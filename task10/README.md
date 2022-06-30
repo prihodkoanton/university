@@ -1,22 +1,43 @@
-# Getting Started
+СRM система по управлению расписания университета
+Общее
 
-### Reference Documentation
-For further reference, please consider the following sections:
+В университете проводится 6 пар в день ПН-СБ. Воскресенье выходной
+Студенты разделены на группы
+Пары привязаны к группам
+Общих лекций для нескольких групп не бывает
+Аудитории не имеют специализации и все одинаковы
+Преподаватели имеют специализацию
 
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.7.1/maven-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/2.7.1/maven-plugin/reference/html/#build-image)
-* [Spring Web](https://docs.spring.io/spring-boot/docs/2.7.1/reference/htmlsingle/#web)
-* [Spring Data JDBC](https://docs.spring.io/spring-boot/docs/2.7.1/reference/htmlsingle/#data.sql.jdbc)
-* [Thymeleaf](https://docs.spring.io/spring-boot/docs/2.7.1/reference/htmlsingle/#web.servlet.spring-mvc.template-engines)
-* [Flyway Migration](https://docs.spring.io/spring-boot/docs/2.7.1/reference/htmlsingle/#howto.data-initialization.migration-tool.flyway)
+Тип расписания
 
-### Guides
-The following guides illustrate how to use some features concretely:
+Простое расписание
 
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Building REST services with Spring](https://spring.io/guides/tutorials/rest/)
-* [Using Spring Data JDBC](https://github.com/spring-projects/spring-data-examples/tree/master/jdbc/basics)
-* [Handling Form Submission](https://spring.io/guides/gs/handling-form-submission/)
+Простое расписание
+Расписание задается один раз в начале учебного периода(семестра) его изменение имеет немедленный эффект, любые дополнительные изменения происходят в частном порядке и реализованной системе отношения не имеют
+Пользователи
 
+Любой посетитель может посмотреть общее для всех групп(или по выбору) расписание (шаблон) на неделю, день (сегодня или на дату)
+По ссылке полученной из деканата пользователь может быть зарегистрирован в системе и получить набор ролей. Далее эти роли могут быть отредактированы пользователем с ролью Admin
+Пользователь может обладать только одной ролью
+
+Роли
+
+Сотрудник(stuff) (Кто угодно не связанный с процессом - уборщица, техник и тд))
+
+может посмотреть расписание аудиторий
+
+
+Студент (student)
+
+по умолчанию видит расписание для своей группы, но может посмотреть общее
+
+
+Преподаватель (teacher)
+
+может посмотреть свое расписание
+
+
+Администратор/Деканат (admin)
+
+может редактировать шаблон
+может редактировать роли пользователя
