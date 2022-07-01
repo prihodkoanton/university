@@ -3,54 +3,38 @@ package com.foxminded.aprihodko.task10.models;
 import java.util.Objects;
 
 public class Teacher extends User {
-    private String firstName;
-    private String lastname;
-    private int id;
+    private Long courseId;
 
-    public Teacher(String firstName, String lastname, int id) {
-        this.firstName = firstName;
-        this.lastname = lastname;
-        this.id = id;
+    public Teacher(Long id, String name, UserType type, Long courseId) {
+        super(id, name, type);
+        this.courseId = courseId;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public Long getGroupId() {
+        return courseId;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public void setGroupId(Long groupId) {
+        this.courseId = groupId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, id, lastname);
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + Objects.hash(courseId);
+        return result;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null)
+        if (!super.equals(obj))
             return false;
         if (getClass() != obj.getClass())
             return false;
         Teacher other = (Teacher) obj;
-        return Objects.equals(firstName, other.firstName) && id == other.id && Objects.equals(lastname, other.lastname);
+        return Objects.equals(courseId, other.courseId);
     }
 }

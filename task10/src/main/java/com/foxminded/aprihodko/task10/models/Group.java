@@ -3,6 +3,7 @@ package com.foxminded.aprihodko.task10.models;
 import java.util.Objects;
 
 public class Group {
+
     private String name;
     private int id;
     private int sutentId;
