@@ -5,13 +5,11 @@ import java.util.Objects;
 public class Group {
 
     private String name;
-    private int id;
-    private int sutentId;
+    private Long id;
 
-    public Group(String name, int id, int sutentId) {
+    public Group(String name, Long id) {
         this.name = name;
         this.id = id;
-        this.sutentId = sutentId;
     }
 
     public String getName() {
@@ -22,25 +20,17 @@ public class Group {
         this.name = name;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    public int getSutentId() {
-        return sutentId;
-    }
-
-    public void setSutentId(int sutentId) {
-        this.sutentId = sutentId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, sutentId);
+        return Objects.hash(id, name);
     }
 
     @Override
@@ -52,6 +42,6 @@ public class Group {
         if (getClass() != obj.getClass())
             return false;
         Group other = (Group) obj;
-        return id == other.id && Objects.equals(name, other.name) && sutentId == other.sutentId;
+        return Objects.equals(id, other.id) && Objects.equals(name, other.name);
     }
 }

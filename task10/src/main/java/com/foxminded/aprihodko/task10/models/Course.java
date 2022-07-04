@@ -3,21 +3,21 @@ package com.foxminded.aprihodko.task10.models;
 import java.util.Objects;
 
 public class Course {
-    private int id;
+    private Long id;
     private String name;
-    private int teacherId;
+    private String discription;
 
-    public Course(int id, String name, int teacherId) {
+    public Course(Long id, String name, String discription) {
         this.id = id;
         this.name = name;
-        this.teacherId = teacherId;
+        this.discription = discription;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -29,17 +29,17 @@ public class Course {
         this.name = name;
     }
 
-    public int getTeacherId() {
-        return teacherId;
+    public String getDiscription() {
+        return discription;
     }
 
-    public void setTeacherId(int teacherId) {
-        this.teacherId = teacherId;
+    public void setDiscription(String discription) {
+        this.discription = discription;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, teacherId);
+        return Objects.hash(discription, id, name);
     }
 
     @Override
@@ -51,6 +51,7 @@ public class Course {
         if (getClass() != obj.getClass())
             return false;
         Course other = (Course) obj;
-        return id == other.id && Objects.equals(name, other.name) && teacherId == other.teacherId;
+        return Objects.equals(discription, other.discription) && Objects.equals(id, other.id)
+                && Objects.equals(name, other.name);
     }
 }

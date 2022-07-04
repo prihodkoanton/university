@@ -10,7 +10,7 @@ public class Student extends User {
         super(id, name, type);
         this.groupdId = groupdId;
     }
-
+        
     public Long getGroupdId() {
         return groupdId;
     }
@@ -37,5 +37,5 @@ public class Student extends User {
             return false;
         Student other = (Student) obj;
         return Objects.equals(groupdId, other.groupdId);
-    } 
+    }
 }
