@@ -10,7 +10,7 @@ public class Student extends User {
         super(id, name, type);
         this.groupdId = groupdId;
     }
-        
+
     public Long getGroupdId() {
         return groupdId;
     }

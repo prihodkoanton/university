@@ -10,17 +10,17 @@ public class Lesson {
     private Long groupId;
     private Long courseId;
     private Long teacherId;
-    private int lessonNum;
+    private int timeSpan;
 
     public Lesson(DayOfWeek dayOfWeek, Long id, Long roomId, Long groupId, Long courseId, Long teacherId,
-            int lessonNum) {
+            int timeSpan) {
         this.dayOfWeek = dayOfWeek;
         this.id = id;
         this.roomId = roomId;
         this.groupId = groupId;
         this.courseId = courseId;
         this.teacherId = teacherId;
-        this.lessonNum = lessonNum;
+        this.timeSpan = timeSpan;
     }
 
     public DayOfWeek getDayOfWeek() {
@@ -72,16 +72,16 @@ public class Lesson {
     }
 
     public int getLessonNum() {
-        return lessonNum;
+        return timeSpan;
     }
 
     public void setLessonNum(int lessonNum) {
-        this.lessonNum = lessonNum;
+        this.timeSpan = lessonNum;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(courseId, dayOfWeek, groupId, id, lessonNum, roomId, teacherId);
+        return Objects.hash(courseId, dayOfWeek, groupId, id, timeSpan, roomId, teacherId);
     }
 
     @Override
@@ -95,7 +95,7 @@ public class Lesson {
         Lesson other = (Lesson) obj;
         return Objects.equals(courseId, other.courseId) && dayOfWeek == other.dayOfWeek
                 && Objects.equals(groupId, other.groupId) && Objects.equals(id, other.id)
-                && lessonNum == other.lessonNum && Objects.equals(roomId, other.roomId)
+                && timeSpan == other.timeSpan && Objects.equals(roomId, other.roomId)
                 && Objects.equals(teacherId, other.teacherId);
     }
 }

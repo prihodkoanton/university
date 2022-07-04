@@ -3,23 +3,33 @@ package com.foxminded.aprihodko.task10.models;
 import java.util.Objects;
 
 public class Room {
-    private int id;
+    private Long id;
+    private String title;
 
-    public Room(int id) {
+    public Room(Long id, String title) {
         this.id = id;
+        this.title = title;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, title);
     }
 
     @Override
@@ -31,6 +41,6 @@ public class Room {
         if (getClass() != obj.getClass())
             return false;
         Room other = (Room) obj;
-        return id == other.id;
+        return Objects.equals(id, other.id) && Objects.equals(title, other.title);
     }
 }
