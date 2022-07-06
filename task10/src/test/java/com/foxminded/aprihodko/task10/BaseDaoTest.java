@@ -8,8 +8,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Testcontainers
 public class BaseDaoTest {
 
- static PostgreSQLContainer postgreSQLContainer = PostgresDatabaseContainer.getInstance();
-     
+    static PostgreSQLContainer postgreSQLContainer = PostgresDatabaseContainer.getInstance();
+
     @DynamicPropertySource
     static void postgresProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
