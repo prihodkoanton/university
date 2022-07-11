@@ -2,12 +2,12 @@ package com.foxminded.aprihodko.task10.models;
 
 import java.util.Objects;
 
-public class Room {
-    private Long id;
+public class Room extends LongEntity {
+
     private String title;
 
     public Room(Long id, String title) {
-        this.id = id;
+        super(id);
         this.title = title;
     }
 
@@ -29,18 +29,21 @@ public class Room {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title);
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + Objects.hash(title);
+        return result;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null)
+        if (!super.equals(obj))
             return false;
         if (getClass() != obj.getClass())
             return false;
         Room other = (Room) obj;
-        return Objects.equals(id, other.id) && Objects.equals(title, other.title);
+        return Objects.equals(title, other.title);
     }
 }

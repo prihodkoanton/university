@@ -2,13 +2,12 @@ package com.foxminded.aprihodko.task10.models;
 
 import java.util.Objects;
 
-public class User {
-    private Long id;
+public class User extends LongEntity {
     private String name;
     UserType type;
 
     public User(Long id, String name, UserType type) {
-        this.id = id;
+        super(id);
         this.name = name;
         this.type = type;
     }
@@ -39,18 +38,21 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, type);
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + Objects.hash(name, type);
+        return result;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null)
+        if (!super.equals(obj))
             return false;
         if (getClass() != obj.getClass())
             return false;
         User other = (User) obj;
-        return Objects.equals(id, other.id) && Objects.equals(name, other.name) && type == other.type;
+        return Objects.equals(name, other.name) && type == other.type;
     }
 }

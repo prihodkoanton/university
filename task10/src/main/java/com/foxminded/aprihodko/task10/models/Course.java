@@ -2,23 +2,18 @@ package com.foxminded.aprihodko.task10.models;
 
 import java.util.Objects;
 
-public class Course {
-    private Long id;
+public class Course extends LongEntity {
     private String name;
     private String discription;
 
     public Course(Long id, String name, String discription) {
-        this.id = id;
+        super(id);
         this.name = name;
         this.discription = discription;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public Course(String name, String discription) {
+        this(null, name, discription);
     }
 
     public String getName() {
@@ -39,19 +34,21 @@ public class Course {
 
     @Override
     public int hashCode() {
-        return Objects.hash(discription, id, name);
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + Objects.hash(discription, name);
+        return result;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null)
+        if (!super.equals(obj))
             return false;
         if (getClass() != obj.getClass())
             return false;
         Course other = (Course) obj;
-        return Objects.equals(discription, other.discription) && Objects.equals(id, other.id)
-                && Objects.equals(name, other.name);
+        return Objects.equals(discription, other.discription) && Objects.equals(name, other.name);
     }
 }

@@ -2,14 +2,13 @@ package com.foxminded.aprihodko.task10.models;
 
 import java.util.Objects;
 
-public class Group {
+public class Group extends LongEntity {
 
     private String name;
-    private Long id;
 
-    public Group(String name, Long id) {
+    public Group(Long id, String name) {
+        super(id);
         this.name = name;
-        this.id = id;
     }
 
     public String getName() {
@@ -30,18 +29,21 @@ public class Group {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + Objects.hash(name);
+        return result;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null)
+        if (!super.equals(obj))
             return false;
         if (getClass() != obj.getClass())
             return false;
         Group other = (Group) obj;
-        return Objects.equals(id, other.id) && Objects.equals(name, other.name);
+        return Objects.equals(name, other.name);
     }
 }
