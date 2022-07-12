@@ -40,7 +40,7 @@ create table university.teachers
 create table university.rooms
 (
     room_id bigserial not null,
-    title   text,
+    room_title   text,
     constraint room_pkey primary key (room_id)
 );
 
