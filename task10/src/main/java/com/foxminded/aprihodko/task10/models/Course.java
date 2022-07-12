@@ -3,6 +3,11 @@ package com.foxminded.aprihodko.task10.models;
 import java.util.Objects;
 
 public class Course extends LongEntity {
+
+    public static final String COURSE_ID = "course_id";
+    public static final String COURSE_NAME = "course_name";
+    public static final String COURSE_DESCRIPTION = "course_description";
+
     private String name;
     private String discription;
 

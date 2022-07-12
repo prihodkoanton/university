@@ -47,8 +47,8 @@ create table university.rooms
 create table university.lesson
 (
     lesson_id   bigserial                                        not null,
-    day_of_weak text                                             not null,
-    time_span   int                                              not null,
+    lesson_day_of_weak text                                             not null,
+    lesson_time_span   int                                              not null,
     room_ref    bigint references university.rooms (room_id)     not null,
     group_ref   bigint references university.groups (group_id)   not null,
     course_ref  bigint references university.courses (course_id) not null,

@@ -4,6 +4,15 @@ import java.time.DayOfWeek;
 import java.util.Objects;
 
 public class Lesson extends LongEntity {
+
+    public static final String LESSON_ID = "lesson_id";
+    public static final String LESSON_DAY_OF_WEEK = "lesson_day_of_week";
+    public static final String LESSON_TIME_SPAN = "lesson_time_span";
+    public static final String ROOM_REF = "room_ref";
+    public static final String GROUP_REF = "group_ref";
+    public static final String COURSE_REF = "course_ref";
+    public static final String TEACHER_REF = "teacher_ref";
+
     private DayOfWeek dayOfWeek;
     private Long roomId;
     private Long groupId;

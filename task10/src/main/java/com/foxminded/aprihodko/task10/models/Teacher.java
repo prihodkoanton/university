@@ -3,6 +3,9 @@ package com.foxminded.aprihodko.task10.models;
 import java.util.Objects;
 
 public class Teacher extends User {
+
+    public static final String COURSE_REF = "course_ref";
+
     private Long courseId;
 
     public Teacher(Long id, String name, UserType type, Long courseId) {

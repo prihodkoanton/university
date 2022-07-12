@@ -4,6 +4,9 @@ import java.util.Objects;
 
 public class Group extends LongEntity {
 
+    public static final String GROUP_ID = "group_id";
+    public static final String GROUP_NAME = "group_name";
+
     private String name;
 
     public Group(Long id, String name) {

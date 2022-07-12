@@ -4,6 +4,9 @@ import java.util.Objects;
 
 public class Room extends LongEntity {
 
+    public static final String ROOM_ID = "room_id";
+    public static final String ROOM_TITLE = "room_title";
+
     private String title;
 
     public Room(Long id, String title) {

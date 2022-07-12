@@ -3,8 +3,13 @@ package com.foxminded.aprihodko.task10.models;
 import java.util.Objects;
 
 public class User extends LongEntity {
+
+    public static final String USER_ID = "user_id";
+    public static final String USER_NAME = "user_name";
+    public static final String USER_TYPE = "user_type";
+
     private String name;
-    UserType type;
+    private UserType type;
 
     public User(Long id, String name, UserType type) {
         super(id);

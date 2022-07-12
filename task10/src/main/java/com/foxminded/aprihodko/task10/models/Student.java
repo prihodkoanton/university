@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class Student extends User {
 
+    public static final String GROUP_REF = "group_ref";
     private Long groupdId;
 
     public Student(Long id, String name, UserType type, Long groupdId) {
