@@ -12,7 +12,7 @@ public interface CrudDao<T extends Entity<K>, K> {
 
     List<T> findAll() throws SQLException;
 
-    T save(T enity) throws SQLException;
+    int save(T enity, Long id) throws SQLException;
 
     void deleteById(K id) throws SQLException;
 }
