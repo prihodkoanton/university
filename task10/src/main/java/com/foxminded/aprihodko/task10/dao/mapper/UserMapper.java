@@ -8,10 +8,12 @@ import static com.foxminded.aprihodko.task10.models.User.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserMapper implements Mapper<User> {
+import org.springframework.jdbc.core.RowMapper;
+
+public class UserMapper implements RowMapper<User> {
 
     @Override
-    public User apply(ResultSet rs) throws SQLException {
+    public User mapRow(ResultSet rs, int rowNum) throws SQLException {
         return new User(rs.getLong(USER_ID), rs.getString(USER_NAME), UserType.valueOf(rs.getString(USER_TYPE)));
     }
 }

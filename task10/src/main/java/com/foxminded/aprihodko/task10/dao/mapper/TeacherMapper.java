@@ -8,10 +8,12 @@ import static com.foxminded.aprihodko.task10.models.Teacher.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class TeacherMapper implements Mapper<Teacher> {
+import org.springframework.jdbc.core.RowMapper;
+
+public class TeacherMapper implements RowMapper<Teacher>{
 
     @Override
-    public Teacher apply(ResultSet rs) throws SQLException {
+    public Teacher mapRow(ResultSet rs, int rowNum) throws SQLException {
         return new Teacher(rs.getLong(USER_ID), rs.getString(USER_NAME), UserType.valueOf(rs.getString(USER_TYPE)),
                 rs.getLong(COURSE_REF));
     }
