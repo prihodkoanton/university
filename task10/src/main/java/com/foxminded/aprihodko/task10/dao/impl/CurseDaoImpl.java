@@ -40,7 +40,7 @@ public class CurseDaoImpl extends AbstractCrudDao<Course, Long> implements Cours
 
     @Override
     public void deleteById(Long id) throws SQLException {
-        jdbcTemplate.execute(DELETE_BY_ID);
+        jdbcTemplate.update(DELETE_BY_ID,id);
     }
 
     @Override
