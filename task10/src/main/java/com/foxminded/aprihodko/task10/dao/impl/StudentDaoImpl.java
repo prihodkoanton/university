@@ -19,7 +19,7 @@ public class StudentDaoImpl extends AbstractCrudDao<Student, Long> implements St
     public static final String FIND_BY_NAME = "SELECT * FROM university.students WHERE student_title = ?";
     public static final String FIND_BY_GROUP_ID = "SELECT * FROM university.students WHERE student_title = ?";
     public static final String CREATE = "INSERT INTO university.students (student_id, student_title) VALUES (?, ?)";
-    public static final String UPDATE = "UPDATE university.students SET student_title) WHERE student_id = ?)";
+    public static final String UPDATE = "UPDATE university.students SET student_title = ? WHERE student_id = ?)";
 
     private JdbcTemplate jdbcTemplate;
     private StudentMapper mapper;
