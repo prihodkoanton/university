@@ -14,20 +14,29 @@ public class Lesson extends LongEntity {
     public static final String TEACHER_REF = "teacher_ref";
 
     private DayOfWeek dayOfWeek;
+    private int timeSpan;
     private Long roomId;
     private Long groupId;
     private Long courseId;
     private Long teacherId;
-    private int timeSpan;
 
-    public Lesson(Long id, DayOfWeek dayOfWeek, Long roomId, Long groupId, Long courseId, Long teacherId,
-            int timeSpan) {
+    public Lesson(Long id, DayOfWeek dayOfWeek, int timeSpan, Long roomId, Long groupId, Long courseId,
+            Long teacherId) {
         super(id);
         this.dayOfWeek = dayOfWeek;
+        this.timeSpan = timeSpan;
         this.roomId = roomId;
         this.groupId = groupId;
         this.courseId = courseId;
         this.teacherId = teacherId;
+
+    }
+
+    public int getTimeSpan() {
+        return timeSpan;
+    }
+
+    public void setTimeSpan(int timeSpan) {
         this.timeSpan = timeSpan;
     }
 

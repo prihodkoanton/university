@@ -9,15 +9,15 @@ import com.foxminded.aprihodko.task10.models.Lesson;
 
 public interface LessonDao extends CrudDao<Lesson, Long> {
 
-    Optional<Lesson> findByDayOfWeek(Connection connection, String dayOfWeek) throws SQLException;
+    Optional<Lesson> findByDayOfWeek(String dayOfWeek) throws SQLException;
 
-    List<Lesson> findByRoomId(Connection connection, Long id) throws SQLException;
+    List<Lesson> findByRoomId(Long id) throws SQLException;
 
-    List<Lesson> findByGroupId(Connection connection, Long id) throws SQLException;
+    List<Lesson> findByGroupId(Long id) throws SQLException;
 
-    List<Lesson> findByCourseId(Connection connection, Long id) throws SQLException;
+    List<Lesson> findByCourseId(Long id) throws SQLException;
 
-    List<Lesson> findByTeacherId(Connection connection, Long id) throws SQLException;
+    List<Lesson> findByTeacherId(Long id) throws SQLException;
 
-    Optional<Lesson> findByTimeSpan(Connection connection, Long timeSpan) throws SQLException;
+    Optional<Lesson> findByTimeSpan(Long timeSpan) throws SQLException;
 }

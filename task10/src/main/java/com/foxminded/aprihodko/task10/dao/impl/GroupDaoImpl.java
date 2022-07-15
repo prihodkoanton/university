@@ -50,11 +50,11 @@ public class GroupDaoImpl extends AbstractCrudDao<Group, Long> implements GroupD
 
     @Override
     protected int create(Group entity) throws SQLException {
-        return jdbcTemplate.update(CREATE, entity.getId(), entity.GROUP_NAME);
+        return jdbcTemplate.update(CREATE, entity.getId(), entity.getName());
     }
 
     @Override
     protected int update(Group entity, Long id) throws SQLException {
-        return jdbcTemplate.update(UPDATE, entity.GROUP_NAME, id);
+        return jdbcTemplate.update(UPDATE, entity.getName(), id);
     }
 }

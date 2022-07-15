@@ -44,7 +44,7 @@ create table university.rooms
     constraint room_pkey primary key (room_id)
 );
 
-create table university.lesson
+create table university.lessons
 (
     lesson_id   bigserial                                        not null,
     lesson_day_of_weak text                                             not null,
@@ -52,9 +52,9 @@ create table university.lesson
     room_ref    bigint references university.rooms (room_id)     not null,
     group_ref   bigint references university.groups (group_id)   not null,
     course_ref  bigint references university.courses (course_id) not null,
-    teacher_ref bigint references university.users (user_id)     not null,
+    teacher_ref bigint references university.users (user_id)     not null, 
     constraint lesson_pkey primary key (lesson_id),
-    unique (day_of_weak, time_span, room_ref),
-    unique (day_of_weak, time_span, group_ref),
-    unique (day_of_weak, time_span, teacher_ref)
+    unique (lesson_day_of_weak, lesson_time_span, room_ref),
+    unique (lesson_day_of_weak, lesson_time_span, group_ref),
+    unique (lesson_day_of_weak, lesson_time_span, teacher_ref)
 );

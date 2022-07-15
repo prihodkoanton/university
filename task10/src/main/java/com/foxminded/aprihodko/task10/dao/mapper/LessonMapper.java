@@ -14,7 +14,7 @@ public class LessonMapper implements RowMapper<Lesson> {
     @Override
     public Lesson mapRow(ResultSet rs, int rowNum) throws SQLException {
         return new Lesson(rs.getLong(LESSON_ID), DayOfWeek.valueOf(rs.getString(LESSON_DAY_OF_WEEK)),
-                rs.getLong(ROOM_REF), rs.getLong(GROUP_REF), rs.getLong(COURSE_REF), rs.getLong(TEACHER_REF),
-                rs.getInt(LESSON_TIME_SPAN));
+                rs.getInt(LESSON_TIME_SPAN), rs.getLong(ROOM_REF), rs.getLong(GROUP_REF), rs.getLong(COURSE_REF),
+                rs.getLong(TEACHER_REF));
     }
 }
