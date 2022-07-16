@@ -26,7 +26,7 @@ create table university.users
 
 create table university.students
 (
-    users_ref bigint PRIMARY KEY references university.users (user_id),
+    user_ref bigint PRIMARY KEY references university.users (user_id),
     group_ref bigint REFERENCES university.groups (group_id)
 );
 

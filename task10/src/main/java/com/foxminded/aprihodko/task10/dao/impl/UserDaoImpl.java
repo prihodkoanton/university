@@ -11,15 +11,17 @@ import com.foxminded.aprihodko.task10.dao.UserDao;
 import com.foxminded.aprihodko.task10.dao.mapper.UserMapper;
 import com.foxminded.aprihodko.task10.models.User;
 
-public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao {
+public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao{
 
-    public static final String FIND_BY_ID = "SELECT * FROM university.users WHERE user_id = ?";
+    public static final String FIND_BY_ID = "select * from university.users u left join university.students s on u.user_id = s.user_ref left join university.teachers t on u.user_id = t.user_ref where u.user_id = ?";
     public static final String FIND_ALL = "SELECT * FROM university.users";
     public static final String DELETE_BY_ID = "DELETE FROM university.users WHERE user_id = ?";
     public static final String FIND_BY_NAME = "SELECT * FROM university.users WHERE user_name = ?";
     public static final String FIND_BY_USER_TYPE = "SELECT * FROM university.users WHERE user_type = ?";
     public static final String CREATE = "INSERT INTO university.users (user_id,  user_name, user_type) VALUES (?, ?, ?)";
     public static final String UPDATE = "UPDATE university.users SET user_name = ?, user_type = ? WHERE user_id = ?)";
+    public static final String CREATE_STUDENT = "INSERT INTO university.students (student_id, student_title) VALUES (?, ?)";
+    public static final String CREATE_TEACHER = "INSERT INTO university.students (student_id, student_title) VALUES (?, ?)";
 
     private JdbcTemplate jdbcTemplate;
     private UserMapper mapper;
@@ -62,5 +64,17 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
     @Override
     protected int update(User entity, Long id) throws SQLException {
         return jdbcTemplate.update(UPDATE, entity.getName(), entity.getType(), id);
+    }
+
+    @Override
+    public List<User> findTeacherByCourseId(Long id) throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<User> findStudentByGroupId(String name) throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
     }
 }
