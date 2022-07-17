@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import com.foxminded.aprihodko.task10.models.Room;
 import static com.foxminded.aprihodko.task10.models.Room.*;
 
-public class RoomMapper implements RowMapper<Room>{
+public class RoomMapper implements RowMapper<Room> {
 
     @Override
     public Room mapRow(ResultSet rs, int rowNum) throws SQLException {

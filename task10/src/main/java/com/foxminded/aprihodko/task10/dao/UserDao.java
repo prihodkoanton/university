@@ -14,5 +14,5 @@ public interface UserDao extends CrudDao<User, Long> {
 
     List<User> findTeacherByCourseId(User entity, Long id) throws SQLException;
 
-    List<User> findStudentByGroupId(User entity,Long id) throws SQLException;
+    List<User> findStudentByGroupId(User entity, Long id) throws SQLException;
 }

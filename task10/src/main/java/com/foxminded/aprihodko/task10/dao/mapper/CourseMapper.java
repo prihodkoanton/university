@@ -8,13 +8,10 @@ import org.springframework.jdbc.core.RowMapper;
 import com.foxminded.aprihodko.task10.models.Course;
 import static com.foxminded.aprihodko.task10.models.Course.*;
 
-public class CourseMapper implements RowMapper<Course>{
+public class CourseMapper implements RowMapper<Course> {
 
     @Override
     public Course mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return new Course(
-                rs.getLong(COURSE_ID),
-                rs.getString(COURSE_NAME),
-                rs.getString(COURSE_DESCRIPTION));
+        return new Course(rs.getLong(COURSE_ID), rs.getString(COURSE_NAME), rs.getString(COURSE_DESCRIPTION));
     }
 }
