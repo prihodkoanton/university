@@ -40,7 +40,7 @@ public class CurseDaoImpl extends AbstractCrudDao<Course, Long> implements Cours
 
     @Override
     public void deleteById(Long id) throws SQLException {
-        jdbcTemplate.update(DELETE_BY_ID,id);
+        jdbcTemplate.update(DELETE_BY_ID, id);
     }
 
     @Override
@@ -49,12 +49,14 @@ public class CurseDaoImpl extends AbstractCrudDao<Course, Long> implements Cours
     }
 
     @Override
-    protected int create(Course entity) throws SQLException {
-        return jdbcTemplate.update(CREATE, entity.getId(), entity.getName(), entity.getDiscription());
+    protected Course create(Course entity) throws SQLException {
+        jdbcTemplate.update(CREATE, entity.getId(), entity.getName(), entity.getDiscription());
+        return entity;
     }
 
     @Override
-    protected int update(Course entity, Long id) throws SQLException {
-        return jdbcTemplate.update(UPDATE, entity.getName(), entity.getDiscription(), id);
+    protected Course update(Course entity, Long id) throws SQLException {
+        jdbcTemplate.update(UPDATE, entity.getName(), entity.getDiscription(), id);
+        return entity;
     }
 }

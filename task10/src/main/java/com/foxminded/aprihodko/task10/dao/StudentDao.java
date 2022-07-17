@@ -7,7 +7,5 @@ import java.util.Optional;
 import com.foxminded.aprihodko.task10.models.Student;
 
 public interface StudentDao extends CrudDao<Student, Long> {
-    Optional<Student> findByName(String name) throws SQLException;
-
-    List<Student> findByGroupId(String name) throws SQLException;
+    List<Student> findStudentByGroupId(String name) throws SQLException;
 }

@@ -13,7 +13,7 @@ public class Teacher extends User {
         this.courseId = courseId;
     }
 
-    public Long getGroupId() {
+    public Long getCourseId() {
         return courseId;
     }
 

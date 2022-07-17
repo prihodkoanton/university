@@ -49,12 +49,14 @@ public class RoomDaoImpl extends AbstractCrudDao<Room, Long> implements RoomDao 
     }
 
     @Override
-    protected int create(Room entity) throws SQLException {
-        return jdbcTemplate.update(CREATE, entity.getId(), entity.getTitle());
+    protected Room create(Room entity) throws SQLException {
+        jdbcTemplate.update(CREATE, entity.getId(), entity.getTitle());
+        return entity;
     }
 
     @Override
-    protected int update(Room entity, Long id) throws SQLException {
-        return jdbcTemplate.update(UPDATE, entity.getTitle(), id);
+    protected Room update(Room entity, Long id) throws SQLException {
+        jdbcTemplate.update(UPDATE, entity.getTitle(), id);
+        return entity;
     }
 }

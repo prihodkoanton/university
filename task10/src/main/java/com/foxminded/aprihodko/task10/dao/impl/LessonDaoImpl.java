@@ -79,14 +79,16 @@ public class LessonDaoImpl extends AbstractCrudDao<Lesson, Long> implements Less
     }
 
     @Override
-    protected int create(Lesson entity) throws SQLException {
-        return jdbcTemplate.update(CREATE, entity.getId(), entity.getDayOfWeek(), entity.getTimeSpan(),
-                entity.getRoomId(), entity.getGroupId(), entity.getCourseId(), entity.getTeacherId());
+    protected Lesson create(Lesson entity) throws SQLException {
+        jdbcTemplate.update(CREATE, entity.getId(), entity.getDayOfWeek(), entity.getTimeSpan(), entity.getRoomId(),
+                entity.getGroupId(), entity.getCourseId(), entity.getTeacherId());
+        return entity;
     }
 
     @Override
-    protected int update(Lesson entity, Long id) throws SQLException {
-        return jdbcTemplate.update(UPDATE, entity.getDayOfWeek(), entity.getTimeSpan(), entity.getRoomId(),
+    protected Lesson update(Lesson entity, Long id) throws SQLException {
+        jdbcTemplate.update(UPDATE, entity.getDayOfWeek(), entity.getTimeSpan(), entity.getRoomId(),
                 entity.getGroupId(), entity.getCourseId(), entity.getTeacherId(), id);
+        return entity;
     }
 }

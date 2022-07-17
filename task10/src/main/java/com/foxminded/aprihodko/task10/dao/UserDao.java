@@ -12,7 +12,7 @@ public interface UserDao extends CrudDao<User, Long> {
 
     List<User> findByUserType(String userType);
 
-    List<User> findTeacherByCourseId(Long id) throws SQLException;
+    List<User> findTeacherByCourseId(User entity, Long id) throws SQLException;
 
-    List<User> findStudentByGroupId(String name) throws SQLException;
+    List<User> findStudentByGroupId(User entity,Long id) throws SQLException;
 }
