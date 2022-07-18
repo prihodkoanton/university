@@ -3,23 +3,40 @@ package com.foxminded.aprihodko.task10.models;
 import java.time.DayOfWeek;
 import java.util.Objects;
 
-public class Lesson {
+public class Lesson extends LongEntity {
+
+    public static final String LESSON_ID = "lesson_id";
+    public static final String LESSON_DAY_OF_WEEK = "lesson_day_of_week";
+    public static final String LESSON_TIME_SPAN = "lesson_time_span";
+    public static final String ROOM_REF = "room_ref";
+    public static final String GROUP_REF = "group_ref";
+    public static final String COURSE_REF = "course_ref";
+    public static final String TEACHER_REF = "teacher_ref";
+
     private DayOfWeek dayOfWeek;
-    private Long id;
+    private int timeSpan;
     private Long roomId;
     private Long groupId;
     private Long courseId;
     private Long teacherId;
-    private int timeSpan;
 
-    public Lesson(DayOfWeek dayOfWeek, Long id, Long roomId, Long groupId, Long courseId, Long teacherId,
-            int timeSpan) {
+    public Lesson(Long id, DayOfWeek dayOfWeek, int timeSpan, Long roomId, Long groupId, Long courseId,
+            Long teacherId) {
+        super(id);
         this.dayOfWeek = dayOfWeek;
-        this.id = id;
+        this.timeSpan = timeSpan;
         this.roomId = roomId;
         this.groupId = groupId;
         this.courseId = courseId;
         this.teacherId = teacherId;
+
+    }
+
+    public int getTimeSpan() {
+        return timeSpan;
+    }
+
+    public void setTimeSpan(int timeSpan) {
         this.timeSpan = timeSpan;
     }
 
@@ -81,21 +98,23 @@ public class Lesson {
 
     @Override
     public int hashCode() {
-        return Objects.hash(courseId, dayOfWeek, groupId, id, timeSpan, roomId, teacherId);
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + Objects.hash(courseId, dayOfWeek, groupId, roomId, teacherId, timeSpan);
+        return result;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null)
+        if (!super.equals(obj))
             return false;
         if (getClass() != obj.getClass())
             return false;
         Lesson other = (Lesson) obj;
         return Objects.equals(courseId, other.courseId) && dayOfWeek == other.dayOfWeek
-                && Objects.equals(groupId, other.groupId) && Objects.equals(id, other.id)
-                && timeSpan == other.timeSpan && Objects.equals(roomId, other.roomId)
-                && Objects.equals(teacherId, other.teacherId);
+                && Objects.equals(groupId, other.groupId) && Objects.equals(roomId, other.roomId)
+                && Objects.equals(teacherId, other.teacherId) && timeSpan == other.timeSpan;
     }
 }

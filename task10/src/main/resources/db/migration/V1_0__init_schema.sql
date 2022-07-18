@@ -1,4 +1,3 @@
-drop schema if exists university cascade;
 create schema university;
 
 CREATE TABLE university.courses
@@ -26,7 +25,7 @@ create table university.users
 
 create table university.students
 (
-    users_ref bigint PRIMARY KEY references university.users (user_id),
+    user_ref  bigint PRIMARY KEY references university.users (user_id),
     group_ref bigint REFERENCES university.groups (group_id)
 );
 
@@ -39,22 +38,22 @@ create table university.teachers
 
 create table university.rooms
 (
-    room_id bigserial not null,
-    title   text,
+    room_id    bigserial not null,
+    room_title text,
     constraint room_pkey primary key (room_id)
 );
 
-create table university.lesson
+create table university.lessons
 (
-    lesson_id   bigserial                                        not null,
-    day_of_weak text                                             not null,
-    time_span   int                                              not null,
-    room_ref    bigint references university.rooms (room_id)     not null,
-    group_ref   bigint references university.groups (group_id)   not null,
-    course_ref  bigint references university.courses (course_id) not null,
-    teacher_ref bigint references university.users (user_id)     not null,
+    lesson_id          bigserial                                        not null,
+    lesson_day_of_weak text                                             not null,
+    lesson_time_span   int                                              not null,
+    room_ref           bigint references university.rooms (room_id)     not null,
+    group_ref          bigint references university.groups (group_id)   not null,
+    course_ref         bigint references university.courses (course_id) not null,
+    teacher_ref        bigint references university.users (user_id)     not null,
     constraint lesson_pkey primary key (lesson_id),
-    unique (day_of_weak, time_span, room_ref),
-    unique (day_of_weak, time_span, group_ref),
-    unique (day_of_weak, time_span, teacher_ref)
+    unique (lesson_day_of_weak, lesson_time_span, room_ref),
+    unique (lesson_day_of_weak, lesson_time_span, group_ref),
+    unique (lesson_day_of_weak, lesson_time_span, teacher_ref)
 );
