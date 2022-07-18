@@ -8,8 +8,8 @@ public class Teacher extends User {
 
     private Long courseId;
 
-    public Teacher(Long id, String name, UserType type, Long courseId) {
-        super(id, name, type);
+    public Teacher(Long id, String name, Long courseId) {
+        super(id, name, UserType.TEACHER);
         this.courseId = courseId;
     }
 
