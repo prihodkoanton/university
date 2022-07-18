@@ -22,9 +22,9 @@ public class UserMapper implements RowMapper<User> {
         Long id = rs.getLong(USER_ID);
         String name = rs.getString(USER_NAME);
         if (type == UserType.STUDENT) {
-            return new Student(id, name, type, rs.getLong(GROUP_REF));
+            return new Student(id, name, rs.getLong(GROUP_REF));
         } else if (type == UserType.TEACHER) {
-            return new Teacher(id, name, type, rs.getLong(COURSE_REF));
+            return new Teacher(id, name, rs.getLong(COURSE_REF));
         } else {
             return new User(id, name, type);
         }
