@@ -110,37 +110,37 @@ class UserDaoImplTest extends BaseDaoTest {
         List<User> actual = userDao.findByType(UserType.STUDENT);
         assertEquals(expected, actual);
     }
-    
+
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
-    void shouldCreateTeacher() throws SQLException{
+    void shouldCreateTeacher() throws SQLException {
         User expected = new Teacher(100L, "john", 100L);
         User actual = userDao.save(expected, 100L);
         assertNotNull(actual.getId());
         expected.setId(actual.getId());
         assertEquals(expected, actual);
     }
-    
+
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
-    void shouldCreateStudent() throws SQLException{
+    void shouldCreateStudent() throws SQLException {
         User expected = new Student(100L, "john", 100L);
         User actual = userDao.save(expected, 100L);
         assertNotNull(actual.getId());
         expected.setId(actual.getId());
         assertEquals(expected, actual);
     }
-    
+
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
-    void shouldCreateUserNone() throws SQLException{
+    void shouldCreateUserNone() throws SQLException {
         User expected = new User(100L, "john", UserType.NONE);
         User actual = userDao.save(expected, 100L);
         assertNotNull(actual.getId());
         expected.setId(actual.getId());
         assertEquals(expected, actual);
     }
-   
+
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
     void shouldFindTeachersByCourseId() throws SQLException {
