@@ -24,7 +24,11 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
             "         left join university.students s on u.user_id = s.user_ref\n" +
             "         left join university.teachers t on u.user_id = t.user_ref;";
     public static final String DELETE_BY_ID = "DELETE FROM university.users WHERE user_id = ?";
-    public static final String FIND_BY_NAME = "SELECT * FROM university.users WHERE user_name = ?";
+    public static final String FIND_BY_NAME = "select *\n" +
+            "from university.users u\n" +
+            "         left join university.students s on u.user_id = s.user_ref\n" +
+            "         left join university.teachers t on u.user_id = t.user_ref\n" +
+            "where user_name = ?;";
     public static final String FIND_BY_USER_TYPE = "" +
             "select *\n" +
             "from university.users u\n" +
@@ -34,9 +38,9 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
     public static final String CREATE_USER = "INSERT INTO university.users (user_id,  user_name, user_type) VALUES (?, ?, ?)";
     public static final String CREATE_STUDENT = "INSERT INTO university.students (user_ref, group_ref) VALUES (?, ?)";
     public static final String CREATE_TEACHER = "INSERT INTO university.teachers (user_ref, course_ref) VALUES (?, ?)";
-    public static final String UPDATE = "UPDATE university.users SET user_name = ?, user_type = ? WHERE user_id = ?)";
-    public static final String UPDATE_GROUP_FOR_STUDENT = "UPDATE university.students SET group_ref = ?, user_type = ? WHERE user_ref = ?)";
-    public static final String UPDATE_COURSE_FOR_TEACHER = "UPDATE university.teachers SET course_ref = ?, user_type = ? WHERE user_ref = ?)";
+    public static final String UPDATE = "UPDATE university.users SET user_name = ?, user_type = ? WHERE user_id = ?";
+    public static final String UPDATE_GROUP_FOR_STUDENT = "UPDATE university.students SET group_ref = ? WHERE user_ref = ?";
+    public static final String UPDATE_COURSE_FOR_TEACHER = "UPDATE university.teachers SET course_ref = ? WHERE user_ref = ?";
     public static final String FIND_STUDENT_BY_GROUP_ID = "select * from university.students s left join university.users u on s.user_ref = u.user_id   where group_ref = ?";
     public static final String FIND_TEACHER_BY_COURSE_ID = "select * from university.teachers t left join university.users u on t.user_ref = u.user_id   where course_ref = ?";
 
@@ -88,11 +92,11 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
 
     @Override
     protected User update(User entity, Long id) throws SQLException {
-        jdbcTemplate.update(UPDATE, entity.getName(), entity.getType(), id);
+        jdbcTemplate.update(UPDATE, entity.getName(), entity.getType().toString(), id);
         if (entity instanceof Student) {
             Student student = (Student) entity;
             jdbcTemplate.update(UPDATE_GROUP_FOR_STUDENT, student.getId(), student.getGroupdId());
-        } else if (entity instanceof Teacher) {
+        } else if (entity.getType().equals(UserType.TEACHER)) {
             Teacher teacher = (Teacher) entity;
             jdbcTemplate.update(UPDATE_COURSE_FOR_TEACHER, teacher.getId(), teacher.getCourseId());
         }
