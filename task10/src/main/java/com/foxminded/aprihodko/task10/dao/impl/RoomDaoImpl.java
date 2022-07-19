@@ -18,12 +18,10 @@ public class RoomDaoImpl extends AbstractCrudDao<Room, Long> implements RoomDao 
     public static final String DELETE_BY_ID = "DELETE FROM university.rooms WHERE room_id = ?";
     public static final String FIND_BY_TITLE = "SELECT * FROM university.rooms WHERE room_title = ?";
     public static final String CREATE = "INSERT INTO university.rooms (room_id, room_title) VALUES (?, ?)";
-    public static final String UPDATE = "UPDATE university.rooms SET room_title) WHERE room_id = ?)";
+    public static final String UPDATE = "UPDATE university.rooms SET room_title = ? WHERE room_id = ?";
 
     private final JdbcTemplate jdbcTemplate;
     private final RoomMapper mapper;
-
-    
 
     public RoomDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
