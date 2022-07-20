@@ -13,8 +13,13 @@ public class LessonMapper implements RowMapper<Lesson> {
 
     @Override
     public Lesson mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return new Lesson(rs.getLong(LESSON_ID), DayOfWeek.valueOf(rs.getString(LESSON_DAY_OF_WEEK)),
-                rs.getInt(LESSON_TIME_SPAN), rs.getLong(ROOM_REF), rs.getLong(GROUP_REF), rs.getLong(COURSE_REF),
-                rs.getLong(TEACHER_REF));
+        Long id = rs.getLong(LESSON_ID);
+        DayOfWeek day = DayOfWeek.valueOf(rs.getString(LESSON_DAY_OF_WEEK));
+        int time_span = rs.getInt(LESSON_TIME_SPAN);
+        Long room_id = rs.getLong(ROOM_REF);
+        Long group_id = rs.getLong(GROUP_REF);
+        Long course_id = rs.getLong(COURSE_REF);
+        Long teacher_id = rs.getLong(TEACHER_REF);
+        return new Lesson(id, day, time_span, room_id, group_id, course_id, teacher_id);
     }
 }
