@@ -18,14 +18,14 @@ public class GroupDaoImpl extends AbstractCrudDao<Group, Long> implements GroupD
     public static final String DELETE_BY_ID = "DELETE FROM university.groups WHERE group_id = ?";
     public static final String FIND_BY_NAME = "SELECT * FROM university.groups WHERE group_name = ?";
     public static final String CREATE = "INSERT INTO university.groups (group_id, group_name) VALUES (?, ?)";
-    public static final String UPDATE = "UPDATE university.groups SET group_name = ?, WHERE group_id = ?";
+    public static final String UPDATE = "UPDATE university.groups SET group_name = ? WHERE group_id = ?";
 
     private JdbcTemplate jdbcTemplate;
     private GroupMapper mapper;
 
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+    public GroupDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.mapper = new GroupMapper();
+        mapper = new GroupMapper();
     }
 
     @Override
