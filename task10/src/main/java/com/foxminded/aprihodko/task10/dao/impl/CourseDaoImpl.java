@@ -11,21 +11,21 @@ import com.foxminded.aprihodko.task10.dao.CourseDao;
 import com.foxminded.aprihodko.task10.dao.mapper.CourseMapper;
 import com.foxminded.aprihodko.task10.models.Course;
 
-public class CurseDaoImpl extends AbstractCrudDao<Course, Long> implements CourseDao {
+public class CourseDaoImpl extends AbstractCrudDao<Course, Long> implements CourseDao {
 
     public static final String FIND_BY_ID = "SELECT * FROM university.courses where course_id = ?";
     public static final String FIND_ALL = "SELECT * FROM university.courses";
-    public static final String DELETE_BY_ID = "DELETE FROM university.courses where couse_id = ?";
-    public static final String FIND_BY_NAME = "SELECT * FROM university.courses where course.name = ?";
+    public static final String DELETE_BY_ID = "DELETE FROM university.courses where course_id = ?";
+    public static final String FIND_BY_NAME = "SELECT * FROM university.courses where course_name = ?";
     public static final String CREATE = "INSERT INTO university.courses(course_id, course_name, course_description) VALUES (?, ?, ?)";
     public static final String UPDATE = "UPDATE university.courses SET course_name = ?, course_description = ? WHERE course_id = ?";
 
     private JdbcTemplate jdbcTemplate;
     private CourseMapper mapper;
 
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+    public CourseDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.mapper = new CourseMapper();
+        mapper = new CourseMapper();
     }
 
     @Override

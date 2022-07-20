@@ -17,10 +17,6 @@ public class Course extends LongEntity {
         this.discription = discription;
     }
 
-    public Course(String name, String discription) {
-        this(null, name, discription);
-    }
-
     public String getName() {
         return name;
     }
