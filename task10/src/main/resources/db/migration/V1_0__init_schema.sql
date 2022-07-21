@@ -25,14 +25,14 @@ create table university.users
 
 create table university.students
 (
-    user_ref  bigint PRIMARY KEY references university.users (user_id),
-    group_ref bigint REFERENCES university.groups (group_id)
+    user_ref  bigint PRIMARY KEY references university.users (user_id) ON DELETE CASCADE,
+    group_ref bigint REFERENCES university.groups (group_id) ON DELETE CASCADE
 );
 
 create table university.teachers
 (
-    user_ref   bigint primary key references university.users (user_id),
-    course_ref bigint references university.courses (course_id)
+    user_ref   bigint primary key references university.users (user_id) ON DELETE CASCADE,
+    course_ref bigint references university.courses (course_id) ON DELETE CASCADE
 );
 
 
@@ -46,14 +46,14 @@ create table university.rooms
 create table university.lessons
 (
     lesson_id          bigserial                                        not null,
-    lesson_day_of_weak text                                             not null,
+    lesson_day_of_week text                                             not null,
     lesson_time_span   int                                              not null,
     room_ref           bigint references university.rooms (room_id)     not null,
     group_ref          bigint references university.groups (group_id)   not null,
     course_ref         bigint references university.courses (course_id) not null,
     teacher_ref        bigint references university.users (user_id)     not null,
     constraint lesson_pkey primary key (lesson_id),
-    unique (lesson_day_of_weak, lesson_time_span, room_ref),
-    unique (lesson_day_of_weak, lesson_time_span, group_ref),
-    unique (lesson_day_of_weak, lesson_time_span, teacher_ref)
+    unique (lesson_day_of_week, lesson_time_span, room_ref),
+    unique (lesson_day_of_week, lesson_time_span, group_ref),
+    unique (lesson_day_of_week, lesson_time_span, teacher_ref)
 );
