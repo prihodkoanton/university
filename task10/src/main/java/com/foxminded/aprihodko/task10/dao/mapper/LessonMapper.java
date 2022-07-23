@@ -20,6 +20,6 @@ public class LessonMapper implements RowMapper<Lesson> {
         Long group_id = rs.getLong(GROUP_REF);
         Long course_id = rs.getLong(COURSE_REF);
         Long teacher_id = rs.getLong(TEACHER_REF);
-        return new Lesson(id, day, time_span, room_id, group_id, course_id, teacher_id);
+        return new Lsson(id, day, time_span, room_id, group_id, course_id, teacher_id);
     }
 }

@@ -11,7 +11,7 @@ public class Course extends LongEntity {
     private String name;
     private String discription;
 
-    public Course(Long id, String name, String discription) {
+    public Curse(Long id, String name, String discription) {
         super(id);
         this.name = name;
         this.discription = discription;

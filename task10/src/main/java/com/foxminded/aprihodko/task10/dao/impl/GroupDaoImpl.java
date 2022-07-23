@@ -21,7 +21,7 @@ public class GroupDaoImpl extends AbstractCrudDao<Group, Long> implements GroupD
     public static final String UPDATE = "UPDATE university.groups SET group_name = ? WHERE group_id = ?";
 
     private JdbcTemplate jdbcTemplate;
-    private GroupMapper mapper;
+    private GroupMapper mpper;
 
     public GroupDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
