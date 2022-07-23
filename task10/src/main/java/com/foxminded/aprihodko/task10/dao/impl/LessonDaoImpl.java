@@ -29,7 +29,7 @@ public class LessonDaoImpl extends AbstractCrudDao<Lesson, Long> implements Less
     public static final String CREATE = "INSET INTO university.lessons (lesson_id, lesson_day_of_week, lesson_time_span, room_ref, group_ref, course_ref, teacher_ref) VALUES (?, ?, ?, ?, ?, ?, ?)";
     public static final String UPDATE = "UPDATE university.lessons SET lesson_day_of_week =?, lesson_time_span =?, room_ref =?, group_ref =?, course_ref =?, teacher_ref =? WHERE lesson_id = ?";
 
-    private LessonMapper mpper;
+    private LessonMapper mapper;
     private JdbcTemplate jdbcTemplate;
 
     public LessonDaoImpl(JdbcTemplate jdbcTemplate) {

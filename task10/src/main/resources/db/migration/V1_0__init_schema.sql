@@ -1,4 +1,4 @@
-create schema univrsity;
+create schema university;
 
 CREATE TABLE university.courses
 (
