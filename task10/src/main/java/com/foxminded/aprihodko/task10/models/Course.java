@@ -9,7 +9,7 @@ public class Course extends LongEntity {
     public static final String COURSE_DESCRIPTION = "course_description";
 
     private String name;
-    private String discription;
+    private Sring discription;
 
     public Course(Long id, String name, String discription) {
         super(id);
