@@ -18,5 +18,5 @@ public interface LessonDao extends CrudDao<Lesson, Long> {
 
     List<Lesson> findByTeacherId(Long id) throws SQLException;
 
-    List<Lesson> findByTimeSpan(Long timeSpan) throws SQLException;
+    List<Lesson> finByTimeSpan(Long timeSpan) throws SQLException;
 }
