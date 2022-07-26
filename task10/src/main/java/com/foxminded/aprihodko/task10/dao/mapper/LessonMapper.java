@@ -8,7 +8,9 @@ import java.sql.SQLException;
 import java.time.DayOfWeek;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class LessonMapper implements RowMapper<Lesson> {
 
     @Override

@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import com.foxminded.aprihodko.task10.dao.AbstractCrudDao;
 import com.foxminded.aprihodko.task10.dao.RoomDao;
 import com.foxminded.aprihodko.task10.dao.mapper.RoomMapper;
 import com.foxminded.aprihodko.task10.models.Room;
 
+@Repository
 public class RoomDaoImpl extends AbstractCrudDao<Room, Long> implements RoomDao {
 
     public static final String FIND_BY_ID = "SELECT * FROM university.rooms WHERE room_id = ?";

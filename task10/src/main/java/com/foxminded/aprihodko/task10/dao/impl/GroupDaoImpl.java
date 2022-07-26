@@ -20,8 +20,8 @@ public class GroupDaoImpl extends AbstractCrudDao<Group, Long> implements GroupD
     public static final String CREATE = "INSERT INTO university.groups (group_id, group_name) VALUES (?, ?)";
     public static final String UPDATE = "UPDATE university.groups SET group_name = ? WHERE group_id = ?";
 
-    private JdbcTemplate jdbcTemplate;
-    private GroupMapper mapper;
+    private final JdbcTemplate jdbcTemplate;
+    private final GroupMapper mapper;
 
     public GroupDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import com.foxminded.aprihodko.task10.models.UserType;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import com.foxminded.aprihodko.task10.dao.AbstractCrudDao;
 import com.foxminded.aprihodko.task10.dao.UserDao;
@@ -15,6 +16,7 @@ import com.foxminded.aprihodko.task10.models.Student;
 import com.foxminded.aprihodko.task10.models.Teacher;
 import com.foxminded.aprihodko.task10.models.User;
 
+@Repository
 public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao {
 
     public static final String FIND_BY_ID = "select * from university.users u left join university.students s on u.user_id = s.user_ref left join university.teachers t on u.user_id = t.user_ref where u.user_id = ?";

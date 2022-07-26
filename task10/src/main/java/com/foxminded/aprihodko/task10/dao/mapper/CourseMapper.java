@@ -4,10 +4,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.foxminded.aprihodko.task10.models.Course;
 import static com.foxminded.aprihodko.task10.models.Course.*;
 
+@Component
 public class CourseMapper implements RowMapper<Course> {
 
     @Override

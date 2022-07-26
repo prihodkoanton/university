@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import com.foxminded.aprihodko.task10.dao.AbstractCrudDao;
 import com.foxminded.aprihodko.task10.dao.LessonDao;
 import com.foxminded.aprihodko.task10.dao.mapper.LessonMapper;
 import com.foxminded.aprihodko.task10.models.Lesson;
 
+@Repository
 public class LessonDaoImpl extends AbstractCrudDao<Lesson, Long> implements LessonDao {
 
     public static final String FIND_BY_ID = "select * from university.lessons l left join university.rooms r on l.room_ref = r.room_id\n"
@@ -29,8 +31,8 @@ public class LessonDaoImpl extends AbstractCrudDao<Lesson, Long> implements Less
     public static final String CREATE = "INSET INTO university.lessons (lesson_id, lesson_day_of_week, lesson_time_span, room_ref, group_ref, course_ref, teacher_ref) VALUES (?, ?, ?, ?, ?, ?, ?)";
     public static final String UPDATE = "UPDATE university.lessons SET lesson_day_of_week =?, lesson_time_span =?, room_ref =?, group_ref =?, course_ref =?, teacher_ref =? WHERE lesson_id = ?";
 
-    private LessonMapper mapper;
-    private JdbcTemplate jdbcTemplate;
+    private final LessonMapper mapper;
+    private final JdbcTemplate jdbcTemplate;
 
     public LessonDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
