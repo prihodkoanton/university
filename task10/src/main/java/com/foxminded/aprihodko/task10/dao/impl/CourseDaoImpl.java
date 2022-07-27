@@ -1,4 +1,4 @@
- package com.foxminded.aprihodko.task10.dao.impl;
+package com.foxminded.aprihodko.task10.dao.impl;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -23,7 +23,7 @@ public class CourseDaoImpl extends AbstractCrudDao<Course, Long> implements Cour
     public static final String UPDATE = "UPDATE university.courses SET course_name = ?, course_description = ? WHERE course_id = ?";
 
     private final JdbcTemplate jdbcTemplate;
-    
+
     private final CourseMapper mapper;
 
     public CourseDaoImpl(JdbcTemplate jdbcTemplate) {
@@ -43,6 +43,9 @@ public class CourseDaoImpl extends AbstractCrudDao<Course, Long> implements Cour
 
     @Override
     public void deleteById(Long id) throws SQLException {
+        if (jdbcTemplate.update(DELETE_BY_ID, id) != 1) {
+            throw new SQLException("Unable to delete course (id = " + id + ")");
+        }
         jdbcTemplate.update(DELETE_BY_ID, id);
     }
 
@@ -52,13 +55,19 @@ public class CourseDaoImpl extends AbstractCrudDao<Course, Long> implements Cour
     }
 
     @Override
-    protected Course create(Course entity) throws SQLException {
+    public Course create(Course entity) throws SQLException {
+        if (jdbcTemplate.update(CREATE, entity.getId(), entity.getName(), entity.getDiscription()) != 1) {
+            throw new SQLException("Unable to retrieve id" + entity.getId());
+        }
         jdbcTemplate.update(CREATE, entity.getId(), entity.getName(), entity.getDiscription());
         return entity;
     }
 
     @Override
-    protected Course update(Course entity, Long id) throws SQLException {
+    public Course update(Course entity, Long id) throws SQLException {
+        if (jdbcTemplate.update(CREATE, entity.getId(), entity.getName(), entity.getDiscription()) != 1) {
+            throw new SQLException("Unable to update course " + entity);
+        }
         jdbcTemplate.update(UPDATE, entity.getName(), entity.getDiscription(), id);
         return entity;
     }

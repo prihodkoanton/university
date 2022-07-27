@@ -1,5 +1,6 @@
 package com.foxminded.aprihodko.task10.dao.impl;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.SQLException;
@@ -41,18 +42,23 @@ class CourseDaoImplTest extends BaseDaoTest {
         Course actual = courseDao.findById(100L).orElseThrow();
         assertEquals(expected, actual);
     }
-    
+
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/course_test_data.sql" })
     void shouldFindAll() throws SQLException {
-        List<Course> expected = Arrays.asList(
-                new Course(100L, "java", "Java course"),
-                new Course(101L, "english", "English course"),
-                new Course(102L, "math", "Math course"));
+        List<Course> expected = Arrays.asList(new Course(100L, "java", "Java course"),
+                new Course(101L, "english", "English course"), new Course(102L, "math", "Math course"));
         List<Course> actual = courseDao.findAll();
         assertEquals(expected, actual);
     }
-    
+
+    @Test
+    @Sql(scripts = { "/sql/clear_tables.sql", "/sql/course_test_data.sql" })
+    void shouldNotDeleteById() throws SQLException {
+        Exception e = assertThrows(SQLException.class, () -> courseDao.deleteById(10L));
+        assertEquals("Unable to delete course (id = 10)", e.getMessage());
+    }
+
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/course_test_data.sql" })
     void shouldDeleteById() throws SQLException {
@@ -60,7 +66,7 @@ class CourseDaoImplTest extends BaseDaoTest {
         Optional<Course> shouldBeEmpty = courseDao.findById(100L);
         assertTrue(shouldBeEmpty.isEmpty());
     }
-    
+
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/course_test_data.sql" })
     void shouldFindByName() throws SQLException {
@@ -68,14 +74,14 @@ class CourseDaoImplTest extends BaseDaoTest {
         Course actual = courseDao.findByName("java").orElseThrow();
         assertEquals(expected, actual);
     }
-    
+
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/course_test_data.sql" })
     void shouldCreateCourse() throws SQLException {
-        Course expected = new Course(100L, "java", "Java course");
-        Course actual = courseDao.save(expected, 100L);
+        Course expected = new Course(105L, "java", "Java course");
+        Course actual = courseDao.save(expected, 105L);
         assertNotNull(actual.getId());
         expected.setId(actual.getId());
         assertEquals(expected, actual);
-    }   
+    }
 }

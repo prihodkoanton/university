@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import com.foxminded.aprihodko.task10.dao.AbstractCrudDao;
 import com.foxminded.aprihodko.task10.dao.GroupDao;
 import com.foxminded.aprihodko.task10.dao.mapper.GroupMapper;
 import com.foxminded.aprihodko.task10.models.Group;
 
+@Repository
 public class GroupDaoImpl extends AbstractCrudDao<Group, Long> implements GroupDao {
 
     public static final String FIND_BY_ID = "SELECT * FROM university.groups WHERE group_id = ?";

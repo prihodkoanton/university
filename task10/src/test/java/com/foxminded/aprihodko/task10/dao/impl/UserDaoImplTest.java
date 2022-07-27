@@ -6,6 +6,8 @@ import com.foxminded.aprihodko.task10.models.Student;
 import com.foxminded.aprihodko.task10.models.Teacher;
 import com.foxminded.aprihodko.task10.models.User;
 import com.foxminded.aprihodko.task10.models.UserType;
+import com.foxminded.aprihodko.task10.services.impl.UserServiceImpl;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -82,7 +84,6 @@ class UserDaoImplTest extends BaseDaoTest {
     void shoudlFindTeaherByName() throws SQLException {
         User expected = new Teacher(100L, "john", 100L);
         User actual = userDao.findByName("john").orElseThrow();
-        System.out.println(actual);
         assertEquals(expected, actual);
     }
 
@@ -91,7 +92,6 @@ class UserDaoImplTest extends BaseDaoTest {
     void shoudlFindStudentByName() throws SQLException {
         User expected = new Student(101L, "peter", 100L);
         User actual = userDao.findByName("peter").orElseThrow();
-        System.out.println(actual);
         assertEquals(expected, actual);
     }
 
@@ -124,8 +124,8 @@ class UserDaoImplTest extends BaseDaoTest {
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
     void shouldCreateStudent() throws SQLException {
-        User expected = new Student(103L, "john", 103L);
-        User actual = userDao.save(expected, 103L);
+        User expected = new Student(104L, "john", 104L);
+        User actual = userDao.save(expected, 104L);
         assertNotNull(actual.getId());
         expected.setId(actual.getId());
         assertEquals(expected, actual);

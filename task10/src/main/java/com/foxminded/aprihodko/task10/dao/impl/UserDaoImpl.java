@@ -90,18 +90,16 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
 
     @Override
     public User update(User entity, Long id) throws SQLException {
-        if (jdbcTemplate.update(CREATE_USER, entity.getId(), entity.getName(), entity.getType()) != 1) {
+        if (jdbcTemplate.update(CREATE_USER, entity.getId(), entity.getName(), entity.getType().toString()) != 1) {
             throw new SQLException("Unable to update user" + entity.getId());
         }
-        jdbcTemplate.update(UPDATE, entity.getName(), entity.getType().name(), id);
+        jdbcTemplate.update(UPDATE, entity.getName(), entity.getType().toString(), id);
         if (entity.getType().equals(UserType.STUDENT)) {
             Student student = (Student) entity;
-            jdbcTemplate.update(UPDATE_GROUP_FOR_STUDENT, student.getId(), student.getGroupdId(),
-                    student.getType().name());
+            jdbcTemplate.update(UPDATE_GROUP_FOR_STUDENT, student.getId(), student.getGroupdId());
         } else if (entity.getType().equals(UserType.TEACHER)) {
             Teacher teacher = (Teacher) entity;
-            jdbcTemplate.update(UPDATE_COURSE_FOR_TEACHER, teacher.getId(), teacher.getCourseId(),
-                    teacher.getType().toString());
+            jdbcTemplate.update(UPDATE_COURSE_FOR_TEACHER, teacher.getId(), teacher.getCourseId());
         }
         return entity;
     }

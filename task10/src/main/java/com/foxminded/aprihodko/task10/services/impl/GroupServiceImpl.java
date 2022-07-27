@@ -15,7 +15,7 @@ import com.foxminded.aprihodko.task10.services.GroupService;
 public class GroupServiceImpl implements GroupService {
 
     private final GroupDao groupDao;
-
+    
     public GroupServiceImpl(GroupDao groupDao) {
         this.groupDao = groupDao;
     }

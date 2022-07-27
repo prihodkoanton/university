@@ -11,7 +11,7 @@ import com.foxminded.aprihodko.task10.models.Teacher;
 import com.foxminded.aprihodko.task10.models.User;
 import com.foxminded.aprihodko.task10.models.UserType;
 
-@Component
+
 public interface UserDao extends CrudDao<User, Long> {
 
     Optional<User> findByName(String name);
