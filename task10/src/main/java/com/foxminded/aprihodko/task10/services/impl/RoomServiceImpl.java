@@ -5,37 +5,43 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.foxminded.aprihodko.task10.dao.impl.RoomDaoImpl;
+import com.foxminded.aprihodko.task10.dao.RoomDao;
 import com.foxminded.aprihodko.task10.models.Room;
 import com.foxminded.aprihodko.task10.services.RoomService;
 
 @Service
-public class RoomServiceImpl implements RoomService{
+public class RoomServiceImpl implements RoomService {
 
-    private final RoomDaoImpl roomDaoImpl;
+    private final RoomDao roomDao;
 
-    public RoomServiceImpl(RoomDaoImpl roomDaoImpl) {
-        this.roomDaoImpl = roomDaoImpl;
+    public RoomServiceImpl(RoomDao roomDao) {
+        this.roomDao = roomDao;
     }
-    
-    Optional<Room> findById(Long id) throws SQLException {
-        return roomDaoImpl.findById(id);
+
+    @Transactional
+    public Optional<Room> findById(Long id) throws SQLException {
+        return roomDao.findById(id);
     }
-    
-    List<Room> findAll() throws SQLException {
-        return roomDaoImpl.findAll();
+
+    @Transactional
+    public List<Room> findAll() throws SQLException {
+        return roomDao.findAll();
     }
-    
-    void deleteById(Long id) throws SQLException {
-        roomDaoImpl.deleteById(id);
+
+    @Transactional
+    public void deleteById(Long id) throws SQLException {
+        roomDao.deleteById(id);
     }
-    
-    Optional<Room> findByTitle(String name) {
-        return roomDaoImpl.findByTitle(name);
+
+    @Transactional
+    public Optional<Room> findByTitle(String name) {
+        return roomDao.findByTitle(name);
     }
-    
-    Room update(Room entity, Long id) throws SQLException {
-        return roomDaoImpl.save(entity, id);
+
+    @Transactional
+    public Room update(Room entity, Long id) throws SQLException {
+        return roomDao.save(entity, id);
     }
 }

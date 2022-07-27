@@ -40,6 +40,9 @@ public class GroupDaoImpl extends AbstractCrudDao<Group, Long> implements GroupD
 
     @Override
     public void deleteById(Long id) throws SQLException {
+        if (jdbcTemplate.update(DELETE_BY_ID, id) != 1) {
+            throw new SQLException("Unable to delete course (id = " + id + ")");
+        }
         jdbcTemplate.update(DELETE_BY_ID, id);
     }
 
@@ -49,13 +52,19 @@ public class GroupDaoImpl extends AbstractCrudDao<Group, Long> implements GroupD
     }
 
     @Override
-    protected Group create(Group entity) throws SQLException {
+    public Group create(Group entity) throws SQLException {
+        if (jdbcTemplate.update(CREATE, entity.getId(), entity.getName()) != 1) {
+            throw new SQLException("Unable to retrieve id" + entity.getId());
+        }
         jdbcTemplate.update(CREATE, entity.getId(), entity.getName());
         return entity;
     }
 
     @Override
-    protected Group update(Group entity, Long id) throws SQLException {
+    public Group update(Group entity, Long id) throws SQLException {
+        if (jdbcTemplate.update(CREATE, entity.getId(), entity.getName()) != 1) {
+            throw new SQLException("Unable to update group " + entity);
+        }
         jdbcTemplate.update(UPDATE, entity.getName(), id);
         return entity;
     }

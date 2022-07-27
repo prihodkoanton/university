@@ -42,6 +42,9 @@ public class RoomDaoImpl extends AbstractCrudDao<Room, Long> implements RoomDao 
 
     @Override
     public void deleteById(Long id) throws SQLException {
+        if (jdbcTemplate.update(DELETE_BY_ID, id) != 1) {
+            throw new SQLException("Unable to delete course (id = " + id + ")");
+        }
         jdbcTemplate.update(DELETE_BY_ID, id);
     }
 
@@ -51,13 +54,19 @@ public class RoomDaoImpl extends AbstractCrudDao<Room, Long> implements RoomDao 
     }
 
     @Override
-    protected Room create(Room entity) throws SQLException {
+    public Room create(Room entity) throws SQLException {
+        if (jdbcTemplate.update(CREATE, entity.getId(), entity.getTitle()) != 1) {
+            throw new SQLException("Unable to retrieve id" + entity.getId());
+        }
         jdbcTemplate.update(CREATE, entity.getId(), entity.getTitle());
         return entity;
     }
 
     @Override
-    protected Room update(Room entity, Long id) throws SQLException {
+    public Room update(Room entity, Long id) throws SQLException {
+        if (jdbcTemplate.update(CREATE, entity.getId(), entity.getTitle()) != 1) {
+            throw new SQLException("Unable to update room" + entity.getId());
+        }
         jdbcTemplate.update(UPDATE, entity.getTitle(), id);
         return entity;
     }

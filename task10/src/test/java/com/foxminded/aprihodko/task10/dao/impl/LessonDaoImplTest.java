@@ -1,5 +1,6 @@
 package com.foxminded.aprihodko.task10.dao.impl;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.SQLException;
@@ -63,6 +64,13 @@ class LessonDaoImplTest extends BaseDaoTest {
 
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/lesson_test_data.sql" })
+    void shouldNotDeleteById() throws SQLException {
+        Exception e = assertThrows(SQLException.class, () -> lessonDao.deleteById(10L));
+        assertEquals("Unable to delete course (id = 10)", e.getMessage());
+    }
+
+    @Test
+    @Sql(scripts = { "/sql/clear_tables.sql", "/sql/lesson_test_data.sql" })
     void shoudlFindByRoomId() throws SQLException {
         List<Lesson> expected = Arrays.asList(new Lesson(100L, DayOfWeek.MONDAY, 1, 100L, 100L, 100L, 100L));
         List<Lesson> actual = lessonDao.findByRoomId(100L);
@@ -106,10 +114,10 @@ class LessonDaoImplTest extends BaseDaoTest {
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/lesson_test_data.sql" })
     void shoudlCreateLesson() throws SQLException {
-        Lesson expected = new Lesson(100L, DayOfWeek.MONDAY, 1, 100L, 100L, 100L, 100L);
-        Lesson actual = lessonDao.save(expected, 100L);
+        Lesson lesson = new Lesson(103L, DayOfWeek.MONDAY, 1, 103L, 103L, 103L, 103L);
+        Lesson actual = lessonDao.save(lesson, 103L);
         assertNotNull(actual.getId());
-        expected.setId(actual.getId());
-        assertEquals(expected, actual);
+        lesson.setId(actual.getId());
+        assertEquals(lesson, actual);
     }
 }

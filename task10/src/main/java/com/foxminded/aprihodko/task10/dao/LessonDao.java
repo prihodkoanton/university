@@ -4,8 +4,11 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Component;
+
 import com.foxminded.aprihodko.task10.models.Lesson;
 
+@Component
 public interface LessonDao extends CrudDao<Lesson, Long> {
 
     Optional<Lesson> findByDayOfWeek(String dayOfWeek) throws SQLException;

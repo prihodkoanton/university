@@ -7,41 +7,41 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.foxminded.aprihodko.task10.dao.impl.GroupDaoImpl;
+import com.foxminded.aprihodko.task10.dao.GroupDao;
 import com.foxminded.aprihodko.task10.models.Group;
 import com.foxminded.aprihodko.task10.services.GroupService;
 
 @Service
 public class GroupServiceImpl implements GroupService {
 
-    private final GroupDaoImpl groupDaoImpl;
+    private final GroupDao groupDao;
 
-    public GroupServiceImpl(GroupDaoImpl groupDaoImpl) {
-        this.groupDaoImpl = groupDaoImpl;
+    public GroupServiceImpl(GroupDao groupDao) {
+        this.groupDao = groupDao;
     }
 
     @Transactional
-    Optional<Group> findById(Long id) throws SQLException {
-        return groupDaoImpl.findById(id);
+    public Optional<Group> findById(Long id) throws SQLException {
+        return groupDao.findById(id);
     }
 
     @Transactional
-    List<Group> findAll() throws SQLException {
-        return groupDaoImpl.findAll();
+    public List<Group> findAll() throws SQLException {
+        return groupDao.findAll();
     }
 
     @Transactional
-    void deleteById(Long id) throws SQLException {
-        groupDaoImpl.deleteById(id);
+    public void deleteById(Long id) throws SQLException {
+        groupDao.deleteById(id);
     }
 
     @Transactional
-    Optional<Group> findByName(String name) throws SQLException {
-        return groupDaoImpl.findByName(name);
+    public Optional<Group> findByName(String name) throws SQLException {
+        return groupDao.findByName(name);
     }
 
     @Transactional
-    Group update(Group entity, Long id) throws SQLException {
-        return groupDaoImpl.save(entity, id);
+    public Group update(Group entity, Long id) throws SQLException {
+        return groupDao.save(entity, id);
     }
 }

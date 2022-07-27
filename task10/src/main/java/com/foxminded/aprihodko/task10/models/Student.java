@@ -6,10 +6,18 @@ public class Student extends User {
 
     public static final String GROUP_REF = "group_ref";
     private Long groupdId;
+    private static final String USERTYPE = UserType.STUDENT.toString(); 
+    
 
     public Student(Long id, String name, Long groupdId) {
         super(id, name, UserType.STUDENT);
         this.groupdId = groupdId;
+    }
+    
+    public Student(Long id, String name, Long groupdId, String userType) {
+        super(id, name, UserType.STUDENT);
+        this.groupdId = groupdId;
+        userType = USERTYPE;
     }
 
     public Long getGroupdId() {

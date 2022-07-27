@@ -7,7 +7,9 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.foxminded.aprihodko.task10.dao.impl.UserDaoImpl;
+import com.foxminded.aprihodko.task10.dao.UserDao;
+import com.foxminded.aprihodko.task10.models.Student;
+import com.foxminded.aprihodko.task10.models.Teacher;
 import com.foxminded.aprihodko.task10.models.User;
 import com.foxminded.aprihodko.task10.models.UserType;
 import com.foxminded.aprihodko.task10.services.UserService;
@@ -15,39 +17,51 @@ import com.foxminded.aprihodko.task10.services.UserService;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserDaoImpl userDaoImpl;
+    private final UserDao userDao;
 
-    public UserServiceImpl(UserDaoImpl userDaoImpl) {
-        this.userDaoImpl = userDaoImpl;
+    public UserServiceImpl(UserDao userDao) {
+        this.userDao = userDao;
     }
 
     @Transactional
-    Optional<User> findById(Long id) throws SQLException {
-        return userDaoImpl.findById(id);
+    public Optional<User> findById(Long id) throws SQLException {
+        return userDao.findById(id);
+    }
+
+    @Transactional
+    public List<User> findAll() throws SQLException {
+        return userDao.findAll();
+    }
+
+    @Transactional
+    public void deleteById(Long id) throws SQLException {
+        userDao.deleteById(id);
+    }
+
+    @Transactional
+    public Optional<User> findByName(String name) {
+        return userDao.findByName(name);
+    }
+
+    @Transactional
+    public List<User> findByType(UserType userType) {
+        return userDao.findByType(userType);
+    }
+    
+    
+
+    @Transactional
+    public User update(User entity, Long id) throws SQLException {
+        return userDao.save(entity, id);
     }
     
     @Transactional
-    List<User> findAll() throws SQLException {
-        return userDaoImpl.findAll();
-    }
-   
-    @Transactional
-    void deleteById(Long id) throws SQLException {
-        userDaoImpl.deleteById(id);
+    public List<Student> findStudentByGroupId(Long id)  throws SQLException {
+        return userDao.findStudentByGroupId(id);
     }
     
     @Transactional
-    Optional<User> findByName(String name) {
-        return userDaoImpl.findByName(name);
-    }
-    
-    @Transactional
-    List<User> findByType(UserType userType) {
-        return userDaoImpl.findByType(userType);
-    }
-    
-    @Transactional
-    User update(User entity, Long id) throws SQLException {
-        return userDaoImpl.save(entity, id);
+    public List<Teacher> findTeacherByCourseId(Long id)  throws SQLException {
+        return userDao.findTeacherByCourseId(id);
     }
 }

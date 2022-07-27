@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.foxminded.aprihodko.task10.dao.LessonDao;
 import com.foxminded.aprihodko.task10.dao.impl.LessonDaoImpl;
 import com.foxminded.aprihodko.task10.models.Lesson;
 import com.foxminded.aprihodko.task10.services.LessonService;
@@ -14,59 +15,59 @@ import com.foxminded.aprihodko.task10.services.LessonService;
 @Service
 public class LessonServiceImpl implements LessonService {
 
-    private final LessonDaoImpl lessonDaoImpl;
+    private final LessonDao lessonDao;
 
-    public LessonServiceImpl(LessonDaoImpl lessonDaoImpl) {
-        this.lessonDaoImpl = lessonDaoImpl;
+    public LessonServiceImpl(LessonDao lessonDao) {
+        this.lessonDao = lessonDao;
     }
 
     @Transactional
-    Optional<Lesson> findById(Long id) throws SQLException {
-        return lessonDaoImpl.findById(id);
+    public Optional<Lesson> findById(Long id) throws SQLException {
+        return lessonDao.findById(id);
     }
 
     @Transactional
-    List<Lesson> findAll() throws SQLException {
-        return lessonDaoImpl.findAll();
+    public List<Lesson> findAll() throws SQLException {
+        return lessonDao.findAll();
     }
 
     @Transactional
-    void deleteById(Long id) throws SQLException {
-        lessonDaoImpl.deleteById(id);
+    public void deleteById(Long id) throws SQLException {
+        lessonDao.deleteById(id);
     }
 
     @Transactional
-    Optional<Lesson> findByDayOfWeek(String dayOfWeek) throws SQLException {
-        return lessonDaoImpl.findByDayOfWeek(dayOfWeek);
+    public Optional<Lesson> findByDayOfWeek(String dayOfWeek) throws SQLException {
+        return lessonDao.findByDayOfWeek(dayOfWeek);
     }
     
     @Transactional
-    List<Lesson> findByRoomId(Long id) throws SQLException {
-        return lessonDaoImpl.findByRoomId(id);
+    public List<Lesson> findByRoomId(Long id) throws SQLException {
+        return lessonDao.findByRoomId(id);
     }
     
     @Transactional
-    List<Lesson> findByGroupId(Long id) throws SQLException {
-        return lessonDaoImpl.findByGroupId(id);
+    public List<Lesson> findByGroupId(Long id) throws SQLException {
+        return lessonDao.findByGroupId(id);
     }
 
     @Transactional
-    List<Lesson> findByCourseId(Long id) throws SQLException {
-        return lessonDaoImpl.findByCourseId(id);
+    public List<Lesson> findByCourseId(Long id) throws SQLException {
+        return lessonDao.findByCourseId(id);
     }
 
     @Transactional
-    List<Lesson> findByTeacherId(Long id) throws SQLException {
-        return lessonDaoImpl.findByTeacherId(id);
+    public List<Lesson> findByTeacherId(Long id) throws SQLException {
+        return lessonDao.findByTeacherId(id);
     }
 
     @Transactional
-    List<Lesson> findByTimeSpan(Long timeSpan) throws SQLException {
-        return lessonDaoImpl.findByTimeSpan(timeSpan);
+    public List<Lesson> findByTimeSpan(Long timeSpan) throws SQLException {
+        return lessonDao.findByTimeSpan(timeSpan);
     }
 
     @Transactional
-    Lesson update(Lesson entity, Long id) throws SQLException {
-        return lessonDaoImpl.save(entity, id);
+    public Lesson update(Lesson entity, Long id) throws SQLException {
+        return lessonDao.save(entity, id);
     }
 }

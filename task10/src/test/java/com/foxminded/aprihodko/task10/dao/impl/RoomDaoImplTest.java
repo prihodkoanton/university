@@ -1,5 +1,6 @@
 package com.foxminded.aprihodko.task10.dao.impl;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.SQLException;
@@ -52,6 +53,13 @@ class RoomDaoImplTest extends BaseDaoTest {
 
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/room_test_data.sql" })
+    void shouldNotDeleteById() throws SQLException {
+        Exception e = assertThrows(SQLException.class, () -> roomDao.deleteById(10L));
+        assertEquals("Unable to delete course (id = 10)", e.getMessage());
+    }
+
+    @Test
+    @Sql(scripts = { "/sql/clear_tables.sql", "/sql/room_test_data.sql" })
     void shouldDeleteById() throws SQLException {
         roomDao.deleteById(100L);
         Optional<Room> shouldBeEmpty = roomDao.findById(100L);
@@ -69,8 +77,8 @@ class RoomDaoImplTest extends BaseDaoTest {
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/room_test_data.sql" })
     void shouldCreateRoom() throws SQLException {
-        Room expected = new Room(100L, "room for Java");
-        Room actual = roomDao.save(expected, 100L);
+        Room expected = new Room(107L, "room for Java");
+        Room actual = roomDao.save(expected, 107L);
         assertNotNull(actual.getId());
         expected.setId(actual.getId());
         assertEquals(expected, actual);

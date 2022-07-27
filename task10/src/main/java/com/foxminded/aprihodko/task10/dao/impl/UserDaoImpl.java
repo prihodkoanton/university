@@ -30,7 +30,7 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
     public static final String FIND_BY_USER_TYPE = "" + "select *\n" + "from university.users u\n"
             + "         left join university.students s on u.user_id = s.user_ref\n"
             + "         left join university.teachers t on u.user_id = t.user_ref\n" + "where user_type = ?;";
-    public static final String CREATE_USER = "INSERT INTO university.users (user_id,  user_name, user_type) VALUES (?, ?, ?)";
+    public static final String CREATE_USER = "INSERT INTO university.users (user_id, user_name, user_type) VALUES (?, ?, ?)";
     public static final String CREATE_STUDENT = "INSERT INTO university.students (user_ref, group_ref) VALUES (?, ?)";
     public static final String CREATE_TEACHER = "INSERT INTO university.teachers (user_ref, course_ref) VALUES (?, ?)";
     public static final String UPDATE = "UPDATE university.users SET user_name = ?, user_type = ? WHERE user_id = ?";
@@ -59,6 +59,9 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
 
     @Override
     public void deleteById(Long id) throws SQLException {
+        if (jdbcTemplate.update(DELETE_BY_ID, id) != 1) {
+            throw new SQLException("Unable to delete course (id = " + id + ")");
+        }
         jdbcTemplate.update(DELETE_BY_ID, id);
     }
 
@@ -73,12 +76,12 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
     }
 
     @Override
-    protected User create(User entity) throws SQLException {
-        jdbcTemplate.update(CREATE_USER, entity.getId(), entity.getName(), entity.getType());
-        if (entity instanceof Student) {
+    public User create(User entity) throws SQLException {
+        jdbcTemplate.update(CREATE_USER, entity.getId(), entity.getName(), entity.getType().toString());
+        if (entity.getType().equals(UserType.STUDENT)) {
             Student student = (Student) entity;
             jdbcTemplate.update(CREATE_STUDENT, student.getId(), student.getGroupdId());
-        } else if (entity instanceof Teacher) {
+        } else if (entity.getType().equals(UserType.TEACHER)) {
             Teacher teacher = (Teacher) entity;
             jdbcTemplate.update(CREATE_TEACHER, teacher.getId(), teacher.getCourseId());
         }
@@ -86,14 +89,19 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
     }
 
     @Override
-    protected User update(User entity, Long id) throws SQLException {
-        jdbcTemplate.update(UPDATE, entity.getName(), entity.getType().toString(), id);
-        if (entity instanceof Student) {
+    public User update(User entity, Long id) throws SQLException {
+        if (jdbcTemplate.update(CREATE_USER, entity.getId(), entity.getName(), entity.getType()) != 1) {
+            throw new SQLException("Unable to update user" + entity.getId());
+        }
+        jdbcTemplate.update(UPDATE, entity.getName(), entity.getType().name(), id);
+        if (entity.getType().equals(UserType.STUDENT)) {
             Student student = (Student) entity;
-            jdbcTemplate.update(UPDATE_GROUP_FOR_STUDENT, student.getId(), student.getGroupdId());
+            jdbcTemplate.update(UPDATE_GROUP_FOR_STUDENT, student.getId(), student.getGroupdId(),
+                    student.getType().name());
         } else if (entity.getType().equals(UserType.TEACHER)) {
             Teacher teacher = (Teacher) entity;
-            jdbcTemplate.update(UPDATE_COURSE_FOR_TEACHER, teacher.getId(), teacher.getCourseId());
+            jdbcTemplate.update(UPDATE_COURSE_FOR_TEACHER, teacher.getId(), teacher.getCourseId(),
+                    teacher.getType().toString());
         }
         return entity;
     }

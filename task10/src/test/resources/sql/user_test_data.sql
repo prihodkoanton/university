@@ -1,6 +1,7 @@
 insert into university.courses (course_id, course_name, course_description)
 VALUES (100, 'java', 'Java course'),
-       (101, 'english', 'English course');
+       (101, 'english', 'English course'),
+       (104, 'math','Math course');
 
 insert into university.groups (group_id, group_name)
 VALUES (100, 'AA-01'),
@@ -19,3 +20,4 @@ VALUES (100, 100),
 insert into university.students (user_ref, group_ref)
 VALUES (101, 100),
        (103, 101);
+       
