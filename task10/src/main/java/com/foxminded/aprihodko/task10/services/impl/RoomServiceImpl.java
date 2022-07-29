@@ -1,15 +1,14 @@
 package com.foxminded.aprihodko.task10.services.impl;
 
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.foxminded.aprihodko.task10.dao.RoomDao;
 import com.foxminded.aprihodko.task10.models.Room;
 import com.foxminded.aprihodko.task10.services.RoomService;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RoomServiceImpl implements RoomService {

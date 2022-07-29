@@ -1,16 +1,15 @@
 package com.foxminded.aprihodko.task10.dao.impl;
 
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
-
 import com.foxminded.aprihodko.task10.dao.AbstractCrudDao;
 import com.foxminded.aprihodko.task10.dao.CourseDao;
 import com.foxminded.aprihodko.task10.dao.mapper.CourseMapper;
 import com.foxminded.aprihodko.task10.models.Course;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class CourseDaoImpl extends AbstractCrudDao<Course, Long> implements CourseDao {

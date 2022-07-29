@@ -1,18 +1,17 @@
 package com.foxminded.aprihodko.task10.services.impl;
 
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.foxminded.aprihodko.task10.dao.UserDao;
 import com.foxminded.aprihodko.task10.models.Student;
 import com.foxminded.aprihodko.task10.models.Teacher;
 import com.foxminded.aprihodko.task10.models.User;
 import com.foxminded.aprihodko.task10.models.UserType;
 import com.foxminded.aprihodko.task10.services.UserService;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -47,21 +46,20 @@ public class UserServiceImpl implements UserService {
     public List<User> findByType(UserType userType) {
         return userDao.findByType(userType);
     }
-    
-    
+
 
     @Transactional
     public User update(User entity, Long id) throws SQLException {
         return userDao.save(entity, id);
     }
-    
+
     @Transactional
-    public List<Student> findStudentByGroupId(Long id)  throws SQLException {
+    public List<Student> findStudentByGroupId(Long id) throws SQLException {
         return userDao.findStudentByGroupId(id);
     }
-    
+
     @Transactional
-    public List<Teacher> findTeacherByCourseId(Long id)  throws SQLException {
+    public List<Teacher> findTeacherByCourseId(Long id) throws SQLException {
         return userDao.findTeacherByCourseId(id);
     }
 }

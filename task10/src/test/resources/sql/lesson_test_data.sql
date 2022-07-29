@@ -3,10 +3,10 @@ VALUES (100, 'room for core java'),
        (101, 'room for english'),
        (102, 'room for math'),
        (103, 'room for physic');
-       
+
 insert into university.groups (group_id, group_name)
 VALUES (100, 'AA-01'),
-       (101, 'BB-02'),       
+       (101, 'BB-02'),
        (102, 'CC-03'),
        (103, 'DD-04');
 
@@ -28,8 +28,9 @@ VALUES (100, 100),
        (101, 101),
        (102, 102),
        (103, 103);
-       
-insert into university.lessons(lesson_id, lesson_day_of_week, lesson_time_span, room_ref, group_ref, course_ref, teacher_ref)
+
+insert into university.lessons(lesson_id, lesson_day_of_week, lesson_time_span, room_ref, group_ref, course_ref,
+                               teacher_ref)
 VALUES (100, 'MONDAY', 1, 100, 100, 100, 100),
        (101, 'TUESDAY', 1, 101, 101, 101, 101),
        (102, 'WEDNESDAY', 1, 102, 102, 102, 102);

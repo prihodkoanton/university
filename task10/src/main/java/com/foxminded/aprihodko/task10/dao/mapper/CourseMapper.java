@@ -1,12 +1,12 @@
 package com.foxminded.aprihodko.task10.dao.mapper;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
+import com.foxminded.aprihodko.task10.models.Course;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import com.foxminded.aprihodko.task10.models.Course;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import static com.foxminded.aprihodko.task10.models.Course.*;
 
 @Component

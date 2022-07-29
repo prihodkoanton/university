@@ -1,10 +1,8 @@
 package com.foxminded.aprihodko.task10.dao;
 
-import java.util.Optional;
-
-import org.springframework.stereotype.Component;
-
 import com.foxminded.aprihodko.task10.models.Room;
+
+import java.util.Optional;
 
 
 public interface RoomDao extends CrudDao<Room, Long> {

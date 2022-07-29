@@ -1,10 +1,13 @@
 package com.foxminded.aprihodko.task10.dao.services.impl;
 
-import static org.junit.Assert.assertThrows;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import com.foxminded.aprihodko.task10.BaseDaoTest;
+import com.foxminded.aprihodko.task10.dao.LessonDao;
+import com.foxminded.aprihodko.task10.models.Lesson;
+import com.foxminded.aprihodko.task10.services.impl.LessonServiceImpl;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.sql.SQLException;
 import java.time.DayOfWeek;
@@ -12,17 +15,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
-import com.foxminded.aprihodko.task10.BaseDaoTest;
-import com.foxminded.aprihodko.task10.dao.LessonDao;
-import com.foxminded.aprihodko.task10.models.Lesson;
-import com.foxminded.aprihodko.task10.services.impl.LessonServiceImpl;
-
-@SpringBootTest(classes = { LessonServiceImpl.class })
+@SpringBootTest(classes = {LessonServiceImpl.class})
 class LessonServiceImplTest extends BaseDaoTest {
 
     @MockBean

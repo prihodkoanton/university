@@ -8,28 +8,29 @@ public class Teacher extends User {
     private static final String TEACHERRTYPE = UserType.TEACHER.toString();
 
     private final Long courseId;
-    
-    
+
+
     public Teacher(Long id, String name, Long courseId) {
         super(id, name, UserType.TEACHER);
         this.courseId = courseId;
     }
-    
+
     public Teacher(Long id, String name, Long courseId, String userType) {
         super(id, name, UserType.TEACHER);
         this.courseId = courseId;
         userType = TEACHERRTYPE;
     }
 
-    public Long getCourseId() {
-        return courseId;
-    }
-    
     public static String getCourseRef() {
         return COURSE_REF;
     }
+
     public static String getUsertype() {
         return TEACHERRTYPE;
+    }
+
+    public Long getCourseId() {
+        return courseId;
     }
 
     @Override

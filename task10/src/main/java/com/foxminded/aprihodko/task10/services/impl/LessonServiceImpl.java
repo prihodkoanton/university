@@ -1,16 +1,14 @@
 package com.foxminded.aprihodko.task10.services.impl;
 
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Optional;
-
+import com.foxminded.aprihodko.task10.dao.LessonDao;
+import com.foxminded.aprihodko.task10.models.Lesson;
+import com.foxminded.aprihodko.task10.services.LessonService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.foxminded.aprihodko.task10.dao.LessonDao;
-import com.foxminded.aprihodko.task10.dao.impl.LessonDaoImpl;
-import com.foxminded.aprihodko.task10.models.Lesson;
-import com.foxminded.aprihodko.task10.services.LessonService;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LessonServiceImpl implements LessonService {
@@ -40,12 +38,12 @@ public class LessonServiceImpl implements LessonService {
     public Optional<Lesson> findByDayOfWeek(String dayOfWeek) throws SQLException {
         return lessonDao.findByDayOfWeek(dayOfWeek);
     }
-    
+
     @Transactional
     public List<Lesson> findByRoomId(Long id) throws SQLException {
         return lessonDao.findByRoomId(id);
     }
-    
+
     @Transactional
     public List<Lesson> findByGroupId(Long id) throws SQLException {
         return lessonDao.findByGroupId(id);

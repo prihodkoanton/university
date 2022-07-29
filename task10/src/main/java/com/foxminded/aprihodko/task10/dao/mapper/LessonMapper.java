@@ -1,14 +1,14 @@
 package com.foxminded.aprihodko.task10.dao.mapper;
 
 import com.foxminded.aprihodko.task10.models.Lesson;
-import static com.foxminded.aprihodko.task10.models.Lesson.*;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.DayOfWeek;
 
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
+import static com.foxminded.aprihodko.task10.models.Lesson.*;
 
 @Component
 public class LessonMapper implements RowMapper<Lesson> {
