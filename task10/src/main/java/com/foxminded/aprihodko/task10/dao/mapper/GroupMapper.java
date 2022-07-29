@@ -1,13 +1,16 @@
 package com.foxminded.aprihodko.task10.dao.mapper;
 
 import com.foxminded.aprihodko.task10.models.Group;
-import static com.foxminded.aprihodko.task10.models.Group.*;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.springframework.jdbc.core.RowMapper;
+import static com.foxminded.aprihodko.task10.models.Group.GROUP_ID;
+import static com.foxminded.aprihodko.task10.models.Group.GROUP_NAME;
 
+@Component
 public class GroupMapper implements RowMapper<Group> {
 
     @Override

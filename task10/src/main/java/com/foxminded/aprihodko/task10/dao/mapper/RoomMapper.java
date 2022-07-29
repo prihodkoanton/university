@@ -1,13 +1,16 @@
 package com.foxminded.aprihodko.task10.dao.mapper;
 
+import com.foxminded.aprihodko.task10.models.Room;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.springframework.jdbc.core.RowMapper;
+import static com.foxminded.aprihodko.task10.models.Room.ROOM_ID;
+import static com.foxminded.aprihodko.task10.models.Room.ROOM_TITLE;
 
-import com.foxminded.aprihodko.task10.models.Room;
-import static com.foxminded.aprihodko.task10.models.Room.*;
-
+@Component
 public class RoomMapper implements RowMapper<Room> {
 
     @Override

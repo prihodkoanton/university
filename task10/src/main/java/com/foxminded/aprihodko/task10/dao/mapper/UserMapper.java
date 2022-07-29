@@ -4,16 +4,17 @@ import com.foxminded.aprihodko.task10.models.Student;
 import com.foxminded.aprihodko.task10.models.Teacher;
 import com.foxminded.aprihodko.task10.models.User;
 import com.foxminded.aprihodko.task10.models.UserType;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import static com.foxminded.aprihodko.task10.models.Student.GROUP_REF;
 import static com.foxminded.aprihodko.task10.models.Teacher.COURSE_REF;
 import static com.foxminded.aprihodko.task10.models.User.*;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import org.springframework.jdbc.core.RowMapper;
-
+@Component
 public class UserMapper implements RowMapper<User> {
 
     @Override

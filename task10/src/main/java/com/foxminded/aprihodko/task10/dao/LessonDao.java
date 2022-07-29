@@ -1,10 +1,11 @@
 package com.foxminded.aprihodko.task10.dao;
 
+import com.foxminded.aprihodko.task10.models.Lesson;
+
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-import com.foxminded.aprihodko.task10.models.Lesson;
 
 public interface LessonDao extends CrudDao<Lesson, Long> {
 

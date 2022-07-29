@@ -21,7 +21,7 @@ public class Lesson extends LongEntity {
     private Long teacherId;
 
     public Lesson(Long id, DayOfWeek dayOfWeek, int timeSpan, Long roomId, Long groupId, Long courseId,
-            Long teacherId) {
+                  Long teacherId) {
         super(id);
         this.dayOfWeek = dayOfWeek;
         this.timeSpan = timeSpan;

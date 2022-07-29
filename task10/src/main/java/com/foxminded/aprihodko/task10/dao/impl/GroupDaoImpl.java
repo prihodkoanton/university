@@ -1,16 +1,17 @@
 package com.foxminded.aprihodko.task10.dao.impl;
 
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.jdbc.core.JdbcTemplate;
-
 import com.foxminded.aprihodko.task10.dao.AbstractCrudDao;
 import com.foxminded.aprihodko.task10.dao.GroupDao;
 import com.foxminded.aprihodko.task10.dao.mapper.GroupMapper;
 import com.foxminded.aprihodko.task10.models.Group;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
+
+@Repository
 public class GroupDaoImpl extends AbstractCrudDao<Group, Long> implements GroupDao {
 
     public static final String FIND_BY_ID = "SELECT * FROM university.groups WHERE group_id = ?";
@@ -20,8 +21,8 @@ public class GroupDaoImpl extends AbstractCrudDao<Group, Long> implements GroupD
     public static final String CREATE = "INSERT INTO university.groups (group_id, group_name) VALUES (?, ?)";
     public static final String UPDATE = "UPDATE university.groups SET group_name = ? WHERE group_id = ?";
 
-    private JdbcTemplate jdbcTemplate;
-    private GroupMapper mapper;
+    private final JdbcTemplate jdbcTemplate;
+    private final GroupMapper mapper;
 
     public GroupDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -40,6 +41,9 @@ public class GroupDaoImpl extends AbstractCrudDao<Group, Long> implements GroupD
 
     @Override
     public void deleteById(Long id) throws SQLException {
+        if (jdbcTemplate.update(DELETE_BY_ID, id) != 1) {
+            throw new SQLException("Unable to delete course (id = " + id + ")");
+        }
         jdbcTemplate.update(DELETE_BY_ID, id);
     }
 
@@ -49,13 +53,19 @@ public class GroupDaoImpl extends AbstractCrudDao<Group, Long> implements GroupD
     }
 
     @Override
-    protected Group create(Group entity) throws SQLException {
+    public Group create(Group entity) throws SQLException {
+        if (jdbcTemplate.update(CREATE, entity.getId(), entity.getName()) != 1) {
+            throw new SQLException("Unable to retrieve id" + entity.getId());
+        }
         jdbcTemplate.update(CREATE, entity.getId(), entity.getName());
         return entity;
     }
 
     @Override
-    protected Group update(Group entity, Long id) throws SQLException {
+    public Group update(Group entity, Long id) throws SQLException {
+        if (jdbcTemplate.update(CREATE, entity.getId(), entity.getName()) != 1) {
+            throw new SQLException("Unable to update group " + entity);
+        }
         jdbcTemplate.update(UPDATE, entity.getName(), id);
         return entity;
     }
