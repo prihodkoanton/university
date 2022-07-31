@@ -9,7 +9,6 @@ public class Teacher extends User {
 
     private final Long courseId;
 
-
     public Teacher(Long id, String name, Long courseId) {
         super(id, name, UserType.TEACHER);
         this.courseId = courseId;
@@ -43,13 +42,22 @@ public class Teacher extends User {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (!super.equals(obj))
+        }
+        if (!super.equals(obj)) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Teacher other = (Teacher) obj;
         return Objects.equals(courseId, other.courseId);
     }
+
+    @Override
+    public String toString() {
+        return "Teacher [courseId=" + courseId + ", id=" + id + "]";
+    }
+
 }

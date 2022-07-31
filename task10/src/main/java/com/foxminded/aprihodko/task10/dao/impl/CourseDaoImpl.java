@@ -1,18 +1,23 @@
 package com.foxminded.aprihodko.task10.dao.impl;
 
-import com.foxminded.aprihodko.task10.dao.AbstractCrudDao;
-import com.foxminded.aprihodko.task10.dao.CourseDao;
-import com.foxminded.aprihodko.task10.dao.mapper.CourseMapper;
-import com.foxminded.aprihodko.task10.models.Course;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
-
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import com.foxminded.aprihodko.task10.dao.AbstractCrudDao;
+import com.foxminded.aprihodko.task10.dao.CourseDao;
+import com.foxminded.aprihodko.task10.dao.mapper.CourseMapper;
+import com.foxminded.aprihodko.task10.models.Course;
+
 @Repository
 public class CourseDaoImpl extends AbstractCrudDao<Course, Long> implements CourseDao {
+
+    private static final Logger logger = LoggerFactory.getLogger(CourseDaoImpl.class);
 
     public static final String FIND_BY_ID = "SELECT * FROM university.courses where course_id = ?";
     public static final String FIND_ALL = "SELECT * FROM university.courses";
@@ -56,6 +61,8 @@ public class CourseDaoImpl extends AbstractCrudDao<Course, Long> implements Cour
     @Override
     public Course create(Course entity) throws SQLException {
         if (jdbcTemplate.update(CREATE, entity.getId(), entity.getName(), entity.getDiscription()) != 1) {
+            logger.debug("COURSE:{}", entity);
+            logger.error("Unable to retrieve id" + entity.getId());
             throw new SQLException("Unable to retrieve id" + entity.getId());
         }
         jdbcTemplate.update(CREATE, entity.getId(), entity.getName(), entity.getDiscription());

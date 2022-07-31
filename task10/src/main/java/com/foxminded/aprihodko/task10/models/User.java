@@ -17,10 +17,12 @@ public class User extends LongEntity {
         this.type = type;
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -51,13 +53,21 @@ public class User extends LongEntity {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (!super.equals(obj))
+        }
+        if (!super.equals(obj)) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         User other = (User) obj;
         return Objects.equals(name, other.name) && type == other.type;
+    }
+
+    @Override
+    public String toString() {
+        return "User [name=" + name + ", type=" + type + ", id=" + id + "]";
     }
 }

@@ -30,13 +30,22 @@ public class Student extends User {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (!super.equals(obj))
+        }
+        if (!super.equals(obj)) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Student other = (Student) obj;
         return Objects.equals(groupdId, other.groupdId);
     }
+
+    @Override
+    public String toString() {
+        return "Student [groupdId=" + groupdId + ", id=" + id + "]";
+    }
+
 }

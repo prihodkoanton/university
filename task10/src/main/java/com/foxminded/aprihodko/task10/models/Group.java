@@ -22,10 +22,12 @@ public class Group extends LongEntity {
         this.name = name;
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -40,13 +42,22 @@ public class Group extends LongEntity {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (!super.equals(obj))
+        }
+        if (!super.equals(obj)) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Group other = (Group) obj;
         return Objects.equals(name, other.name);
     }
+
+    @Override
+    public String toString() {
+        return "Group [name=" + name + ", id=" + id + "]";
+    }
+
 }

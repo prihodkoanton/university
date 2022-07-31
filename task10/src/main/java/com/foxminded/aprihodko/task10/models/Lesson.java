@@ -21,7 +21,7 @@ public class Lesson extends LongEntity {
     private Long teacherId;
 
     public Lesson(Long id, DayOfWeek dayOfWeek, int timeSpan, Long roomId, Long groupId, Long courseId,
-                  Long teacherId) {
+            Long teacherId) {
         super(id);
         this.dayOfWeek = dayOfWeek;
         this.timeSpan = timeSpan;
@@ -48,10 +48,12 @@ public class Lesson extends LongEntity {
         this.dayOfWeek = dayOfWeek;
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -106,15 +108,25 @@ public class Lesson extends LongEntity {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (!super.equals(obj))
+        }
+        if (!super.equals(obj)) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Lesson other = (Lesson) obj;
         return Objects.equals(courseId, other.courseId) && dayOfWeek == other.dayOfWeek
                 && Objects.equals(groupId, other.groupId) && Objects.equals(roomId, other.roomId)
                 && Objects.equals(teacherId, other.teacherId) && timeSpan == other.timeSpan;
     }
+
+    @Override
+    public String toString() {
+        return "Lesson [dayOfWeek=" + dayOfWeek + ", timeSpan=" + timeSpan + ", roomId=" + roomId + ", groupId="
+                + groupId + ", courseId=" + courseId + ", teacherId=" + teacherId + ", id=" + id + "]";
+    }
+
 }

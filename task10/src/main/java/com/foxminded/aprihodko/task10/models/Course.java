@@ -43,13 +43,22 @@ public class Course extends LongEntity {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (!super.equals(obj))
+        }
+        if (!super.equals(obj)) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Course other = (Course) obj;
         return Objects.equals(discription, other.discription) && Objects.equals(name, other.name);
     }
+
+    @Override
+    public String toString() {
+        return "Course [name=" + name + ", discription=" + discription + ", id=" + id + "]";
+    }
+
 }

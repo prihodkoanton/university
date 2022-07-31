@@ -1,5 +1,13 @@
 package com.foxminded.aprihodko.task10.dao.impl;
 
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
 import com.foxminded.aprihodko.task10.dao.AbstractCrudDao;
 import com.foxminded.aprihodko.task10.dao.UserDao;
 import com.foxminded.aprihodko.task10.dao.mapper.UserMapper;
@@ -7,28 +15,28 @@ import com.foxminded.aprihodko.task10.models.Student;
 import com.foxminded.aprihodko.task10.models.Teacher;
 import com.foxminded.aprihodko.task10.models.User;
 import com.foxminded.aprihodko.task10.models.UserType;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
-
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Repository
-public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao {
+public class UserDaoImpl extends AbstractCrudDao<User, Long>
+        implements
+            UserDao {
 
     public static final String FIND_BY_ID = "select * from university.users u left join university.students s on u.user_id = s.user_ref left join university.teachers t on u.user_id = t.user_ref where u.user_id = ?";
-    public static final String FIND_ALL = "" + "select *\n" + "from university.users u\n"
+    public static final String FIND_ALL = "" + "select *\n"
+            + "from university.users u\n"
             + "         left join university.students s on u.user_id = s.user_ref\n"
             + "         left join university.teachers t on u.user_id = t.user_ref;";
     public static final String DELETE_BY_ID = "DELETE FROM university.users WHERE user_id = ?";
-    public static final String FIND_BY_NAME = "select *\n" + "from university.users u\n"
+    public static final String FIND_BY_NAME = "select *\n"
+            + "from university.users u\n"
             + "         left join university.students s on u.user_id = s.user_ref\n"
-            + "         left join university.teachers t on u.user_id = t.user_ref\n" + "where user_name = ?;";
-    public static final String FIND_BY_USER_TYPE = "" + "select *\n" + "from university.users u\n"
+            + "         left join university.teachers t on u.user_id = t.user_ref\n"
+            + "where user_name = ?;";
+    public static final String FIND_BY_USER_TYPE = "" + "select *\n"
+            + "from university.users u\n"
             + "         left join university.students s on u.user_id = s.user_ref\n"
-            + "         left join university.teachers t on u.user_id = t.user_ref\n" + "where user_type = ?;";
+            + "         left join university.teachers t on u.user_id = t.user_ref\n"
+            + "where user_type = ?;";
     public static final String CREATE_USER = "INSERT INTO university.users (user_id, user_name, user_type) VALUES (?, ?, ?)";
     public static final String CREATE_STUDENT = "INSERT INTO university.students (user_ref, group_ref) VALUES (?, ?)";
     public static final String CREATE_TEACHER = "INSERT INTO university.teachers (user_ref, course_ref) VALUES (?, ?)";
@@ -66,7 +74,8 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
 
     @Override
     public Optional<User> findByName(String name) {
-        return jdbcTemplate.query(FIND_BY_NAME, mapper, name).stream().findFirst();
+        return jdbcTemplate.query(FIND_BY_NAME, mapper, name).stream()
+                .findFirst();
     }
 
     @Override
@@ -76,42 +85,51 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
 
     @Override
     public User create(User entity) throws SQLException {
-        jdbcTemplate.update(CREATE_USER, entity.getId(), entity.getName(), entity.getType().toString());
-        if (entity.getType().equals(UserType.STUDENT)) {
+        jdbcTemplate.update(CREATE_USER, entity.getId(), entity.getName(),
+                entity.getType().toString());
+        if (entity instanceof Student) {
             Student student = (Student) entity;
-            jdbcTemplate.update(CREATE_STUDENT, student.getId(), student.getGroupdId());
-        } else if (entity.getType().equals(UserType.TEACHER)) {
+            jdbcTemplate.update(CREATE_STUDENT, student.getId(),
+                    student.getGroupdId());
+        } else if (entity instanceof Teacher) {
             Teacher teacher = (Teacher) entity;
-            jdbcTemplate.update(CREATE_TEACHER, teacher.getId(), teacher.getCourseId());
+            jdbcTemplate.update(CREATE_TEACHER, teacher.getId(),
+                    teacher.getCourseId());
         }
         return entity;
     }
 
     @Override
     public User update(User entity, Long id) throws SQLException {
-        if (jdbcTemplate.update(CREATE_USER, entity.getId(), entity.getName(), entity.getType().toString()) != 1) {
+        if (jdbcTemplate.update(CREATE_USER, entity.getId(), entity.getName(),
+                entity.getType().toString()) != 1) {
             throw new SQLException("Unable to update user" + entity.getId());
         }
-        jdbcTemplate.update(UPDATE, entity.getName(), entity.getType().toString(), id);
-        if (entity.getType().equals(UserType.STUDENT)) {
+        jdbcTemplate.update(UPDATE, entity.getName(),
+                entity.getType().toString(), id);
+        if (entity instanceof Student) {
             Student student = (Student) entity;
-            jdbcTemplate.update(UPDATE_GROUP_FOR_STUDENT, student.getId(), student.getGroupdId());
-        } else if (entity.getType().equals(UserType.TEACHER)) {
+            jdbcTemplate.update(UPDATE_GROUP_FOR_STUDENT, student.getId(),
+                    student.getGroupdId());
+        } else if (entity instanceof Teacher) {
             Teacher teacher = (Teacher) entity;
-            jdbcTemplate.update(UPDATE_COURSE_FOR_TEACHER, teacher.getId(), teacher.getCourseId());
+            jdbcTemplate.update(UPDATE_COURSE_FOR_TEACHER, teacher.getId(),
+                    teacher.getCourseId());
         }
         return entity;
     }
 
     @Override
-    public List<Teacher> findTeacherByCourseId(Long courseId) throws SQLException {
-        return jdbcTemplate.query(FIND_TEACHER_BY_COURSE_ID, mapper, courseId).stream().map(u -> (Teacher) u)
-                .collect(Collectors.toList());
+    public List<Teacher> findTeacherByCourseId(Long courseId)
+            throws SQLException {
+        return jdbcTemplate.query(FIND_TEACHER_BY_COURSE_ID, mapper, courseId)
+                .stream().map(u -> (Teacher) u).collect(Collectors.toList());
     }
 
     @Override
-    public List<Student> findStudentByGroupId(Long courseId) throws SQLException {
-        return jdbcTemplate.query(FIND_STUDENT_BY_GROUP_ID, mapper, courseId).stream().map(u -> (Student) u)
-                .collect(Collectors.toList());
+    public List<Student> findStudentByGroupId(Long courseId)
+            throws SQLException {
+        return jdbcTemplate.query(FIND_STUDENT_BY_GROUP_ID, mapper, courseId)
+                .stream().map(u -> (Student) u).collect(Collectors.toList());
     }
 }
