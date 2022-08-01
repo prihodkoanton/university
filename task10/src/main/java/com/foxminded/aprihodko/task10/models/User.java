@@ -17,6 +17,10 @@ public class User extends LongEntity {
         this.type = type;
     }
 
+    public User(String name, UserType type) {
+        this(null, name, type);
+    }
+
     @Override
     public Long getId() {
         return id;

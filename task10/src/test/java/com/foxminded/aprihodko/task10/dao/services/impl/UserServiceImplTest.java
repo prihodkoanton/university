@@ -1,5 +1,22 @@
 package com.foxminded.aprihodko.task10.dao.services.impl;
 
+import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
 import com.foxminded.aprihodko.task10.BaseDaoTest;
 import com.foxminded.aprihodko.task10.dao.UserDao;
 import com.foxminded.aprihodko.task10.models.Student;
@@ -7,22 +24,8 @@ import com.foxminded.aprihodko.task10.models.Teacher;
 import com.foxminded.aprihodko.task10.models.User;
 import com.foxminded.aprihodko.task10.models.UserType;
 import com.foxminded.aprihodko.task10.services.impl.UserServiceImpl;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.Assert.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.*;
-
-@SpringBootTest(classes = {UserServiceImpl.class})
+@SpringBootTest(classes = { UserServiceImpl.class })
 class UserServiceImplTest extends BaseDaoTest {
 
     @MockBean
@@ -77,9 +80,9 @@ class UserServiceImplTest extends BaseDaoTest {
     @Test
     void shouldCreateUser() throws SQLException {
         User user = new User(100L, "john", UserType.NONE);
-        when(userDao.save(user, 100L)).thenReturn(user);
-        User expected = userDao.save(user, 100L);
-        User actual = userDao.save(user, 100L);
+        when(userDao.save(user)).thenReturn(user);
+        User expected = userDao.save(user);
+        User actual = userDao.save(user);
         assertNotNull(actual.getId());
         user.setId(actual.getId());
         assertEquals(expected, actual);

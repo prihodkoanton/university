@@ -6,10 +6,19 @@ public class Teacher extends User {
 
     public static final String COURSE_REF = "course_ref";
 
-    private final Long courseId;
+    private Long courseId;
 
     public Teacher(Long id, String name, Long courseId) {
         super(id, name, UserType.TEACHER);
+        this.courseId = courseId;
+    }
+
+    public Teacher(Long id, String name) {
+        super(id, name, UserType.TEACHER);
+    }
+
+    public Teacher(String name, Long courseId) {
+        super(null, name, UserType.TEACHER);
         this.courseId = courseId;
     }
 

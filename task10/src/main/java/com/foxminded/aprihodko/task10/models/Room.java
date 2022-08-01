@@ -14,6 +14,10 @@ public class Room extends LongEntity {
         this.title = title;
     }
 
+    public Room(String title) {
+        this(null, title);
+    }
+
     @Override
     public Long getId() {
         return id;

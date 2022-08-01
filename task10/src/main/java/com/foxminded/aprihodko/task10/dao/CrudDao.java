@@ -1,10 +1,10 @@
 package com.foxminded.aprihodko.task10.dao;
 
-import com.foxminded.aprihodko.task10.models.Entity;
-
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+
+import com.foxminded.aprihodko.task10.models.Entity;
 
 public interface CrudDao<T extends Entity<K>, K> {
 
@@ -12,7 +12,7 @@ public interface CrudDao<T extends Entity<K>, K> {
 
     List<T> findAll() throws SQLException;
 
-    T save(T enity, Long id) throws SQLException;
+    T save(T enity) throws SQLException;
 
     void deleteById(K id) throws SQLException;
 }

@@ -12,6 +12,15 @@ public class Student extends User {
         this.groupdId = groupdId;
     }
 
+    public Student(Long id, String name) {
+        super(id, name, UserType.STUDENT);
+    }
+
+    public Student(String name, Long groupdId) {
+        super(null, name, UserType.STUDENT);
+        this.groupdId = groupdId;
+    }
+
     public Long getGroupdId() {
         return groupdId;
     }

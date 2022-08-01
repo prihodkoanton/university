@@ -1,14 +1,15 @@
 package com.foxminded.aprihodko.task10.services.impl;
 
-import com.foxminded.aprihodko.task10.dao.GroupDao;
-import com.foxminded.aprihodko.task10.models.Group;
-import com.foxminded.aprihodko.task10.services.GroupService;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.foxminded.aprihodko.task10.dao.GroupDao;
+import com.foxminded.aprihodko.task10.models.Group;
+import com.foxminded.aprihodko.task10.services.GroupService;
 
 @Service
 public class GroupServiceImpl implements GroupService {
@@ -40,7 +41,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Transactional
-    public Group update(Group entity, Long id) throws SQLException {
-        return groupDao.save(entity, id);
+    public Group update(Group entity) throws SQLException {
+        return groupDao.save(entity);
     }
 }

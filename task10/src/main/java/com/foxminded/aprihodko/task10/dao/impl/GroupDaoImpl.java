@@ -1,12 +1,15 @@
 package com.foxminded.aprihodko.task10.dao.impl;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import com.foxminded.aprihodko.task10.dao.AbstractCrudDao;
@@ -28,10 +31,13 @@ public class GroupDaoImpl extends AbstractCrudDao<Group, Long> implements GroupD
 
     private final JdbcTemplate jdbcTemplate;
     private final GroupMapper mapper;
+    private final SimpleJdbcInsert simpleJdbcInsert;
 
     public GroupDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         mapper = new GroupMapper();
+        simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate.getDataSource()).withTableName("university.groups")
+                .usingColumns("group_name").usingGeneratedKeyColumns("group_id");
     }
 
     @Override
@@ -60,21 +66,23 @@ public class GroupDaoImpl extends AbstractCrudDao<Group, Long> implements GroupD
 
     @Override
     public Group create(Group entity) throws SQLException {
-        int createdRowCount = jdbcTemplate.update(CREATE, entity.getId(), entity.getName());
-        if (createdRowCount != 1) {
+        Map<String, Object> usersParameters = new HashMap<String, Object>();
+        usersParameters.put("group_name", entity.getName());
+        Number id = simpleJdbcInsert.executeAndReturnKey(usersParameters);
+        if (id == null) {
             logger.error("Unable to create Group:{}", entity);
             throw new SQLException("Unable to retrieve id" + entity.getId());
         }
-        return entity;
+        return new Group(id.longValue(), entity.getName());
     }
 
     @Override
-    public Group update(Group entity, Long id) throws SQLException {
+    public Group update(Group entity) throws SQLException {
         int updatedRowCount = jdbcTemplate.update(CREATE, entity.getId(), entity.getName());
         if (updatedRowCount != 1) {
             logger.error("Unable to update Group:{}", entity);
             throw new SQLException("Unable to update group " + entity);
         }
-        return entity;
+        return new Group(entity.getId(), entity.getName());
     }
 }

@@ -14,6 +14,10 @@ public class Group extends LongEntity {
         this.name = name;
     }
 
+    public Group(String name) {
+        this(null, name);
+    }
+
     public String getName() {
         return name;
     }
