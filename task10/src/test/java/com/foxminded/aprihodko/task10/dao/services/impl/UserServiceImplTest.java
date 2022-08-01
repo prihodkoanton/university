@@ -78,11 +78,11 @@ class UserServiceImplTest extends BaseDaoTest {
     }
 
     @Test
-    void shouldCreateUser() throws SQLException {
+    void shouldUpdateUser() throws SQLException {
         User user = new User(100L, "john", UserType.NONE);
         when(userDao.save(user)).thenReturn(user);
         User expected = userDao.save(user);
-        User actual = userDao.save(user);
+        User actual = userServiceImpl.update(user);
         assertNotNull(actual.getId());
         user.setId(actual.getId());
         assertEquals(expected, actual);

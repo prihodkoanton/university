@@ -74,7 +74,7 @@ class RoomServiceImplTest extends BaseDaoTest {
     }
 
     @Test
-    void shouldCreateRoom() throws SQLException {
+    void shouldUpdateRoom() throws SQLException {
         Room room = new Room(1L, "room for java");
         when(roomDao.save(room)).thenReturn(room);
         Room expected = roomDao.save(room);

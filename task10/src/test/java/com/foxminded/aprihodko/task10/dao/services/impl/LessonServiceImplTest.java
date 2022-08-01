@@ -1,13 +1,11 @@
 package com.foxminded.aprihodko.task10.dao.services.impl;
 
-import com.foxminded.aprihodko.task10.BaseDaoTest;
-import com.foxminded.aprihodko.task10.dao.LessonDao;
-import com.foxminded.aprihodko.task10.models.Lesson;
-import com.foxminded.aprihodko.task10.services.impl.LessonServiceImpl;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.sql.SQLException;
 import java.time.DayOfWeek;
@@ -15,11 +13,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
-@SpringBootTest(classes = {LessonServiceImpl.class})
+import com.foxminded.aprihodko.task10.BaseDaoTest;
+import com.foxminded.aprihodko.task10.dao.LessonDao;
+import com.foxminded.aprihodko.task10.models.Lesson;
+import com.foxminded.aprihodko.task10.services.impl.LessonServiceImpl;
+
+@SpringBootTest(classes = { LessonServiceImpl.class })
 class LessonServiceImplTest extends BaseDaoTest {
 
     @MockBean
@@ -114,6 +118,17 @@ class LessonServiceImplTest extends BaseDaoTest {
         when(lessonDao.findByTimeSpan(1L)).thenReturn(lessons);
         List<Lesson> expected = lessonDao.findByTimeSpan(1L);
         List<Lesson> actual = lessonServiceImpl.findByTimeSpan(1L);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldUpdatCourse() throws SQLException {
+        Lesson lesson = new Lesson(1L, DayOfWeek.FRIDAY, 1, 1L, 1L, 1L, 1L);
+        when(lessonDao.save(lesson)).thenReturn(lesson);
+        Lesson actual = lessonDao.save(lesson);
+        Lesson expected = lessonServiceImpl.update(lesson);
+        assertNotNull(actual.getId());
+        lesson.setId(actual.getId());
         assertEquals(expected, actual);
     }
 
