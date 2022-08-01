@@ -5,7 +5,6 @@ import java.util.Objects;
 public class Teacher extends User {
 
     public static final String COURSE_REF = "course_ref";
-    private static final String TEACHERRTYPE = UserType.TEACHER.toString();
 
     private final Long courseId;
 
@@ -14,18 +13,8 @@ public class Teacher extends User {
         this.courseId = courseId;
     }
 
-    public Teacher(Long id, String name, Long courseId, String userType) {
-        super(id, name, UserType.TEACHER);
-        this.courseId = courseId;
-        userType = TEACHERRTYPE;
-    }
-
     public static String getCourseRef() {
         return COURSE_REF;
-    }
-
-    public static String getUsertype() {
-        return TEACHERRTYPE;
     }
 
     public Long getCourseId() {
