@@ -47,7 +47,8 @@ public class CourseDaoImpl extends AbstractCrudDao<Course, Long> implements Cour
 
     @Override
     public void deleteById(Long id) throws SQLException {
-        if (jdbcTemplate.update(DELETE_BY_ID, id) != 1) {
+        int deleteRowCount = jdbcTemplate.update(DELETE_BY_ID, id);
+        if (deleteRowCount != 1) {
             throw new SQLException("Unable to delete course (id = " + id + ")");
         }
         jdbcTemplate.update(DELETE_BY_ID, id);
@@ -60,21 +61,21 @@ public class CourseDaoImpl extends AbstractCrudDao<Course, Long> implements Cour
 
     @Override
     public Course create(Course entity) throws SQLException {
-        if (jdbcTemplate.update(CREATE, entity.getId(), entity.getName(), entity.getDiscription()) != 1) {
-            logger.debug("COURSE:{}", entity);
-            logger.error("Unable to retrieve id" + entity.getId());
+        int createdRowCount = jdbcTemplate.update(CREATE, entity.getId(), entity.getName(), entity.getDiscription());
+        if (createdRowCount != 1) {
+            logger.error("Unable to create Course: {}", entity);
             throw new SQLException("Unable to retrieve id" + entity.getId());
         }
-        jdbcTemplate.update(CREATE, entity.getId(), entity.getName(), entity.getDiscription());
         return entity;
     }
 
     @Override
     public Course update(Course entity, Long id) throws SQLException {
-        if (jdbcTemplate.update(CREATE, entity.getId(), entity.getName(), entity.getDiscription()) != 1) {
+        int updatedRowCount = jdbcTemplate.update(CREATE, entity.getId(), entity.getName(), entity.getDiscription());
+        if (updatedRowCount != 1) {
+            logger.error("Unable to update Course: {}", entity);
             throw new SQLException("Unable to update course " + entity);
         }
-        jdbcTemplate.update(UPDATE, entity.getName(), entity.getDiscription(), id);
         return entity;
     }
 }

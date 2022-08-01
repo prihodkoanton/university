@@ -1,18 +1,23 @@
 package com.foxminded.aprihodko.task10.dao.impl;
 
-import com.foxminded.aprihodko.task10.dao.AbstractCrudDao;
-import com.foxminded.aprihodko.task10.dao.RoomDao;
-import com.foxminded.aprihodko.task10.dao.mapper.RoomMapper;
-import com.foxminded.aprihodko.task10.models.Room;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
-
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import com.foxminded.aprihodko.task10.dao.AbstractCrudDao;
+import com.foxminded.aprihodko.task10.dao.RoomDao;
+import com.foxminded.aprihodko.task10.dao.mapper.RoomMapper;
+import com.foxminded.aprihodko.task10.models.Room;
+
 @Repository
 public class RoomDaoImpl extends AbstractCrudDao<Room, Long> implements RoomDao {
+
+    private static final Logger logger = LoggerFactory.getLogger(RoomDaoImpl.class);
 
     public static final String FIND_BY_ID = "SELECT * FROM university.rooms WHERE room_id = ?";
     public static final String FIND_ALL = "SELECT * FROM university.rooms";
@@ -41,7 +46,9 @@ public class RoomDaoImpl extends AbstractCrudDao<Room, Long> implements RoomDao 
 
     @Override
     public void deleteById(Long id) throws SQLException {
-        if (jdbcTemplate.update(DELETE_BY_ID, id) != 1) {
+        int deleteRowCount = jdbcTemplate.update(DELETE_BY_ID, id);
+        if (deleteRowCount != 1) {
+            logger.error("Unable to delete room (id = " + id + ")");
             throw new SQLException("Unable to delete course (id = " + id + ")");
         }
         jdbcTemplate.update(DELETE_BY_ID, id);
@@ -54,19 +61,21 @@ public class RoomDaoImpl extends AbstractCrudDao<Room, Long> implements RoomDao 
 
     @Override
     public Room create(Room entity) throws SQLException {
-        if (jdbcTemplate.update(CREATE, entity.getId(), entity.getTitle()) != 1) {
+        int createdRowCount = jdbcTemplate.update(CREATE, entity.getId(), entity.getTitle());
+        if (createdRowCount != 1) {
+            logger.error("Unable to create Room:{}", entity);
             throw new SQLException("Unable to retrieve id" + entity.getId());
         }
-        jdbcTemplate.update(CREATE, entity.getId(), entity.getTitle());
         return entity;
     }
 
     @Override
     public Room update(Room entity, Long id) throws SQLException {
-        if (jdbcTemplate.update(CREATE, entity.getId(), entity.getTitle()) != 1) {
+        int updatedRowCount = jdbcTemplate.update(CREATE, entity.getId(), entity.getTitle());
+        if (updatedRowCount != 1) {
+            logger.error("Unable to update Room:{}", entity);
             throw new SQLException("Unable to update room" + entity.getId());
         }
-        jdbcTemplate.update(UPDATE, entity.getTitle(), id);
         return entity;
     }
 }
