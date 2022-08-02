@@ -14,10 +14,16 @@ public class Room extends LongEntity {
         this.title = title;
     }
 
+    public Room(String title) {
+        this(null, title);
+    }
+
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -40,13 +46,22 @@ public class Room extends LongEntity {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (!super.equals(obj))
+        }
+        if (!super.equals(obj)) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Room other = (Room) obj;
         return Objects.equals(title, other.title);
     }
+
+    @Override
+    public String toString() {
+        return "Room [title=" + title + ", id=" + id + "]";
+    }
+
 }

@@ -5,28 +5,25 @@ import java.util.Objects;
 public class Teacher extends User {
 
     public static final String COURSE_REF = "course_ref";
-    private static final String TEACHERRTYPE = UserType.TEACHER.toString();
 
-    private final Long courseId;
-
+    private Long courseId;
 
     public Teacher(Long id, String name, Long courseId) {
         super(id, name, UserType.TEACHER);
         this.courseId = courseId;
     }
 
-    public Teacher(Long id, String name, Long courseId, String userType) {
+    public Teacher(Long id, String name) {
         super(id, name, UserType.TEACHER);
+    }
+
+    public Teacher(String name, Long courseId) {
+        super(null, name, UserType.TEACHER);
         this.courseId = courseId;
-        userType = TEACHERRTYPE;
     }
 
     public static String getCourseRef() {
         return COURSE_REF;
-    }
-
-    public static String getUsertype() {
-        return TEACHERRTYPE;
     }
 
     public Long getCourseId() {
@@ -43,13 +40,22 @@ public class Teacher extends User {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (!super.equals(obj))
+        }
+        if (!super.equals(obj)) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Teacher other = (Teacher) obj;
         return Objects.equals(courseId, other.courseId);
     }
+
+    @Override
+    public String toString() {
+        return "Teacher [courseId=" + courseId + ", id=" + id + "]";
+    }
+
 }

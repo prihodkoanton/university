@@ -1,18 +1,26 @@
 package com.foxminded.aprihodko.task10.dao.impl;
 
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
+
 import com.foxminded.aprihodko.task10.dao.AbstractCrudDao;
 import com.foxminded.aprihodko.task10.dao.LessonDao;
 import com.foxminded.aprihodko.task10.dao.mapper.LessonMapper;
 import com.foxminded.aprihodko.task10.models.Lesson;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
-
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class LessonDaoImpl extends AbstractCrudDao<Lesson, Long> implements LessonDao {
+
+    private static final Logger logger = LoggerFactory.getLogger(LessonDaoImpl.class);
 
     public static final String FIND_BY_ID = "select * from university.lessons l left join university.rooms r on l.room_ref = r.room_id\n"
             + "                                    left join university.groups g on l.group_ref = g.group_id\n"
@@ -32,10 +40,15 @@ public class LessonDaoImpl extends AbstractCrudDao<Lesson, Long> implements Less
 
     private final LessonMapper mapper;
     private final JdbcTemplate jdbcTemplate;
+    private final SimpleJdbcInsert simpleJdbcInsert;
 
     public LessonDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         mapper = new LessonMapper();
+        simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate.getDataSource()).withTableName("university.lessons")
+                .usingColumns("lesson_day_of_week", "lesson_time_span", "room_ref", "group_ref", "course_ref",
+                        "teacher_ref")
+                .usingGeneratedKeyColumns("lesson_id");
     }
 
     @Override
@@ -50,10 +63,11 @@ public class LessonDaoImpl extends AbstractCrudDao<Lesson, Long> implements Less
 
     @Override
     public void deleteById(Long id) throws SQLException {
-        if (jdbcTemplate.update(DELETE_BY_ID, id) != 1) {
+        int deleteRowCount = jdbcTemplate.update(DELETE_BY_ID, id);
+        if (deleteRowCount != 1) {
+            logger.error("Unable to delete lesson (id = " + id + ")");
             throw new SQLException("Unable to delete course (id = " + id + ")");
         }
-        jdbcTemplate.update(DELETE_BY_ID, id);
     }
 
     @Override
@@ -88,23 +102,32 @@ public class LessonDaoImpl extends AbstractCrudDao<Lesson, Long> implements Less
 
     @Override
     public Lesson create(Lesson entity) throws SQLException {
-        if (jdbcTemplate.update(CREATE, entity.getId(), entity.getDayOfWeek(), entity.getTimeSpan(), entity.getRoomId(),
-                entity.getGroupId(), entity.getCourseId(), entity.getTeacherId()) != 1) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("lesson_day_of_week", entity.getDayOfWeek().toString());
+        parameters.put("lesson_time_span", entity.getTimeSpan());
+        parameters.put("room_ref", entity.getRoomId());
+        parameters.put("group_ref", entity.getGroupId());
+        parameters.put("course_ref", entity.getCourseId());
+        parameters.put("teacher_ref", entity.getTeacherId());
+        Number id = simpleJdbcInsert.executeAndReturnKey(parameters);
+        if (id == null) {
+            logger.error("Unable to create Lesson:{}", entity);
             throw new SQLException("Unable to retrieve id" + entity.getId());
         }
-        jdbcTemplate.update(CREATE, entity.getId(), entity.getDayOfWeek().toString(), entity.getTimeSpan(), entity.getRoomId(),
+        return new Lesson(id.longValue(), entity.getDayOfWeek(), entity.getTimeSpan(), entity.getRoomId(),
                 entity.getGroupId(), entity.getCourseId(), entity.getTeacherId());
-        return entity;
     }
 
     @Override
-    public Lesson update(Lesson entity, Long id) throws SQLException {
-        if (jdbcTemplate.update(CREATE, entity.getId(), entity.getDayOfWeek().toString(), entity.getTimeSpan(), entity.getRoomId(),
-                entity.getGroupId(), entity.getCourseId(), entity.getTeacherId()) != 1) {
+    public Lesson update(Lesson entity) throws SQLException {
+        int updatedRowCount = jdbcTemplate.update(CREATE, entity.getId(), entity.getDayOfWeek().toString(),
+                entity.getTimeSpan(), entity.getRoomId(), entity.getGroupId(), entity.getCourseId(),
+                entity.getTeacherId());
+        if (updatedRowCount != 1) {
+            logger.error("Unable to update Lesson:{}", entity);
             throw new SQLException("Unable to update lesson" + entity.getId());
         }
-        jdbcTemplate.update(UPDATE, entity.getDayOfWeek().toString(), entity.getTimeSpan(), entity.getRoomId(),
-                entity.getGroupId(), entity.getCourseId(), entity.getTeacherId(), id);
-        return entity;
+        return new Lesson(entity.getId(), entity.getDayOfWeek(), entity.getTimeSpan(), entity.getRoomId(),
+                entity.getGroupId(), entity.getCourseId(), entity.getTeacherId());
     }
 }

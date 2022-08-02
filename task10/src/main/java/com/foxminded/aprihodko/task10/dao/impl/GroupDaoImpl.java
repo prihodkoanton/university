@@ -1,18 +1,26 @@
 package com.foxminded.aprihodko.task10.dao.impl;
 
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
+
 import com.foxminded.aprihodko.task10.dao.AbstractCrudDao;
 import com.foxminded.aprihodko.task10.dao.GroupDao;
 import com.foxminded.aprihodko.task10.dao.mapper.GroupMapper;
 import com.foxminded.aprihodko.task10.models.Group;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
-
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class GroupDaoImpl extends AbstractCrudDao<Group, Long> implements GroupDao {
+
+    private static final Logger logger = LoggerFactory.getLogger(GroupDaoImpl.class);
 
     public static final String FIND_BY_ID = "SELECT * FROM university.groups WHERE group_id = ?";
     public static final String FIND_ALL = "SELECT * FROM university.groups";
@@ -23,10 +31,13 @@ public class GroupDaoImpl extends AbstractCrudDao<Group, Long> implements GroupD
 
     private final JdbcTemplate jdbcTemplate;
     private final GroupMapper mapper;
+    private final SimpleJdbcInsert simpleJdbcInsert;
 
     public GroupDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         mapper = new GroupMapper();
+        simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate.getDataSource()).withTableName("university.groups")
+                .usingColumns("group_name").usingGeneratedKeyColumns("group_id");
     }
 
     @Override
@@ -41,10 +52,11 @@ public class GroupDaoImpl extends AbstractCrudDao<Group, Long> implements GroupD
 
     @Override
     public void deleteById(Long id) throws SQLException {
-        if (jdbcTemplate.update(DELETE_BY_ID, id) != 1) {
+        int deleteRowCount = jdbcTemplate.update(DELETE_BY_ID, id);
+        if (deleteRowCount != 1) {
+            logger.error("Unable to delete group (id = " + id + ")");
             throw new SQLException("Unable to delete course (id = " + id + ")");
         }
-        jdbcTemplate.update(DELETE_BY_ID, id);
     }
 
     @Override
@@ -54,19 +66,23 @@ public class GroupDaoImpl extends AbstractCrudDao<Group, Long> implements GroupD
 
     @Override
     public Group create(Group entity) throws SQLException {
-        if (jdbcTemplate.update(CREATE, entity.getId(), entity.getName()) != 1) {
+        Map<String, Object> usersParameters = new HashMap<String, Object>();
+        usersParameters.put("group_name", entity.getName());
+        Number id = simpleJdbcInsert.executeAndReturnKey(usersParameters);
+        if (id == null) {
+            logger.error("Unable to create Group:{}", entity);
             throw new SQLException("Unable to retrieve id" + entity.getId());
         }
-        jdbcTemplate.update(CREATE, entity.getId(), entity.getName());
-        return entity;
+        return new Group(id.longValue(), entity.getName());
     }
 
     @Override
-    public Group update(Group entity, Long id) throws SQLException {
-        if (jdbcTemplate.update(CREATE, entity.getId(), entity.getName()) != 1) {
+    public Group update(Group entity) throws SQLException {
+        int updatedRowCount = jdbcTemplate.update(CREATE, entity.getId(), entity.getName());
+        if (updatedRowCount != 1) {
+            logger.error("Unable to update Group:{}", entity);
             throw new SQLException("Unable to update group " + entity);
         }
-        jdbcTemplate.update(UPDATE, entity.getName(), id);
-        return entity;
+        return new Group(entity.getId(), entity.getName());
     }
 }

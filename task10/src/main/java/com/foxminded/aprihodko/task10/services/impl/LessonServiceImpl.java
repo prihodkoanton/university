@@ -1,14 +1,15 @@
 package com.foxminded.aprihodko.task10.services.impl;
 
-import com.foxminded.aprihodko.task10.dao.LessonDao;
-import com.foxminded.aprihodko.task10.models.Lesson;
-import com.foxminded.aprihodko.task10.services.LessonService;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.foxminded.aprihodko.task10.dao.LessonDao;
+import com.foxminded.aprihodko.task10.models.Lesson;
+import com.foxminded.aprihodko.task10.services.LessonService;
 
 @Service
 public class LessonServiceImpl implements LessonService {
@@ -65,7 +66,7 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Transactional
-    public Lesson update(Lesson entity, Long id) throws SQLException {
-        return lessonDao.save(entity, id);
+    public Lesson update(Lesson entity) throws SQLException {
+        return lessonDao.save(entity);
     }
 }

@@ -1,24 +1,27 @@
 package com.foxminded.aprihodko.task10.dao.services.impl;
 
-import com.foxminded.aprihodko.task10.BaseDaoTest;
-import com.foxminded.aprihodko.task10.dao.GroupDao;
-import com.foxminded.aprihodko.task10.models.Group;
-import com.foxminded.aprihodko.task10.services.impl.GroupServiceImpl;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
-@SpringBootTest(classes = {GroupServiceImpl.class})
+import com.foxminded.aprihodko.task10.BaseDaoTest;
+import com.foxminded.aprihodko.task10.dao.GroupDao;
+import com.foxminded.aprihodko.task10.models.Group;
+import com.foxminded.aprihodko.task10.services.impl.GroupServiceImpl;
+
+@SpringBootTest(classes = { GroupServiceImpl.class })
 class GroupServiceImplTest extends BaseDaoTest {
 
     @MockBean
@@ -72,9 +75,9 @@ class GroupServiceImplTest extends BaseDaoTest {
     @Test
     void shouldCreateCourse() throws SQLException {
         Group group = new Group(100L, "test");
-        when(groupDao.save(group, 100L)).thenReturn(group);
-        Group expected = groupDao.save(group, 100L);
-        Group actual = groupServiceImpl.update(group, 100L);
+        when(groupDao.save(group)).thenReturn(group);
+        Group expected = groupDao.save(group);
+        Group actual = groupServiceImpl.update(group);
         assertEquals(expected, actual);
     }
 }

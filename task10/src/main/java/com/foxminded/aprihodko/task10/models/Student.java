@@ -12,6 +12,15 @@ public class Student extends User {
         this.groupdId = groupdId;
     }
 
+    public Student(Long id, String name) {
+        super(id, name, UserType.STUDENT);
+    }
+
+    public Student(String name, Long groupdId) {
+        super(null, name, UserType.STUDENT);
+        this.groupdId = groupdId;
+    }
+
     public Long getGroupdId() {
         return groupdId;
     }
@@ -30,13 +39,22 @@ public class Student extends User {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (!super.equals(obj))
+        }
+        if (!super.equals(obj)) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Student other = (Student) obj;
         return Objects.equals(groupdId, other.groupdId);
     }
+
+    @Override
+    public String toString() {
+        return "Student [groupdId=" + groupdId + ", id=" + id + "]";
+    }
+
 }

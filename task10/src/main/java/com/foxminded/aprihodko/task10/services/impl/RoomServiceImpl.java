@@ -1,14 +1,15 @@
 package com.foxminded.aprihodko.task10.services.impl;
 
-import com.foxminded.aprihodko.task10.dao.RoomDao;
-import com.foxminded.aprihodko.task10.models.Room;
-import com.foxminded.aprihodko.task10.services.RoomService;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.foxminded.aprihodko.task10.dao.RoomDao;
+import com.foxminded.aprihodko.task10.models.Room;
+import com.foxminded.aprihodko.task10.services.RoomService;
 
 @Service
 public class RoomServiceImpl implements RoomService {
@@ -40,7 +41,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Transactional
-    public Room update(Room entity, Long id) throws SQLException {
-        return roomDao.save(entity, id);
+    public Room update(Room entity) throws SQLException {
+        return roomDao.save(entity);
     }
 }

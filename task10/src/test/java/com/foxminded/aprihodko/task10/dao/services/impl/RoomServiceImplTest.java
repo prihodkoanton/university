@@ -1,25 +1,28 @@
 package com.foxminded.aprihodko.task10.dao.services.impl;
 
-import com.foxminded.aprihodko.task10.BaseDaoTest;
-import com.foxminded.aprihodko.task10.dao.RoomDao;
-import com.foxminded.aprihodko.task10.models.Room;
-import com.foxminded.aprihodko.task10.services.impl.RoomServiceImpl;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
-@SpringBootTest(classes = {RoomServiceImpl.class})
+import com.foxminded.aprihodko.task10.BaseDaoTest;
+import com.foxminded.aprihodko.task10.dao.RoomDao;
+import com.foxminded.aprihodko.task10.models.Room;
+import com.foxminded.aprihodko.task10.services.impl.RoomServiceImpl;
+
+@SpringBootTest(classes = { RoomServiceImpl.class })
 class RoomServiceImplTest extends BaseDaoTest {
 
     @MockBean
@@ -71,11 +74,11 @@ class RoomServiceImplTest extends BaseDaoTest {
     }
 
     @Test
-    void shouldCreateRoom() throws SQLException {
+    void shouldUpdateRoom() throws SQLException {
         Room room = new Room(1L, "room for java");
-        when(roomDao.save(room, 1L)).thenReturn(room);
-        Room expected = roomDao.save(room, 1L);
-        Room actual = roomServiceImpl.update(room, 1L);
+        when(roomDao.save(room)).thenReturn(room);
+        Room expected = roomDao.save(room);
+        Room actual = roomServiceImpl.update(room);
         assertNotNull(actual.getId());
         room.setId(actual.getId());
         assertEquals(expected, actual);

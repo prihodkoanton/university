@@ -1,5 +1,18 @@
 package com.foxminded.aprihodko.task10.dao.impl;
 
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
+
 import com.foxminded.aprihodko.task10.dao.AbstractCrudDao;
 import com.foxminded.aprihodko.task10.dao.UserDao;
 import com.foxminded.aprihodko.task10.dao.mapper.UserMapper;
@@ -7,16 +20,11 @@ import com.foxminded.aprihodko.task10.models.Student;
 import com.foxminded.aprihodko.task10.models.Teacher;
 import com.foxminded.aprihodko.task10.models.User;
 import com.foxminded.aprihodko.task10.models.UserType;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
-
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Repository
 public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
 
     public static final String FIND_BY_ID = "select * from university.users u left join university.students s on u.user_id = s.user_ref left join university.teachers t on u.user_id = t.user_ref where u.user_id = ?";
     public static final String FIND_ALL = "" + "select *\n" + "from university.users u\n"
@@ -29,9 +37,9 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
     public static final String FIND_BY_USER_TYPE = "" + "select *\n" + "from university.users u\n"
             + "         left join university.students s on u.user_id = s.user_ref\n"
             + "         left join university.teachers t on u.user_id = t.user_ref\n" + "where user_type = ?;";
-    public static final String CREATE_USER = "INSERT INTO university.users (user_id, user_name, user_type) VALUES (?, ?, ?)";
-    public static final String CREATE_STUDENT = "INSERT INTO university.students (user_ref, group_ref) VALUES (?, ?)";
-    public static final String CREATE_TEACHER = "INSERT INTO university.teachers (user_ref, course_ref) VALUES (?, ?)";
+    public static final String CREATE_USER = "INSERT INTO university.users(user_name, user_type) VALUES (?, ?)";
+    public static final String CREATE_STUDENT = "INSERT INTO university.students(user_ref, group_ref) VALUES (?, ?)";
+    public static final String CREATE_TEACHER = "INSERT INTO university.teachers(user_ref, course_ref) VALUES (?, ?)";
     public static final String UPDATE = "UPDATE university.users SET user_name = ?, user_type = ? WHERE user_id = ?";
     public static final String UPDATE_GROUP_FOR_STUDENT = "UPDATE university.students SET group_ref = ? WHERE user_ref = ?";
     public static final String UPDATE_COURSE_FOR_TEACHER = "UPDATE university.teachers SET course_ref = ? WHERE user_ref = ?";
@@ -40,10 +48,13 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
 
     private final JdbcTemplate jdbcTemplate;
     private final UserMapper mapper;
+    private final SimpleJdbcInsert simpleJdbcInsert;
 
     public UserDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         mapper = new UserMapper();
+        simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate.getDataSource()).withTableName("university.users")
+                .usingColumns("user_name", "user_type").usingGeneratedKeyColumns("user_id");
     }
 
     @Override
@@ -58,10 +69,11 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
 
     @Override
     public void deleteById(Long id) throws SQLException {
-        if (jdbcTemplate.update(DELETE_BY_ID, id) != 1) {
+        int deleteRowCount = jdbcTemplate.update(DELETE_BY_ID, id);
+        if (deleteRowCount != 1) {
+            logger.error("Unable to user group (id = " + id + ")");
             throw new SQLException("Unable to delete course (id = " + id + ")");
         }
-        jdbcTemplate.update(DELETE_BY_ID, id);
     }
 
     @Override
@@ -76,31 +88,62 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
 
     @Override
     public User create(User entity) throws SQLException {
-        jdbcTemplate.update(CREATE_USER, entity.getId(), entity.getName(), entity.getType().toString());
-        if (entity.getType().equals(UserType.STUDENT)) {
-            Student student = (Student) entity;
-            jdbcTemplate.update(CREATE_STUDENT, student.getId(), student.getGroupdId());
-        } else if (entity.getType().equals(UserType.TEACHER)) {
-            Teacher teacher = (Teacher) entity;
-            jdbcTemplate.update(CREATE_TEACHER, teacher.getId(), teacher.getCourseId());
+        Map<String, Object> usersParameters = new HashMap<String, Object>();
+        usersParameters.put("user_name", entity.getName());
+        usersParameters.put("user_type", entity.getType().toString());
+        Number id = simpleJdbcInsert.executeAndReturnKey(usersParameters);
+        if (id == null) {
+            logger.error("Unable to create User:{}", entity);
+            throw new SQLException("Unable to retrieve id" + entity.getId());
         }
-        return entity;
+        if (entity instanceof Student) {
+            Student student = (Student) entity;
+            int createdStudentRowCount = jdbcTemplate.update(CREATE_STUDENT, id.longValue(), student.getGroupdId());
+            if (createdStudentRowCount != 1) {
+                logger.error("Unable to create Student:{}", student);
+                throw new SQLException("Unable to create Teacher", student.toString());
+            }
+            return new Student(id.longValue(), student.getName(), student.getGroupdId());
+        } else if (entity instanceof Teacher) {
+            Teacher teacher = (Teacher) entity;
+            int createdTeacherRowCount = jdbcTemplate.update(CREATE_TEACHER, id.longValue(), teacher.getCourseId());
+            if (createdTeacherRowCount != 1) {
+                logger.error("Unable to create Teacher:{}", teacher);
+                throw new SQLException("Unable to create Teacher", teacher.toString());
+            }
+            return new Teacher(id.longValue(), teacher.getName(), teacher.getCourseId());
+        }
+        return new User(id.longValue(), entity.getName(), entity.getType());
     }
 
     @Override
-    public User update(User entity, Long id) throws SQLException {
-        if (jdbcTemplate.update(CREATE_USER, entity.getId(), entity.getName(), entity.getType().toString()) != 1) {
+    public User update(User entity) throws SQLException {
+        int updatedUserRowCount = jdbcTemplate.update(CREATE_USER, entity.getId(), entity.getName(),
+                entity.getType().toString());
+        if (updatedUserRowCount != 1) {
+            logger.error("Unable to update User:{}", entity);
             throw new SQLException("Unable to update user" + entity.getId());
         }
-        jdbcTemplate.update(UPDATE, entity.getName(), entity.getType().toString(), id);
-        if (entity.getType().equals(UserType.STUDENT)) {
+        if (entity instanceof Student) {
             Student student = (Student) entity;
-            jdbcTemplate.update(UPDATE_GROUP_FOR_STUDENT, student.getId(), student.getGroupdId());
-        } else if (entity.getType().equals(UserType.TEACHER)) {
+            int updatedStudentRowCount = jdbcTemplate.update(UPDATE_GROUP_FOR_STUDENT, student.getId(),
+                    student.getGroupdId());
+            if (updatedStudentRowCount != 1) {
+                logger.error("Unable to update Student:{}", student);
+                throw new SQLException("Unable to update Student", student.toString());
+            }
+            return new Student(student.getId(), student.getName());
+        } else if (entity instanceof Teacher) {
             Teacher teacher = (Teacher) entity;
-            jdbcTemplate.update(UPDATE_COURSE_FOR_TEACHER, teacher.getId(), teacher.getCourseId());
+            int updatedTeacherRowCount = jdbcTemplate.update(UPDATE_COURSE_FOR_TEACHER, teacher.getId(),
+                    teacher.getCourseId());
+            if (updatedTeacherRowCount != 1) {
+                logger.error("Unable to update Teacher:{}", teacher);
+                throw new SQLException("Unable to update Teacher", teacher.toString());
+            }
+            return new Teacher(entity.getId(), entity.getName());
         }
-        return entity;
+        return new User(entity.getName(), entity.getType());
     }
 
     @Override
