@@ -74,7 +74,6 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
             logger.error("Unable to user group (id = " + id + ")");
             throw new SQLException("Unable to delete course (id = " + id + ")");
         }
-        jdbcTemplate.update(DELETE_BY_ID, id);
     }
 
     @Override

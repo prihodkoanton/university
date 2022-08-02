@@ -57,7 +57,6 @@ public class RoomDaoImpl extends AbstractCrudDao<Room, Long> implements RoomDao 
             logger.error("Unable to delete room (id = " + id + ")");
             throw new SQLException("Unable to delete course (id = " + id + ")");
         }
-        jdbcTemplate.update(DELETE_BY_ID, id);
     }
 
     @Override

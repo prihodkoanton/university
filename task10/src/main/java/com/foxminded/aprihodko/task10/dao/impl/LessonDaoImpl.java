@@ -68,7 +68,6 @@ public class LessonDaoImpl extends AbstractCrudDao<Lesson, Long> implements Less
             logger.error("Unable to delete lesson (id = " + id + ")");
             throw new SQLException("Unable to delete course (id = " + id + ")");
         }
-        jdbcTemplate.update(DELETE_BY_ID, id);
     }
 
     @Override

@@ -56,7 +56,6 @@ public class CourseDaoImpl extends AbstractCrudDao<Course, Long> implements Cour
         if (deleteRowCount != 1) {
             throw new SQLException("Unable to delete course (id = " + id + ")");
         }
-        jdbcTemplate.update(DELETE_BY_ID, id);
     }
 
     @Override
