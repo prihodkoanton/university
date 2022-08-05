@@ -32,7 +32,7 @@ public class UserController {
 
     @GetMapping("list")
     public String users(Model model) throws SQLException {
-        model.addAttribute("students", this.userDao.findAll());
+        model.addAttribute("users", this.userDao.findAll());
         return "index";
     }
 
@@ -55,20 +55,19 @@ public class UserController {
     }
 
     @PostMapping("update/{id}")
-    public String updateStudent(@PathVariable("id") long id, User user, BindingResult result, Model model)
+    public String updateUser(@PathVariable("id") long id, User user, BindingResult result, Model model)
             throws SQLException {
         if (result.hasErrors()) {
             user.setId(id);
             return "update-user";
         }
-
         userDao.save(user);
-        model.addAttribute("students", this.userDao.findAll());
+        model.addAttribute("users", this.userDao.findAll());
         return "index";
     }
 
     @GetMapping("delete/{id}")
-    public String deleteUser(@PathVariable("id") long id, Model model) throws IllegalArgumentException, SQLException {
+    public String deleteUser(@PathVariable("id") long id, Model model) throws SQLException {
         User user = this.userDao.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user id: " + id));
         this.userDao.deleteById(id);
         model.addAttribute("user", this.userDao.findAll());
