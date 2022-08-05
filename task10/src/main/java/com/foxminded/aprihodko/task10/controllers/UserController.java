@@ -33,7 +33,7 @@ public class UserController {
     @GetMapping("list")
     public String users(Model model) throws SQLException {
         model.addAttribute("users", this.userDao.findAll());
-        return "index";
+        return "index-user";
     }
 
     @PostMapping("add")
@@ -63,7 +63,7 @@ public class UserController {
         }
         userDao.save(user);
         model.addAttribute("users", this.userDao.findAll());
-        return "index";
+        return "index-user";
     }
 
     @GetMapping("delete/{id}")
@@ -71,6 +71,6 @@ public class UserController {
         User user = this.userDao.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user id: " + id));
         this.userDao.deleteById(id);
         model.addAttribute("user", this.userDao.findAll());
-        return "index";
+        return "index-user";
     }
 }

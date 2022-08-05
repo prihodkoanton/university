@@ -33,7 +33,7 @@ public class RoomController {
     @GetMapping("list")
     public String rooms(Model model) throws SQLException {
         model.addAttribute("rooms", this.roomDao.findAll());
-        return "index";
+        return "index-room";
     }
 
     @PostMapping
@@ -62,7 +62,7 @@ public class RoomController {
         }
         roomDao.save(room);
         model.addAttribute("rooms", this.roomDao.findAll());
-        return "index";
+        return "index-room";
     }
 
     @GetMapping("delete/{id}")
@@ -70,6 +70,6 @@ public class RoomController {
         Room room = this.roomDao.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid room id" + id));
         this.roomDao.deleteById(id);
         model.addAttribute("room", this.roomDao.findAll());
-        return "index";
+        return "index-room";
     }
 }

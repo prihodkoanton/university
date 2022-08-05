@@ -23,8 +23,8 @@
 			<div class="card-body">
 				<div class="col-md-8">
 					<form action="#" method="post"
-						th:action="@{/students/update/{id}(id=${student.id})}"
-						th:object="${student}">
+						th:action="@{/users/update/{id}(id=${user.id})}"
+						th:object="${user}">
 						<div class="row">
 							<div class="form-group col-md-6">
 								<label class="col-form-label" for="name">Name</label> <input
@@ -34,23 +34,15 @@
 									th:if="${#fields.hasErrors('name')}"></span>
 							</div>
 							<div class="form-group col-md-8">
-								<label class="col-form-label" for="email">Email</label> <input
-									class="form-control" id="email" placeholder="Email"
-									th:field="*{email}" type="text"> <span
-									class="text-danger" th:errors="*{email}"
-									th:if="${#fields.hasErrors('email')}"></span>
-							</div>
-							<div class="form-group col-md-8">
-								<label class="col-form-label" for="phoneNo">Phone No</label> <input
-									class="form-control" id="phoneNo" placeholder="phoneNo"
-									th:field="*{phoneNo}" type="text"> <span
-									class="text-danger" th:errors="phoneNo"
-									th:if="${#fields.hasErrors('phoneNo')}"></span>
+								<label class="col-form-label" for="type">Type</label> <input
+									class="form-control" id="type" placeholder="Type"
+									th:field="*{type}" type="text"> <span
+									class="text-danger" th:errors="*{type}"
+									th:if="${#fields.hasErrors('type')}"></span>
 							</div>
 
 							<div class="form-group col-md-8">
-								<input class="btn btn-primary" type="submit"
-									value="Update Student">
+								<input class="btn btn-primary" type="submit" value="Update User">
 							</div>
 						</div>
 					</form>
