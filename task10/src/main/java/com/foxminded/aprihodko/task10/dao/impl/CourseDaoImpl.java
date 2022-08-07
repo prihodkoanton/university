@@ -26,6 +26,7 @@ public class CourseDaoImpl extends AbstractCrudDao<Course, Long> implements Cour
     public static final String FIND_ALL = "SELECT * FROM university.courses";
     public static final String DELETE_BY_ID = "DELETE FROM university.courses where course_id = ?";
     public static final String FIND_BY_NAME = "SELECT * FROM university.courses where course_name = ?";
+    public static final String FIND_BY_DESCRIPTION = "SELECT * FROM university.courses where course_description = ?";
     public static final String CREATE = "INSERT INTO university.courses(course_id, course_name, course_description) VALUES (?, ?, ?)";
     public static final String UPDATE = "UPDATE university.courses SET course_name = ?, course_description = ? WHERE course_id = ?";
 
@@ -61,6 +62,11 @@ public class CourseDaoImpl extends AbstractCrudDao<Course, Long> implements Cour
     @Override
     public Optional<Course> findByName(String name) throws SQLException {
         return jdbcTemplate.query(FIND_BY_NAME, mapper, name).stream().findFirst();
+    }
+
+    @Override
+    public Optional<Course> findByDescription(String description) throws SQLException {
+        return jdbcTemplate.query(FIND_BY_DESCRIPTION, mapper, description).stream().findFirst();
     }
 
     @Override
