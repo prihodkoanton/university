@@ -22,7 +22,7 @@ public class Lesson extends LongEntity {
 
     public Lesson(Long id, DayOfWeek dayOfWeek, int timeSpan, Long roomId, Long groupId, Long courseId,
             Long teacherId) {
-        super(id);
+        this.id = id;
         this.dayOfWeek = dayOfWeek;
         this.timeSpan = timeSpan;
         this.roomId = roomId;
@@ -33,13 +33,16 @@ public class Lesson extends LongEntity {
     }
 
     public Lesson(DayOfWeek dayOfWeek, int timeSpan, Long roomId, Long groupId, Long courseId, Long teacherId) {
-        super(null);
+        this.id = null;
         this.dayOfWeek = dayOfWeek;
         this.timeSpan = timeSpan;
         this.roomId = roomId;
         this.groupId = groupId;
         this.courseId = courseId;
         this.teacherId = teacherId;
+    }
+
+    public Lesson() {
 
     }
 

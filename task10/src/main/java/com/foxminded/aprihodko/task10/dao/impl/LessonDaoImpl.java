@@ -35,7 +35,7 @@ public class LessonDaoImpl extends AbstractCrudDao<Lesson, Long> implements Less
     public static final String FIND_BY_COURSE_ID = "SELECT * FROM university.lessons WHERE course_ref = ?";
     public static final String FIND_BY_TEACH_ID = "SELECT * FROM university.lessons WHERE teacher_ref = ?";
     public static final String FIND_BY_TIME_SPAN = "SELECT * FROM university.lessons WHERE lesson_time_span = ?";
-    public static final String CREATE = "INSERT INTO university.lessons (lesson_id, lesson_day_of_week, lesson_time_span, room_ref, group_ref, course_ref, teacher_ref) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    public static final String CREATE = "INSERT INTO university.lessons (lesson_day_of_week, lesson_time_span, room_ref, group_ref, course_ref, teacher_ref) VALUES (?, ?, ?, ?, ?, ?)";
     public static final String UPDATE = "UPDATE university.lessons SET lesson_day_of_week =?, lesson_time_span =?, room_ref =?, group_ref =?, course_ref =?, teacher_ref =? WHERE lesson_id = ?";
 
     private final LessonMapper mapper;
@@ -120,9 +120,8 @@ public class LessonDaoImpl extends AbstractCrudDao<Lesson, Long> implements Less
 
     @Override
     public Lesson update(Lesson entity) throws SQLException {
-        int updatedRowCount = jdbcTemplate.update(CREATE, entity.getId(), entity.getDayOfWeek().toString(),
-                entity.getTimeSpan(), entity.getRoomId(), entity.getGroupId(), entity.getCourseId(),
-                entity.getTeacherId());
+        int updatedRowCount = jdbcTemplate.update(UPDATE, entity.getDayOfWeek().toString(), entity.getTimeSpan(),
+                entity.getRoomId(), entity.getGroupId(), entity.getCourseId(), entity.getTeacherId(), entity.getId());
         if (updatedRowCount != 1) {
             logger.error("Unable to update Lesson:{}", entity);
             throw new SQLException("Unable to update lesson" + entity.getId());

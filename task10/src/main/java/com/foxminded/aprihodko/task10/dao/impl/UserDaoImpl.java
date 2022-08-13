@@ -37,9 +37,9 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
     public static final String FIND_BY_USER_TYPE = "" + "select *\n" + "from university.users u\n"
             + "         left join university.students s on u.user_id = s.user_ref\n"
             + "         left join university.teachers t on u.user_id = t.user_ref\n" + "where user_type = ?;";
-    public static final String CREATE_USER = "INSERT INTO university.users(user_name, user_type) VALUES (?, ?)";
-    public static final String CREATE_STUDENT = "INSERT INTO university.students(user_ref, group_ref) VALUES (?, ?)";
-    public static final String CREATE_TEACHER = "INSERT INTO university.teachers(user_ref, course_ref) VALUES (?, ?)";
+    public static final String CREATE_USER = "INSERT INTO university.users(user_name, user_type) VALUES  (?, ?)";
+    public static final String CREATE_STUDENT = "INSERT INTO university.students(group_ref) VALUES (?)";
+    public static final String CREATE_TEACHER = "INSERT INTO university.teachers(course_ref) VALUES (?)";
     public static final String UPDATE = "UPDATE university.users SET user_name = ?, user_type = ? WHERE user_id = ?";
     public static final String UPDATE_GROUP_FOR_STUDENT = "UPDATE university.students SET group_ref = ? WHERE user_ref = ?";
     public static final String UPDATE_COURSE_FOR_TEACHER = "UPDATE university.teachers SET course_ref = ? WHERE user_ref = ?";
@@ -98,36 +98,40 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
         }
         if (entity instanceof Student) {
             Student student = (Student) entity;
-            int createdStudentRowCount = jdbcTemplate.update(CREATE_STUDENT, id.longValue(), student.getGroupdId());
-            if (createdStudentRowCount != 1) {
+            Map<String, Object> studentParameters = new HashMap<String, Object>();
+            usersParameters.put("group_ref", student.getGroupdId());
+            Number idStudent = simpleJdbcInsert.executeAndReturnKey(studentParameters);
+            if (idStudent == null) {
                 logger.error("Unable to create Student:{}", student);
                 throw new SQLException("Unable to create Teacher", student.toString());
             }
-            return new Student(id.longValue(), student.getName(), student.getGroupdId());
+            return new Student(idStudent.longValue(), student.getName(), student.getGroupdId());
         } else if (entity instanceof Teacher) {
             Teacher teacher = (Teacher) entity;
-            int createdTeacherRowCount = jdbcTemplate.update(CREATE_TEACHER, id.longValue(), teacher.getCourseId());
-            if (createdTeacherRowCount != 1) {
+            Map<String, Object> teacherParameters = new HashMap<String, Object>();
+            usersParameters.put("course_ref", teacher.getCourseId());
+            Number idTeacher = simpleJdbcInsert.executeAndReturnKey(teacherParameters);
+            if (idTeacher == null) {
                 logger.error("Unable to create Teacher:{}", teacher);
                 throw new SQLException("Unable to create Teacher", teacher.toString());
             }
-            return new Teacher(id.longValue(), teacher.getName(), teacher.getCourseId());
+            return new Teacher(idTeacher.longValue(), teacher.getName(), teacher.getCourseId());
         }
         return new User(id.longValue(), entity.getName(), entity.getType());
     }
 
     @Override
     public User update(User entity) throws SQLException {
-        int updatedUserRowCount = jdbcTemplate.update(CREATE_USER, entity.getId(), entity.getName(),
-                entity.getType().toString());
+        int updatedUserRowCount = jdbcTemplate.update(UPDATE, entity.getName(), entity.getType().toString(),
+                entity.getId());
         if (updatedUserRowCount != 1) {
             logger.error("Unable to update User:{}", entity);
             throw new SQLException("Unable to update user" + entity.getId());
         }
         if (entity instanceof Student) {
             Student student = (Student) entity;
-            int updatedStudentRowCount = jdbcTemplate.update(UPDATE_GROUP_FOR_STUDENT, student.getId(),
-                    student.getGroupdId());
+            int updatedStudentRowCount = jdbcTemplate.update(UPDATE_GROUP_FOR_STUDENT, student.getGroupdId(),
+                    student.getId());
             if (updatedStudentRowCount != 1) {
                 logger.error("Unable to update Student:{}", student);
                 throw new SQLException("Unable to update Student", student.toString());
@@ -135,15 +139,15 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
             return new Student(student.getId(), student.getName());
         } else if (entity instanceof Teacher) {
             Teacher teacher = (Teacher) entity;
-            int updatedTeacherRowCount = jdbcTemplate.update(UPDATE_COURSE_FOR_TEACHER, teacher.getId(),
-                    teacher.getCourseId());
+            int updatedTeacherRowCount = jdbcTemplate.update(UPDATE_COURSE_FOR_TEACHER, teacher.getCourseId(),
+                    teacher.getId());
             if (updatedTeacherRowCount != 1) {
                 logger.error("Unable to update Teacher:{}", teacher);
                 throw new SQLException("Unable to update Teacher", teacher.toString());
             }
             return new Teacher(entity.getId(), entity.getName());
         }
-        return new User(entity.getName(), entity.getType());
+        return new User(entity.getId(), entity.getName(), entity.getType());
     }
 
     @Override

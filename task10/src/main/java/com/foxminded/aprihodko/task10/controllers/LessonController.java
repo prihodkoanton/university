@@ -19,13 +19,13 @@ import com.foxminded.aprihodko.task10.models.Lesson;
 public class LessonController {
 
     @Autowired
-    private final LessonDao lessonDao;
+    private LessonDao lessonDao;
 
-    public LessonController(LessonDao lessonDao) {
-        this.lessonDao = lessonDao;
-    }
+//    public LessonController(LessonDao lessonDao) {
+//        this.lessonDao = lessonDao;
+//    }
 
-    @GetMapping("showFrom")
+    @GetMapping("showForm")
     public String showLessonForm(Lesson lesson) {
         return "add-lesson";
     }
@@ -33,7 +33,7 @@ public class LessonController {
     @GetMapping("list")
     public String lessons(Model model) throws SQLException {
         model.addAttribute("lessons", this.lessonDao.findAll());
-        return "index";
+        return "index-lesson";
     }
 
     @PostMapping("add")
@@ -63,7 +63,7 @@ public class LessonController {
         }
         lessonDao.save(lesson);
         model.addAttribute("users", this.lessonDao.findAll());
-        return "index";
+        return "index-lesson";
     }
 
     @GetMapping("delete/{id}")
@@ -72,6 +72,6 @@ public class LessonController {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid lesson id: " + id));
         this.lessonDao.deleteById(id);
         model.addAttribute("lesson", this.lessonDao.findAll());
-        return "index";
+        return "index-lesson";
     }
 }

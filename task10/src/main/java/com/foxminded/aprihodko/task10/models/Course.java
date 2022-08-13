@@ -12,13 +12,17 @@ public class Course extends LongEntity {
     private String description;
 
     public Course(Long id, String name, String description) {
-        super(id);
+        this.id = id;
         this.name = name;
         this.description = description;
     }
 
-    public Course(String name, String discription) {
-        this(null, name, discription);
+    public Course(String name, String description) {
+        this(null, name, description);
+    }
+
+    public Course() {
+
     }
 
     public String getName() {
@@ -29,12 +33,12 @@ public class Course extends LongEntity {
         this.name = name;
     }
 
-    public String getDiscription() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDiscription(String discription) {
-        this.description = discription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
@@ -64,5 +68,4 @@ public class Course extends LongEntity {
     public String toString() {
         return "Course [name=" + name + ", discription=" + description + ", id=" + id + "]";
     }
-
 }

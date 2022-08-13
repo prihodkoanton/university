@@ -41,6 +41,11 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Transactional
+    public Optional<Course> findByDescription(String descripteon) throws SQLException {
+        return courseDao.findByDescription(descripteon);
+    }
+
+    @Transactional
     public Course update(Course entity) throws SQLException {
         return courseDao.save(entity);
     }

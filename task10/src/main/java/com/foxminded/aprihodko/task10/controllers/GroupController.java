@@ -19,13 +19,13 @@ import com.foxminded.aprihodko.task10.models.Group;
 public class GroupController {
 
     @Autowired
-    private final GroupDao groupDao;
+    private GroupDao groupDao;
 
-    public GroupController(GroupDao groupDao) {
-        this.groupDao = groupDao;
-    }
+//    public GroupController(GroupDao groupDao) {
+//        this.groupDao = groupDao;
+//    }
 
-    @GetMapping("showFrom")
+    @GetMapping("showForm")
     public String showGroupForm(Group group) {
         return "add-group";
     }
@@ -33,7 +33,7 @@ public class GroupController {
     @GetMapping("list")
     public String groups(Model model) throws SQLException {
         model.addAttribute("groups", this.groupDao.findAll());
-        return "index";
+        return "index-group";
     }
 
     @PostMapping("add")
@@ -63,15 +63,15 @@ public class GroupController {
         }
         groupDao.save(group);
         model.addAttribute("groups", this.groupDao.findAll());
-        return "index";
+        return "index-group";
     }
 
     @GetMapping("delete/{id}")
     public String deleteGroup(@PathVariable("id") long id, Model model) throws SQLException {
         Group group = this.groupDao.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid group id: " + id));
-        this.groupDao.deleteById(id);
-        model.addAttribute("user", this.groupDao.findAll());
-        return "index";
+        groupDao.deleteById(id);
+        model.addAttribute("groups", this.groupDao.findAll());
+        return "index-group";
     }
 }

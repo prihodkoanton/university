@@ -22,6 +22,10 @@ public class Teacher extends User {
         this.courseId = courseId;
     }
 
+    public Teacher() {
+
+    }
+
     public static String getCourseRef() {
         return COURSE_REF;
     }

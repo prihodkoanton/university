@@ -19,13 +19,13 @@ import com.foxminded.aprihodko.task10.models.Room;
 public class RoomController {
 
     @Autowired
-    private final RoomDao roomDao;
+    private RoomDao roomDao;
 
-    public RoomController(RoomDao roomDao) {
-        this.roomDao = roomDao;
-    }
+//    public RoomController(RoomDao roomDao) {
+//        this.roomDao = roomDao;
+//    }
 
-    @GetMapping("showFrom")
+    @GetMapping("showForm")
     public String showRoomForm(Room room) {
         return "add-room";
     }
@@ -36,7 +36,7 @@ public class RoomController {
         return "index-room";
     }
 
-    @PostMapping
+    @PostMapping("add")
     public String addRoom(Room room, BindingResult result, Model model) throws SQLException {
         if (result.hasErrors()) {
             return "add-room";
@@ -68,8 +68,8 @@ public class RoomController {
     @GetMapping("delete/{id}")
     public String deleteRoom(@PathVariable("id") long id, Model model) throws IllegalArgumentException, SQLException {
         Room room = this.roomDao.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid room id" + id));
-        this.roomDao.deleteById(id);
-        model.addAttribute("room", this.roomDao.findAll());
+        this.roomDao.deleteById(room.getId());
+        model.addAttribute("rooms", this.roomDao.findAll());
         return "index-room";
     }
 }

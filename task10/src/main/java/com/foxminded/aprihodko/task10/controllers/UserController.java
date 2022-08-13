@@ -19,14 +19,14 @@ import com.foxminded.aprihodko.task10.models.User;
 public class UserController {
 
     @Autowired
-    private final UserDao userDao;
+    private UserDao userDao;
 
-    public UserController(UserDao userDao) {
-        this.userDao = userDao;
-    }
+//    public UserController(UserDao userDao) {
+//        this.userDao = userDao;
+//    }
 
-    @GetMapping("showFrom")
-    public String showUserForm(User user) {
+    @GetMapping("showForm")
+    public String showForm(User user) {
         return "add-user";
     }
 
@@ -70,7 +70,7 @@ public class UserController {
     public String deleteUser(@PathVariable("id") long id, Model model) throws SQLException {
         User user = this.userDao.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user id: " + id));
         this.userDao.deleteById(id);
-        model.addAttribute("user", this.userDao.findAll());
+        model.addAttribute("users", this.userDao.findAll());
         return "index-user";
     }
 }

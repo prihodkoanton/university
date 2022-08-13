@@ -21,6 +21,10 @@ public class Student extends User {
         this.groupdId = groupdId;
     }
 
+    public Student() {
+
+    }
+
     public Long getGroupdId() {
         return groupdId;
     }

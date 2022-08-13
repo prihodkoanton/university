@@ -26,7 +26,7 @@ public class RoomDaoImpl extends AbstractCrudDao<Room, Long> implements RoomDao 
     public static final String FIND_ALL = "SELECT * FROM university.rooms";
     public static final String DELETE_BY_ID = "DELETE FROM university.rooms WHERE room_id = ?";
     public static final String FIND_BY_TITLE = "SELECT * FROM university.rooms WHERE room_title = ?";
-    public static final String CREATE = "INSERT INTO university.rooms (room_id, room_title) VALUES (?, ?)";
+    public static final String CREATE = "INSERT INTO university.rooms (room_title) VALUES (?)";
     public static final String UPDATE = "UPDATE university.rooms SET room_title = ? WHERE room_id = ?";
 
     private final JdbcTemplate jdbcTemplate;
@@ -73,12 +73,12 @@ public class RoomDaoImpl extends AbstractCrudDao<Room, Long> implements RoomDao 
             logger.error("Unable to create Room:{}", entity);
             throw new SQLException("Unable to retrieve id" + entity.getId());
         }
-        return new Room(id.longValue(), entity.getTitle());
+        return new Room(entity.getTitle());
     }
 
     @Override
     public Room update(Room entity) throws SQLException {
-        int updatedRowCount = jdbcTemplate.update(CREATE, entity.getId(), entity.getTitle());
+        int updatedRowCount = jdbcTemplate.update(UPDATE, entity.getTitle(), entity.getId());
         if (updatedRowCount != 1) {
             logger.error("Unable to update Room:{}", entity);
             throw new SQLException("Unable to update room" + entity.getId());
