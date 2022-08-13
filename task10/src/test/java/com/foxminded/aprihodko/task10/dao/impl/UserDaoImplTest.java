@@ -115,7 +115,7 @@ class UserDaoImplTest extends BaseDaoTest {
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
     void shouldCreateTeacher() throws SQLException {
-        User expected = new Teacher("john", 104L);
+        User expected = new User("john", UserType.TEACHER);
         User actual = userDao.save(expected);
         assertNotNull(actual.getId());
         expected.setId(actual.getId());
@@ -125,7 +125,7 @@ class UserDaoImplTest extends BaseDaoTest {
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
     void shouldCreateStudent() throws SQLException {
-        User expected = new Student("john_new", 102L);
+        User expected = new User("john_new", UserType.STUDENT);
         User actual = userDao.save(expected);
         assertNotNull(actual.getId());
         expected.setId(actual.getId());
@@ -135,7 +135,7 @@ class UserDaoImplTest extends BaseDaoTest {
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
     void shouldCreateUserNone() throws SQLException {
-        User expected = new User("john", UserType.TEACHER);
+        User expected = new User("john", UserType.NONE);
         User actual = userDao.save(expected);
         assertNotNull(actual.getId());
         expected.setId(actual.getId());

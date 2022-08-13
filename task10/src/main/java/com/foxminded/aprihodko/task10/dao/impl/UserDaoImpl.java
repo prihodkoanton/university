@@ -103,7 +103,7 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
             Number idStudent = simpleJdbcInsert.executeAndReturnKey(studentParameters);
             if (idStudent == null) {
                 logger.error("Unable to create Student:{}", student);
-                throw new SQLException("Unable to create Teacher", student.toString());
+                throw new SQLException("Unable to create Student", student.toString());
             }
             return new Student(idStudent.longValue(), student.getName(), student.getGroupdId());
         } else if (entity instanceof Teacher) {

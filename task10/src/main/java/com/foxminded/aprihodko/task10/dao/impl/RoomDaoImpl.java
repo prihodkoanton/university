@@ -73,7 +73,7 @@ public class RoomDaoImpl extends AbstractCrudDao<Room, Long> implements RoomDao 
             logger.error("Unable to create Room:{}", entity);
             throw new SQLException("Unable to retrieve id" + entity.getId());
         }
-        return new Room(entity.getTitle());
+        return new Room(id.longValue(), entity.getTitle());
     }
 
     @Override

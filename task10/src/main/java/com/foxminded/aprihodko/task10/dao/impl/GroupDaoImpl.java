@@ -73,7 +73,7 @@ public class GroupDaoImpl extends AbstractCrudDao<Group, Long> implements GroupD
             logger.error("Unable to create Group:{}", entity);
             throw new SQLException("Unable to retrieve id" + entity.getId());
         }
-        return new Group(entity.getName());
+        return new Group(id.longValue(), entity.getName());
     }
 
     @Override

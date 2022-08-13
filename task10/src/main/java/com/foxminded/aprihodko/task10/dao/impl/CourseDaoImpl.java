@@ -79,7 +79,7 @@ public class CourseDaoImpl extends AbstractCrudDao<Course, Long> implements Cour
             logger.error("Unable to create Course: {}", entity);
             throw new SQLException("Unable to retrieve id" + entity.getId());
         }
-        return new Course(entity.getName(), entity.getDescription());
+        return new Course(id.longValue(), entity.getName(), entity.getDescription());
     }
 
     @Override
