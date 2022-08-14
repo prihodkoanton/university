@@ -61,9 +61,8 @@ public class CourseController {
             course.setId(id);
             return "update-course";
         }
-        course.setId(id);
         courseDao.save(course);
-        model.addAttribute("course", this.courseDao.findAll());
+        model.addAttribute("courses", this.courseDao.findAll());
         return "index-course";
     }
 
@@ -72,7 +71,7 @@ public class CourseController {
         Course course = this.courseDao.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid course id: " + id));
         this.courseDao.deleteById(course.getId());
-        model.addAttribute("course", this.courseDao.findAll());
-        return "redirect:list";
+        model.addAttribute("courses", this.courseDao.findAll());
+        return "index-course";
     }
 }
