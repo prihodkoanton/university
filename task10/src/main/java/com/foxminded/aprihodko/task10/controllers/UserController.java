@@ -2,7 +2,6 @@ package com.foxminded.aprihodko.task10.controllers;
 
 import java.sql.SQLException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,12 +17,11 @@ import com.foxminded.aprihodko.task10.models.User;
 @RequestMapping("/users/")
 public class UserController {
 
-    @Autowired
     private UserDao userDao;
 
-//    public UserController(UserDao userDao) {
-//        this.userDao = userDao;
-//    }
+    public UserController(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     @GetMapping("showForm")
     public String showForm(User user) {

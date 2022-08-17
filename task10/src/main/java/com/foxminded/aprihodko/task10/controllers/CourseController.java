@@ -2,7 +2,6 @@ package com.foxminded.aprihodko.task10.controllers;
 
 import java.sql.SQLException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,12 +17,11 @@ import com.foxminded.aprihodko.task10.models.Course;
 @RequestMapping("/courses/")
 public class CourseController {
 
-    @Autowired
     private CourseDaoImpl courseDao;
 
-//    public CourseController(CourseDaoImpl courseDao) {
-//        this.courseDao = courseDao;
-//    }
+    public CourseController(CourseDaoImpl courseDao) {
+        this.courseDao = courseDao;
+    }
 
     @GetMapping("showForm")
     public String showCourseForm(Course course) {

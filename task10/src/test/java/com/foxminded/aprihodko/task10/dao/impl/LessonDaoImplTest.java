@@ -116,7 +116,7 @@ class LessonDaoImplTest extends BaseDaoTest {
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/lesson_test_data.sql" })
     void shoudlCreateLesson() throws SQLException {
-        Lesson lesson = new Lesson(DayOfWeek.MONDAY, 1, 103L, 103L, 103L, 103L);
+        Lesson lesson = new Lesson(DayOfWeek.FRIDAY, 1, 103L, 103L, 103L, 103L);
         Lesson actual = lessonDao.save(lesson);
         assertNotNull(actual.getId());
         lesson.setId(actual.getId());

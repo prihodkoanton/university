@@ -24,8 +24,8 @@
 				<div class="container my-5" th:switch="${lessons}">
 					<p class="my-5">
 						<a class="btn btn-primary" href="/lessons/showForm"><i
-							class="fas fa-user-plus ml-2"> Add Lesson</i></a>
-							<a class="btn btn-primary" href="/" role="button">Main page</a>
+							class="fas fa-user-plus ml-2"> Add Lesson</i></a> <a
+							class="btn btn-primary" href="/" role="button">Main page</a>
 					</p>
 					<div class="col-md-10">
 						<h2 th:case="null">No Lessons yet!</h2>
@@ -47,6 +47,7 @@
 									<tr th:each="lesson : ${lessons}">
 										<td th:text="${lesson.dayOfWeek}"></td>
 										<td th:text="${lesson.timeSpan}"></td>
+										<td th:text="${lesson.roomId}"></td>
 										<td th:text="${lesson.groupId}"></td>
 										<td th:text="${lesson.courseId}"></td>
 										<td th:text="${lesson.teacherId}"></td>
@@ -60,7 +61,6 @@
 								</tbody>
 							</table>
 						</div>
-
 					</div>
 				</div>
 			</div>

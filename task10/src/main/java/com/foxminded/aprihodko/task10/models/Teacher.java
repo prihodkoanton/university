@@ -26,6 +26,11 @@ public class Teacher extends User {
 
     }
 
+    @Override
+    public Long getId() {
+        return id;
+    }
+
     public static String getCourseRef() {
         return COURSE_REF;
     }
