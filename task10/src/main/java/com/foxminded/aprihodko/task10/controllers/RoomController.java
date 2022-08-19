@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.foxminded.aprihodko.task10.dao.RoomDao;
 import com.foxminded.aprihodko.task10.models.Room;
+import com.foxminded.aprihodko.task10.services.RoomService;
 
 @Controller
 @RequestMapping("/rooms")
 public class RoomController {
 
-    private RoomDao roomDao;
+    private RoomService roomService;
 
-    public RoomController(RoomDao roomDao) {
-        this.roomDao = roomDao;
+    public RoomController(RoomService roomService) {
+        this.roomService = roomService;
     }
 
     @GetMapping("showForm")
@@ -30,7 +30,7 @@ public class RoomController {
 
     @GetMapping("list")
     public String rooms(Model model) throws SQLException {
-        model.addAttribute("rooms", this.roomDao.findAll());
+        model.addAttribute("rooms", this.roomService.findAll());
         return "index-room";
     }
 
@@ -39,14 +39,15 @@ public class RoomController {
         if (result.hasErrors()) {
             return "add-room";
         }
-        this.roomDao.save(room);
+        this.roomService.save(room);
         return "redirect:list";
     }
 
     @GetMapping("edit/{id}")
     public String showUpdateForm(@PathVariable("id") long id, Model model)
             throws IllegalArgumentException, SQLException {
-        Room room = this.roomDao.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid room id :" + id));
+        Room room = this.roomService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid room id :" + id));
         model.addAttribute("room", room);
         return "update-room";
     }
@@ -58,16 +59,17 @@ public class RoomController {
             room.setId(id);
             return "update-room";
         }
-        roomDao.save(room);
-        model.addAttribute("rooms", this.roomDao.findAll());
+        roomService.save(room);
+        model.addAttribute("rooms", this.roomService.findAll());
         return "index-room";
     }
 
     @GetMapping("delete/{id}")
     public String deleteRoom(@PathVariable("id") long id, Model model) throws IllegalArgumentException, SQLException {
-        Room room = this.roomDao.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid room id" + id));
-        this.roomDao.deleteById(room.getId());
-        model.addAttribute("rooms", this.roomDao.findAll());
+        Room room = this.roomService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid room id" + id));
+        this.roomService.deleteById(room.getId());
+        model.addAttribute("rooms", this.roomService.findAll());
         return "index-room";
     }
 }

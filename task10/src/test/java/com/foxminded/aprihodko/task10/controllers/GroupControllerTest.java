@@ -14,30 +14,25 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.foxminded.aprihodko.task10.dao.impl.GroupDaoImpl;
 import com.foxminded.aprihodko.task10.models.Group;
+import com.foxminded.aprihodko.task10.services.GroupService;
 
 @WebMvcTest(controllers = { GroupController.class })
 class GroupControllerTest {
 
     @MockBean
-    GroupDaoImpl groupDaoImpl;
+    GroupService groupServiceImpl;
 
     @Autowired
     MockMvc mvc;
 
     @Test
     void shouldGetListOfGroups() throws Exception {
-        when(groupDaoImpl.findAll()).thenReturn(Arrays.asList(new Group("group for Java"),
+        when(groupServiceImpl.findAll()).thenReturn(Arrays.asList(new Group("group for Java"),
                 new Group("group for Java Spring"), new Group("group for C# .Net")));
         mvc.perform(get("/groups/list")).andExpect(status().isOk())
                 .andExpect(content().string(containsString("group for Java")))
                 .andExpect(content().string(containsString("group for Java Spring")))
                 .andExpect(content().string(containsString("group for C# .Net")));
     }
-
-//    @Test
-//    void shouldAddNewGroups() throws Exception {
-//        when(groupDaoImpl.create(new Group("test Group")))
-//    }
 }

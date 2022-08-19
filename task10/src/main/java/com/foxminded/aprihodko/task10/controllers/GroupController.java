@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.foxminded.aprihodko.task10.dao.GroupDao;
 import com.foxminded.aprihodko.task10.models.Group;
+import com.foxminded.aprihodko.task10.services.GroupService;
 
 @Controller
 @RequestMapping("/groups/")
 public class GroupController {
 
-    private GroupDao groupDao;
+    private GroupService groupService;
 
-    public GroupController(GroupDao groupDao) {
-        this.groupDao = groupDao;
+    public GroupController(GroupService groupService) {
+        this.groupService = groupService;
     }
 
     @GetMapping("showForm")
@@ -30,7 +30,7 @@ public class GroupController {
 
     @GetMapping("list")
     public String groups(Model model) throws SQLException {
-        model.addAttribute("groups", this.groupDao.findAll());
+        model.addAttribute("groups", this.groupService.findAll());
         return "index-group";
     }
 
@@ -39,14 +39,14 @@ public class GroupController {
         if (result.hasErrors()) {
             return "add-group";
         }
-        this.groupDao.save(group);
+        this.groupService.save(group);
         return "redirect:list";
     }
 
     @GetMapping("edit/{id}")
     public String showUpdateForm(@PathVariable("id") long id, Model model)
             throws IllegalArgumentException, SQLException {
-        Group group = this.groupDao.findById(id)
+        Group group = this.groupService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid group id : " + id));
         model.addAttribute("group", group);
         return "update-group";
@@ -59,17 +59,17 @@ public class GroupController {
             group.setId(id);
             return "update-group";
         }
-        groupDao.save(group);
-        model.addAttribute("groups", this.groupDao.findAll());
+        groupService.save(group);
+        model.addAttribute("groups", this.groupService.findAll());
         return "index-group";
     }
 
     @GetMapping("delete/{id}")
     public String deleteGroup(@PathVariable("id") long id, Model model) throws SQLException {
-        Group group = this.groupDao.findById(id)
+        Group group = this.groupService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid group id: " + id));
-        groupDao.deleteById(id);
-        model.addAttribute("groups", this.groupDao.findAll());
+        groupService.deleteById(id);
+        model.addAttribute("groups", this.groupService.findAll());
         return "index-group";
     }
 }

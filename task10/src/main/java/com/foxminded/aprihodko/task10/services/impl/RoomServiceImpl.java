@@ -20,28 +20,33 @@ public class RoomServiceImpl implements RoomService {
         this.roomDao = roomDao;
     }
 
+    @Override
     @Transactional
     public Optional<Room> findById(Long id) throws SQLException {
         return roomDao.findById(id);
     }
 
+    @Override
     @Transactional
     public List<Room> findAll() throws SQLException {
         return roomDao.findAll();
     }
 
+    @Override
     @Transactional
     public void deleteById(Long id) throws SQLException {
         roomDao.deleteById(id);
     }
 
+    @Override
     @Transactional
     public Optional<Room> findByTitle(String name) {
         return roomDao.findByTitle(name);
     }
 
+    @Override
     @Transactional
-    public Room update(Room entity) throws SQLException {
+    public Room save(Room entity) throws SQLException {
         return roomDao.save(entity);
     }
 }

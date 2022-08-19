@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.foxminded.aprihodko.task10.dao.UserDao;
 import com.foxminded.aprihodko.task10.models.User;
+import com.foxminded.aprihodko.task10.services.UserService;
 
 @Controller
 @RequestMapping("/users/")
 public class UserController {
 
-    private UserDao userDao;
+    private UserService userService;
 
-    public UserController(UserDao userDao) {
-        this.userDao = userDao;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("showForm")
@@ -30,7 +30,7 @@ public class UserController {
 
     @GetMapping("list")
     public String users(Model model) throws SQLException {
-        model.addAttribute("users", this.userDao.findAll());
+        model.addAttribute("users", this.userService.findAll());
         return "index-user";
     }
 
@@ -39,14 +39,14 @@ public class UserController {
         if (result.hasErrors()) {
             return "add-user";
         }
-        this.userDao.save(user);
+        this.userService.save(user);
         return "redirect:list";
     }
 
     @GetMapping("edit/{id}")
     public String showUpdateForm(@PathVariable("id") long id, Model model)
             throws IllegalArgumentException, SQLException {
-        User user = this.userDao.findById(id)
+        User user = this.userService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user id : " + id));
         model.addAttribute("user", user);
         return "update-user";
@@ -59,16 +59,17 @@ public class UserController {
             user.setId(id);
             return "update-user";
         }
-        userDao.save(user);
-        model.addAttribute("users", this.userDao.findAll());
+        userService.save(user);
+        model.addAttribute("users", this.userService.findAll());
         return "index-user";
     }
 
     @GetMapping("delete/{id}")
     public String deleteUser(@PathVariable("id") long id, Model model) throws SQLException {
-        User user = this.userDao.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user id: " + id));
-        this.userDao.deleteById(id);
-        model.addAttribute("users", this.userDao.findAll());
+        User user = this.userService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user id: " + id));
+        this.userService.deleteById(id);
+        model.addAttribute("users", this.userService.findAll());
         return "index-user";
     }
 }

@@ -82,7 +82,7 @@ class UserServiceImplTest extends BaseDaoTest {
         User user = new User(100L, "john", UserType.NONE);
         when(userDao.save(user)).thenReturn(user);
         User expected = userDao.save(user);
-        User actual = userServiceImpl.update(user);
+        User actual = userServiceImpl.save(user);
         assertNotNull(actual.getId());
         user.setId(actual.getId());
         assertEquals(expected, actual);

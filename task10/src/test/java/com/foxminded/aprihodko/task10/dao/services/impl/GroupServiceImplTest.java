@@ -77,7 +77,7 @@ class GroupServiceImplTest extends BaseDaoTest {
         Group group = new Group(100L, "test");
         when(groupDao.save(group)).thenReturn(group);
         Group expected = groupDao.save(group);
-        Group actual = groupServiceImpl.update(group);
+        Group actual = groupServiceImpl.save(group);
         assertEquals(expected, actual);
     }
 }

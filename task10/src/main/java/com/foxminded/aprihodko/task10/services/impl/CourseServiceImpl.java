@@ -20,33 +20,39 @@ public class CourseServiceImpl implements CourseService {
         this.courseDao = courseDao;
     }
 
+    @Override
     @Transactional
     public Optional<Course> findById(Long id) throws SQLException {
         return courseDao.findById(id);
     }
 
+    @Override
     @Transactional
     public List<Course> findAll() throws SQLException {
         return courseDao.findAll();
     }
 
+    @Override
     @Transactional
     public void deleteById(Long id) throws SQLException {
         courseDao.deleteById(id);
     }
 
+    @Override
     @Transactional
     public Optional<Course> findByName(String name) throws SQLException {
         return courseDao.findByName(name);
     }
 
+    @Override
     @Transactional
     public Optional<Course> findByDescription(String descripteon) throws SQLException {
         return courseDao.findByDescription(descripteon);
     }
 
+    @Override
     @Transactional
-    public Course update(Course entity) throws SQLException {
+    public Course save(Course entity) throws SQLException {
         return courseDao.save(entity);
     }
 }

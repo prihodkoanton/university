@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.foxminded.aprihodko.task10.dao.impl.CourseDaoImpl;
 import com.foxminded.aprihodko.task10.models.Course;
+import com.foxminded.aprihodko.task10.services.CourseService;
 
 @Controller
 @RequestMapping("/courses/")
 public class CourseController {
 
-    private CourseDaoImpl courseDao;
+    private CourseService courseService;
 
-    public CourseController(CourseDaoImpl courseDao) {
-        this.courseDao = courseDao;
+    public CourseController(CourseService courseService) {
+        this.courseService = courseService;
     }
 
     @GetMapping("showForm")
@@ -30,7 +30,7 @@ public class CourseController {
 
     @GetMapping("list")
     public String courses(Model model) throws SQLException {
-        model.addAttribute("courses", this.courseDao.findAll());
+        model.addAttribute("courses", this.courseService.findAll());
         return "index-course";
     }
 
@@ -39,14 +39,14 @@ public class CourseController {
         if (result.hasErrors()) {
             return "add-course";
         }
-        this.courseDao.save(course);
+        this.courseService.save(course);
         return "redirect:list";
     }
 
     @GetMapping("edit/{id}")
     public String showUpdateForm(@PathVariable("id") long id, Model model)
             throws IllegalArgumentException, SQLException {
-        Course course = this.courseDao.findById(id)
+        Course course = this.courseService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid course id : " + id));
         model.addAttribute("course", course);
         return "update-course";
@@ -59,17 +59,17 @@ public class CourseController {
             course.setId(id);
             return "update-course";
         }
-        courseDao.save(course);
-        model.addAttribute("courses", this.courseDao.findAll());
+        courseService.save(course);
+        model.addAttribute("courses", this.courseService.findAll());
         return "index-course";
     }
 
     @GetMapping("delete/{id}")
     public String deleteCourse(@PathVariable("id") long id, Model model) throws SQLException {
-        Course course = this.courseDao.findById(id)
+        Course course = this.courseService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid course id: " + id));
-        this.courseDao.deleteById(course.getId());
-        model.addAttribute("courses", this.courseDao.findAll());
+        this.courseService.deleteById(course.getId());
+        model.addAttribute("courses", this.courseService.findAll());
         return "index-course";
     }
 }

@@ -14,21 +14,21 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.foxminded.aprihodko.task10.dao.impl.CourseDaoImpl;
 import com.foxminded.aprihodko.task10.models.Course;
+import com.foxminded.aprihodko.task10.services.CourseService;
 
 @WebMvcTest(controllers = { CourseController.class })
 class CourseControllerTest {
 
     @MockBean
-    CourseDaoImpl courseDaoImpl;
+    CourseService courseServiceImpl;
 
     @Autowired
     MockMvc mvc;
 
     @Test
     void shouldGetListOfCourses() throws Exception {
-        when(courseDaoImpl.findAll()).thenReturn(Arrays.asList(new Course("one", "course one"),
+        when(courseServiceImpl.findAll()).thenReturn(Arrays.asList(new Course("one", "course one"),
                 new Course("two", "course two"), new Course("three", "course three")));
         mvc.perform(get("/courses/list")).andExpect(status().isOk())
                 .andExpect(content().string(containsString("course one")))

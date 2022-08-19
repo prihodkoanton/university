@@ -11,47 +11,47 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.foxminded.aprihodko.task10.dao.CourseDao;
-import com.foxminded.aprihodko.task10.dao.GroupDao;
-import com.foxminded.aprihodko.task10.dao.LessonDao;
-import com.foxminded.aprihodko.task10.dao.RoomDao;
-import com.foxminded.aprihodko.task10.dao.UserDao;
 import com.foxminded.aprihodko.task10.models.Lesson;
 import com.foxminded.aprihodko.task10.models.UserType;
+import com.foxminded.aprihodko.task10.services.CourseService;
+import com.foxminded.aprihodko.task10.services.GroupService;
+import com.foxminded.aprihodko.task10.services.LessonService;
+import com.foxminded.aprihodko.task10.services.RoomService;
+import com.foxminded.aprihodko.task10.services.UserService;
 
 @Controller
 @RequestMapping("/lessons/")
 public class LessonController {
 
-    private LessonDao lessonDao;
-    private RoomDao roomDao;
-    private GroupDao groupDao;
-    private CourseDao courseDao;
-    private UserDao userDao;
+    private LessonService lessonService;
+    private RoomService roomService;
+    private GroupService groupService;
+    private CourseService courseService;
+    private UserService userService;
 
-    public LessonController(LessonDao lessonDao, RoomDao roomDao, GroupDao groupDao, CourseDao courseDao,
-            UserDao userDao) {
-        this.lessonDao = lessonDao;
-        this.roomDao = roomDao;
-        this.groupDao = groupDao;
-        this.courseDao = courseDao;
-        this.userDao = userDao;
+    public LessonController(LessonService lessonService, RoomService roomService, GroupService groupService,
+            CourseService courseService, UserService userService) {
+        this.lessonService = lessonService;
+        this.roomService = roomService;
+        this.groupService = groupService;
+        this.courseService = courseService;
+        this.userService = userService;
     }
 
     @GetMapping("showForm")
     public String showLessonForm(Lesson lesson, Model model) throws SQLException {
-        model.addAttribute("rooms", this.roomDao.findAll());
-        model.addAttribute("groups", this.groupDao.findAll());
-        model.addAttribute("courses", this.courseDao.findAll());
-        model.addAttribute("teachers", this.userDao.findAll().stream().filter(e -> e.getType().equals(UserType.TEACHER))
-                .collect(Collectors.toList()));
-        model.addAttribute("lessons", this.lessonDao.findAll());
+        model.addAttribute("rooms", this.roomService.findAll());
+        model.addAttribute("groups", this.groupService.findAll());
+        model.addAttribute("courses", this.courseService.findAll());
+        model.addAttribute("teachers", this.userService.findAll().stream()
+                .filter(e -> e.getType().equals(UserType.TEACHER)).collect(Collectors.toList()));
+        model.addAttribute("lessons", this.lessonService.findAll());
         return "add-lesson";
     }
 
     @GetMapping("list")
     public String lessons(Model model) throws SQLException {
-        model.addAttribute("lessons", this.lessonDao.findAll());
+        model.addAttribute("lessons", this.lessonService.findAll());
         return "index-lesson";
     }
 
@@ -61,20 +61,20 @@ public class LessonController {
             return "add-lesson";
         }
 
-        this.lessonDao.save(lesson);
+        this.lessonService.save(lesson);
         return "redirect:list";
     }
 
     @GetMapping("edit/{id}")
     public String showUpdateForm(@PathVariable("id") long id, Model model)
             throws IllegalArgumentException, SQLException {
-        Lesson lesson = this.lessonDao.findById(id)
+        Lesson lesson = this.lessonService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid lesson id : " + id));
-        model.addAttribute("rooms", this.roomDao.findAll());
-        model.addAttribute("groups", this.groupDao.findAll());
-        model.addAttribute("courses", this.courseDao.findAll());
-        model.addAttribute("teachers", this.userDao.findAll().stream().filter(e -> e.getType().equals(UserType.TEACHER))
-                .collect(Collectors.toList()));
+        model.addAttribute("rooms", this.roomService.findAll());
+        model.addAttribute("groups", this.groupService.findAll());
+        model.addAttribute("courses", this.courseService.findAll());
+        model.addAttribute("teachers", this.userService.findAll().stream()
+                .filter(e -> e.getType().equals(UserType.TEACHER)).collect(Collectors.toList()));
         model.addAttribute("lesson", lesson);
         return "update-lesson";
     }
@@ -86,17 +86,17 @@ public class LessonController {
             lesson.setId(id);
             return "update-lesson";
         }
-        lessonDao.save(lesson);
-        model.addAttribute("lessons", this.lessonDao.findAll());
+        lessonService.save(lesson);
+        model.addAttribute("lessons", this.lessonService.findAll());
         return "index-lesson";
     }
 
     @GetMapping("delete/{id}")
     public String deleteLesson(@PathVariable("id") long id, Model model) throws SQLException {
-        Lesson lesson = this.lessonDao.findById(id)
+        Lesson lesson = this.lessonService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid lesson id: " + id));
-        this.lessonDao.deleteById(id);
-        model.addAttribute("lessons", this.lessonDao.findAll());
+        this.lessonService.deleteById(id);
+        model.addAttribute("lessons", this.lessonService.findAll());
         return "index-lesson";
     }
 }

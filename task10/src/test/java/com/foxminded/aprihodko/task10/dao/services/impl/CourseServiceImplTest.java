@@ -79,7 +79,7 @@ class CourseServiceImplTest extends BaseDaoTest {
         Course course = new Course(104L, "java", "Java course");
         when(courseDao.save(course)).thenReturn(course);
         Course expected = courseDao.save(course);
-        Course actual = courseServiceImpl.update(course);
+        Course actual = courseServiceImpl.save(course);
         assertNotNull(actual.getId());
         course.setId(actual.getId());
         assertEquals(expected, actual);

@@ -78,7 +78,7 @@ class RoomServiceImplTest extends BaseDaoTest {
         Room room = new Room(1L, "room for java");
         when(roomDao.save(room)).thenReturn(room);
         Room expected = roomDao.save(room);
-        Room actual = roomServiceImpl.update(room);
+        Room actual = roomServiceImpl.save(room);
         assertNotNull(actual.getId());
         room.setId(actual.getId());
         assertEquals(expected, actual);
