@@ -21,13 +21,13 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Optional<Lesson> findById(Long id) throws SQLException {
         return lessonDao.findById(id);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Lesson> findAll() throws SQLException {
         return lessonDao.findAll();
     }
@@ -39,37 +39,37 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Optional<Lesson> findByDayOfWeek(String dayOfWeek) throws SQLException {
         return lessonDao.findByDayOfWeek(dayOfWeek);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Lesson> findByRoomId(Long id) throws SQLException {
         return lessonDao.findByRoomId(id);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Lesson> findByGroupId(Long id) throws SQLException {
         return lessonDao.findByGroupId(id);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Lesson> findByCourseId(Long id) throws SQLException {
         return lessonDao.findByCourseId(id);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Lesson> findByTeacherId(Long id) throws SQLException {
         return lessonDao.findByTeacherId(id);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Lesson> findByTimeSpan(Long timeSpan) throws SQLException {
         return lessonDao.findByTimeSpan(timeSpan);
     }

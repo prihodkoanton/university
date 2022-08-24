@@ -21,13 +21,13 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Optional<Course> findById(Long id) throws SQLException {
         return courseDao.findById(id);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Course> findAll() throws SQLException {
         return courseDao.findAll();
     }
@@ -39,13 +39,13 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Optional<Course> findByName(String name) throws SQLException {
         return courseDao.findByName(name);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Optional<Course> findByDescription(String descripteon) throws SQLException {
         return courseDao.findByDescription(descripteon);
     }

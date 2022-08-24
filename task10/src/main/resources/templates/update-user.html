@@ -18,7 +18,7 @@
 
 <body>
 	<div class="container my-5">
-		<h3>Update Student</h3>
+		<h3>Update User</h3>
 		<div class="card">
 			<div class="card-body">
 				<div class="col-md-8">
@@ -26,8 +26,8 @@
 						th:action="@{/users/update/{id}(id=${user.id})}"
 						th:object="${user}">
 						<div class="row">
-							<div class="form-group col-md-6">
-								<label class="col-form-label" for="name">Name</label> <input
+							<div class="form-group col-md-6" >
+								<label class=" col-form-label" for="name"> Name</label> <input
 									class="form-control" id="name" placeholder="Name"
 									th:field="*{name}" type="text"> <span
 									class="text-danger" th:errors="*{name}"
@@ -35,8 +35,7 @@
 							</div>
 							<div class="form-group col-md-8">
 								<label class="col-form-label" for="type">Type</label> <select
-									class="form-control selectpicker" placeholder="Type"
-									th:field="*{type}" id="type">
+									class="form-control selectpicker" th:field="*{type}" id="type">
 									<option
 										th:each="type : ${T(com.foxminded.aprihodko.task10.models.UserType).values()}"
 										th:value="${type}" th:text="${type}">type</option>

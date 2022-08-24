@@ -21,13 +21,13 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Optional<Group> findById(Long id) throws SQLException {
         return groupDao.findById(id);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Group> findAll() throws SQLException {
         return groupDao.findAll();
     }
@@ -39,7 +39,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Optional<Group> findByName(String name) throws SQLException {
         return groupDao.findByName(name);
     }

@@ -21,13 +21,13 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Optional<Room> findById(Long id) throws SQLException {
         return roomDao.findById(id);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Room> findAll() throws SQLException {
         return roomDao.findAll();
     }
@@ -39,7 +39,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Optional<Room> findByTitle(String name) {
         return roomDao.findByTitle(name);
     }

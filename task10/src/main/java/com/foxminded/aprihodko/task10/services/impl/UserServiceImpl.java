@@ -24,13 +24,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Optional<User> findById(Long id) throws SQLException {
         return userDao.findById(id);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<User> findAll() throws SQLException {
         return userDao.findAll();
     }
@@ -42,13 +42,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Optional<User> findByName(String name) {
         return userDao.findByName(name);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<User> findByType(UserType userType) {
         return userDao.findByType(userType);
     }
@@ -60,13 +60,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Student> findStudentByGroupId(Long id) throws SQLException {
         return userDao.findStudentByGroupId(id);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Teacher> findTeacherByCourseId(Long id) throws SQLException {
         return userDao.findTeacherByCourseId(id);
     }
