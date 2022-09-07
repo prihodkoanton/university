@@ -13,7 +13,8 @@ insert into university.users (user_id, user_name, user_type)
 VALUES (100, 'john', 'TEACHER'),
        (101, 'peter', 'STUDENT'),
        (102, 'alice', 'TEACHER'),
-       (103, 'bob', 'STUDENT');
+       (103, 'bob', 'STUDENT'),
+       (104, 'none', 'NONE');
 
 insert into university.teachers (user_ref, course_ref)
 VALUES (100, 100),

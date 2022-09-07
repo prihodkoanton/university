@@ -32,7 +32,7 @@ create table university.students
 create table university.teachers
 (
     user_ref   bigint primary key references university.users (user_id) ON DELETE CASCADE,
-    course_ref bigint references university.courses (course_id) ON DELETE CASCADE
+    course_ref bigint references university.courses (course_id)ON DELETE CASCADE
 );
 
 

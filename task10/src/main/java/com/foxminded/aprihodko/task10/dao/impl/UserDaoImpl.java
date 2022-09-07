@@ -48,13 +48,19 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
 
     private final JdbcTemplate jdbcTemplate;
     private final UserMapper mapper;
-    private final SimpleJdbcInsert simpleJdbcInsert;
+    private SimpleJdbcInsert simpleJdbcInsert;
+    private SimpleJdbcInsert simpleJdbcInsertStud;
+    private SimpleJdbcInsert simpleJdbcInsertTeach;
 
     public UserDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         mapper = new UserMapper();
         simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate.getDataSource()).withTableName("university.users")
                 .usingColumns("user_name", "user_type").usingGeneratedKeyColumns("user_id");
+        simpleJdbcInsertStud = new SimpleJdbcInsert(jdbcTemplate.getDataSource()).withTableName("university.students")
+                .usingColumns("user_ref", "group_ref");
+        simpleJdbcInsertTeach = new SimpleJdbcInsert(jdbcTemplate.getDataSource()).withTableName("university.teachers")
+                .usingColumns("user_ref", "course_ref");
     }
 
     @Override
@@ -96,26 +102,20 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
             logger.error("Unable to create User:{}", entity);
             throw new SQLException("Unable to retrieve id" + entity.getId());
         }
-        if (entity instanceof Student) {
+        if (entity.getType().equals(UserType.STUDENT)) {
             Student student = (Student) entity;
-            Map<String, Object> studentParameters = new HashMap<String, Object>();
-            usersParameters.put("group_ref", student.getGroupdId());
-            Number idStudent = simpleJdbcInsert.executeAndReturnKey(studentParameters);
-            if (idStudent == null) {
-                logger.error("Unable to create Student:{}", student);
-                throw new SQLException("Unable to create Student", student.toString());
-            }
-            return new Student(idStudent.longValue(), student.getName(), student.getGroupdId());
-        } else if (entity instanceof Teacher) {
+            Map<String, Object> studParameters = new HashMap<String, Object>();
+            studParameters.put("user_ref", id.longValue());
+            studParameters.put("group_ref", student.getGroupId());
+            simpleJdbcInsertStud.execute(studParameters);
+            return new Student(id.longValue(), student.getName(), student.getGroupId());
+        } else if (entity.getType().equals(UserType.TEACHER)) {
             Teacher teacher = (Teacher) entity;
-            Map<String, Object> teacherParameters = new HashMap<String, Object>();
-            usersParameters.put("course_ref", teacher.getCourseId());
-            Number idTeacher = simpleJdbcInsert.executeAndReturnKey(teacherParameters);
-            if (idTeacher == null) {
-                logger.error("Unable to create Teacher:{}", teacher);
-                throw new SQLException("Unable to create Teacher", teacher.toString());
-            }
-            return new Teacher(idTeacher.longValue(), teacher.getName(), teacher.getCourseId());
+            Map<String, Object> taechParameters = new HashMap<String, Object>();
+            taechParameters.put("user_ref", id.longValue());
+            taechParameters.put("course_ref", teacher.getCourseId());
+            simpleJdbcInsertTeach.execute(taechParameters);
+            return new Teacher(id.longValue(), teacher.getName(), teacher.getCourseId());
         }
         return new User(id.longValue(), entity.getName(), entity.getType());
     }
@@ -130,13 +130,13 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
         }
         if (entity instanceof Student) {
             Student student = (Student) entity;
-            int updatedStudentRowCount = jdbcTemplate.update(UPDATE_GROUP_FOR_STUDENT, student.getGroupdId(),
+            int updatedStudentRowCount = jdbcTemplate.update(UPDATE_GROUP_FOR_STUDENT, student.getGroupId(),
                     student.getId());
             if (updatedStudentRowCount != 1) {
                 logger.error("Unable to update Student:{}", student);
                 throw new SQLException("Unable to update Student", student.toString());
             }
-            return new Student(student.getId(), student.getName());
+            return new Student(student.getId(), student.getName(), student.getGroupId());
         } else if (entity instanceof Teacher) {
             Teacher teacher = (Teacher) entity;
             int updatedTeacherRowCount = jdbcTemplate.update(UPDATE_COURSE_FOR_TEACHER, teacher.getCourseId(),
@@ -145,7 +145,7 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
                 logger.error("Unable to update Teacher:{}", teacher);
                 throw new SQLException("Unable to update Teacher", teacher.toString());
             }
-            return new Teacher(entity.getId(), entity.getName());
+            return new Teacher(teacher.getId(), teacher.getName(), teacher.getCourseId());
         }
         return new User(entity.getId(), entity.getName(), entity.getType());
     }
