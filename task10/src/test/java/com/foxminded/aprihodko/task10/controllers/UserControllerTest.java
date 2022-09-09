@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.foxminded.aprihodko.task10.models.User;
 import com.foxminded.aprihodko.task10.models.UserType;
+import com.foxminded.aprihodko.task10.services.CourseService;
 import com.foxminded.aprihodko.task10.services.UserService;
 
 @WebMvcTest(controllers = { UserController.class })
@@ -26,6 +27,9 @@ class UserControllerTest {
 
     @Autowired
     MockMvc mvc;
+
+    @Autowired
+    CourseService courseService;
 
     @Test
     void shouldGetListOfUsers() throws Exception {

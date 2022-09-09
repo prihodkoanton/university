@@ -17,7 +17,6 @@ import com.foxminded.aprihodko.task10.models.Group;
 import com.foxminded.aprihodko.task10.models.Student;
 import com.foxminded.aprihodko.task10.models.Teacher;
 import com.foxminded.aprihodko.task10.models.User;
-import com.foxminded.aprihodko.task10.models.UserType;
 import com.foxminded.aprihodko.task10.models.ui.UserForm;
 import com.foxminded.aprihodko.task10.services.CourseService;
 import com.foxminded.aprihodko.task10.services.GroupService;
@@ -68,27 +67,39 @@ public class UserController {
     @GetMapping("edit/{id}")
     public String showUpdateForm(@PathVariable("id") long id, Model model)
             throws IllegalArgumentException, SQLException {
-
         User user = this.userService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user id : " + id));
-        Teacher teacher = (Teacher) this.userService.findAll().stream()
-                .filter(e -> e.getType().equals(UserType.TEACHER)).findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Invalid user id : " + id));
-        Student student = (Student) this.userService.findAll().stream()
-                .filter(e -> e.getType().equals(UserType.STUDENT)).findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Invalid user id : " + id));
-        model.addAttribute("teacher", teacher);
-        model.addAttribute("student", student);
         model.addAttribute("user", user);
         model.addAttribute("courses", this.courseService.findAll());
         model.addAttribute("groups", this.groupService.findAll());
-        if (user.getType().equals(UserType.STUDENT)) {
-            return "update-student";
-        } else if (user.getType().equals(UserType.TEACHER)) {
+        if (user instanceof Teacher) {
+            Teacher teacher = (Teacher) user;
+            model.addAttribute("teacher", teacher);
             return "update-teacher";
+        } else if (user instanceof Student) {
+            Student student = (Student) user;
+            model.addAttribute("student", student);
+            return "update-student";
+        } else {
+            return "update-user";
         }
-        return "update-user";
+    }
 
+    public User update(@PathVariable("id") long id) throws SQLException {
+        User entity = this.userService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user id : " + id));
+        if (entity instanceof Student) {
+            Student student = (Student) entity;
+            userService.save(student);
+            return student;
+        } else if (entity instanceof Teacher) {
+            Teacher teacher = (Teacher) entity;
+            userService.save(teacher);
+            return teacher;
+        } else {
+            userService.save(entity);
+            return entity;
+        }
     }
 
     @PostMapping("update/{id}")
@@ -98,15 +109,29 @@ public class UserController {
             user.setId(id);
             return "update-user";
         }
-        if (user.getType().equals(UserType.TEACHER)) {
-            Teacher teacher = (Teacher) user;
-            userService.save(teacher);
-        } else if (user.getType().equals(UserType.STUDENT)) {
-            Student student = (Student) user;
-            userService.save(student);
-        } else {
-            userService.save(user);
+        userService.save(user);
+        return "redirect:/users/list";
+    }
+
+    @PostMapping("updateTeacher/{id}")
+    public String updateTeacher(@PathVariable("id") long id, Teacher teacher, BindingResult result, Model model)
+            throws SQLException {
+        if (result.hasErrors()) {
+            teacher.setId(id);
+            return "update-teacher";
         }
+        userService.save(teacher);
+        return "redirect:/users/list";
+    }
+
+    @PostMapping("updateStudent/{id}")
+    public String updateStudent(@PathVariable("id") long id, Student student, BindingResult result, Model model)
+            throws SQLException {
+        if (result.hasErrors()) {
+            student.setId(id);
+            return "update-student";
+        }
+        userService.save(student);
         return "redirect:/users/list";
     }
 
