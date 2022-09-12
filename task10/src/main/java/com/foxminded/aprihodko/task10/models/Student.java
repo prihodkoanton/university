@@ -21,6 +21,10 @@ public class Student extends User {
         this.groupId = groupId;
     }
 
+    public static String getGroupRef() {
+        return GROUP_REF;
+    }
+
     public Student() {
 
     }

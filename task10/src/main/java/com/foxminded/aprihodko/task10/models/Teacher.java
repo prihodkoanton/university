@@ -22,6 +22,10 @@ public class Teacher extends User {
         this.courseId = courseId;
     }
 
+    public void setCourseId(Long courseId) {
+        this.courseId = courseId;
+    }
+
     public Teacher() {
 
     }
