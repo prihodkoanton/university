@@ -9,27 +9,46 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.foxminded.aprihodko.task10.dao.impl.CourseDaoImpl;
+import com.foxminded.aprihodko.task10.dao.impl.GroupDaoImpl;
+import com.foxminded.aprihodko.task10.dao.impl.LessonDaoImpl;
+import com.foxminded.aprihodko.task10.dao.impl.RoomDaoImpl;
+import com.foxminded.aprihodko.task10.dao.impl.UserDaoImpl;
 import com.foxminded.aprihodko.task10.models.User;
 import com.foxminded.aprihodko.task10.models.UserType;
-import com.foxminded.aprihodko.task10.services.CourseService;
 import com.foxminded.aprihodko.task10.services.UserService;
 
+@ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = { UserController.class })
 class UserControllerTest {
 
     @MockBean
     UserService userServiceImpl;
 
-    @Autowired
-    MockMvc mvc;
+    @MockBean
+    CourseDaoImpl courseDaoImpl;
+
+    @MockBean
+    GroupDaoImpl groupDaoImpl;
+
+    @MockBean
+    LessonDaoImpl lessonDaoImpl;
+
+    @MockBean
+    RoomDaoImpl roomDaoImpl;
+
+    @MockBean
+    UserDaoImpl userDaoImpl;
 
     @Autowired
-    CourseService courseService;
+    MockMvc mvc;
 
     @Test
     void shouldGetListOfUsers() throws Exception {

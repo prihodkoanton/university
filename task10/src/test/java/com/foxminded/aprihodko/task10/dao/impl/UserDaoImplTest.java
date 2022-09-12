@@ -42,14 +42,9 @@ class UserDaoImplTest extends BaseDaoTest {
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
     void shouldFindTeacherById() throws SQLException {
-        User newTeacher = new Teacher("new Teacher", 104L);
-        User firsetExpected = userDao.save(newTeacher);
-        User firstActual = userDao.findById(5L).orElseThrow();
-        newTeacher = new Teacher(5L, "rename", 103L);
-        User secondExpected = userDao.save(newTeacher);
-        User secondActual = userDao.findById(5L).orElseThrow();
-        assertEquals(firsetExpected, firstActual);
-        assertEquals(secondExpected, secondActual);
+        User expected = new Teacher(100L, "john", 100L);
+        User actual = userDao.findById(100L).orElseThrow();
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -81,15 +76,8 @@ class UserDaoImplTest extends BaseDaoTest {
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
     void shoudlDeleteStudentById() throws SQLException {
-        User expected = new Teacher("new Teacher", 104L);
-        User actual = userDao.save(expected);
-        User byId = userDao.findById(4L).orElseThrow();
-        userDao.deleteById(4L);
+        userDao.deleteById(101L);
         Optional<User> shouldBeEmpty = userDao.findById(5L);
-        assertNotNull(actual.getId());
-        expected.setId(actual.getId());
-        assertEquals(expected, byId);
-        assertEquals(expected, actual);
         assertTrue(shouldBeEmpty.isEmpty());
     }
 
@@ -159,15 +147,15 @@ class UserDaoImplTest extends BaseDaoTest {
         assertEquals(expected, actual);
     }
 
-//    @Test
-//    @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
-//    void shouldUpdateUser() throws SQLException {
-//        User update = userDao.findById(104L).orElseThrow();
-//        update = new User(104L, "new Teach", UserType.NONE);
-//        User actual1 = userDao.save(update);
-//        assertNotNull(actual1.getId());
-//        assertEquals(update, actual1);
-//    }
+    @Test
+    @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
+    void shouldUpdateUser() throws SQLException {
+        User update = userDao.findById(104L).orElseThrow();
+        update = new User(104L, "new Teach", UserType.NONE);
+        User actual = userDao.save(update);
+        assertNotNull(actual.getId());
+        assertEquals(update, actual);
+    }
 
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
