@@ -6,10 +6,6 @@ public class LongEntity implements Entity<Long> {
 
     protected Long id;
 
-    public LongEntity(Long id) {
-        this.id = id;
-    }
-
     @Override
     public Long getId() {
         return this.id;
@@ -27,12 +23,15 @@ public class LongEntity implements Entity<Long> {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         LongEntity other = (LongEntity) obj;
         return Objects.equals(id, other.id);
     }

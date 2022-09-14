@@ -23,42 +23,50 @@ public class UserServiceImpl implements UserService {
         this.userDao = userDao;
     }
 
-    @Transactional
+    @Override
+    @Transactional(readOnly = true)
     public Optional<User> findById(Long id) throws SQLException {
         return userDao.findById(id);
     }
 
-    @Transactional
+    @Override
+    @Transactional(readOnly = true)
     public List<User> findAll() throws SQLException {
         return userDao.findAll();
     }
 
+    @Override
     @Transactional
     public void deleteById(Long id) throws SQLException {
         userDao.deleteById(id);
     }
 
-    @Transactional
+    @Override
+    @Transactional(readOnly = true)
     public Optional<User> findByName(String name) {
         return userDao.findByName(name);
     }
 
-    @Transactional
+    @Override
+    @Transactional(readOnly = true)
     public List<User> findByType(UserType userType) {
         return userDao.findByType(userType);
     }
 
+    @Override
     @Transactional
-    public User update(User entity) throws SQLException {
+    public User save(User entity) throws SQLException {
         return userDao.save(entity);
     }
 
-    @Transactional
+    @Override
+    @Transactional(readOnly = true)
     public List<Student> findStudentByGroupId(Long id) throws SQLException {
         return userDao.findStudentByGroupId(id);
     }
 
-    @Transactional
+    @Override
+    @Transactional(readOnly = true)
     public List<Teacher> findTeacherByCourseId(Long id) throws SQLException {
         return userDao.findTeacherByCourseId(id);
     }

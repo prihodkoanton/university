@@ -126,7 +126,7 @@ class LessonServiceImplTest extends BaseDaoTest {
         Lesson lesson = new Lesson(1L, DayOfWeek.FRIDAY, 1, 1L, 1L, 1L, 1L);
         when(lessonDao.save(lesson)).thenReturn(lesson);
         Lesson actual = lessonDao.save(lesson);
-        Lesson expected = lessonServiceImpl.update(lesson);
+        Lesson expected = lessonServiceImpl.save(lesson);
         assertNotNull(actual.getId());
         lesson.setId(actual.getId());
         assertEquals(expected, actual);

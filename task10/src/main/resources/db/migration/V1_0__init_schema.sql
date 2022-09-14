@@ -32,14 +32,14 @@ create table university.students
 create table university.teachers
 (
     user_ref   bigint primary key references university.users (user_id) ON DELETE CASCADE,
-    course_ref bigint references university.courses (course_id) ON DELETE CASCADE
+    course_ref bigint references university.courses (course_id)ON DELETE CASCADE
 );
 
 
 create table university.rooms
 (
     room_id    bigserial not null,
-    room_title text,
+    room_title text not null,
     constraint room_pkey primary key (room_id)
 );
 

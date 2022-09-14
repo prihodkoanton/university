@@ -20,53 +20,63 @@ public class LessonServiceImpl implements LessonService {
         this.lessonDao = lessonDao;
     }
 
-    @Transactional
+    @Override
+    @Transactional(readOnly = true)
     public Optional<Lesson> findById(Long id) throws SQLException {
         return lessonDao.findById(id);
     }
 
-    @Transactional
+    @Override
+    @Transactional(readOnly = true)
     public List<Lesson> findAll() throws SQLException {
         return lessonDao.findAll();
     }
 
+    @Override
     @Transactional
     public void deleteById(Long id) throws SQLException {
         lessonDao.deleteById(id);
     }
 
-    @Transactional
+    @Override
+    @Transactional(readOnly = true)
     public Optional<Lesson> findByDayOfWeek(String dayOfWeek) throws SQLException {
         return lessonDao.findByDayOfWeek(dayOfWeek);
     }
 
-    @Transactional
+    @Override
+    @Transactional(readOnly = true)
     public List<Lesson> findByRoomId(Long id) throws SQLException {
         return lessonDao.findByRoomId(id);
     }
 
-    @Transactional
+    @Override
+    @Transactional(readOnly = true)
     public List<Lesson> findByGroupId(Long id) throws SQLException {
         return lessonDao.findByGroupId(id);
     }
 
-    @Transactional
+    @Override
+    @Transactional(readOnly = true)
     public List<Lesson> findByCourseId(Long id) throws SQLException {
         return lessonDao.findByCourseId(id);
     }
 
-    @Transactional
+    @Override
+    @Transactional(readOnly = true)
     public List<Lesson> findByTeacherId(Long id) throws SQLException {
         return lessonDao.findByTeacherId(id);
     }
 
-    @Transactional
+    @Override
+    @Transactional(readOnly = true)
     public List<Lesson> findByTimeSpan(Long timeSpan) throws SQLException {
         return lessonDao.findByTimeSpan(timeSpan);
     }
 
+    @Override
     @Transactional
-    public Lesson update(Lesson entity) throws SQLException {
+    public Lesson save(Lesson entity) throws SQLException {
         return lessonDao.save(entity);
     }
 }

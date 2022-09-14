@@ -22,6 +22,19 @@ public class Teacher extends User {
         this.courseId = courseId;
     }
 
+    public void setCourseId(Long courseId) {
+        this.courseId = courseId;
+    }
+
+    public Teacher() {
+
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
     public static String getCourseRef() {
         return COURSE_REF;
     }

@@ -79,6 +79,14 @@ class CourseDaoImplTest extends BaseDaoTest {
 
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/course_test_data.sql" })
+    void shouldFindByDescription() throws SQLException {
+        Course expected = new Course(100L, "java", "Java course");
+        Course actual = courseDao.findByDescription("Java course").orElseThrow();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    @Sql(scripts = { "/sql/clear_tables.sql", "/sql/course_test_data.sql" })
     void shouldCreateCourse() throws SQLException {
         Course expected = new Course("java", "Java course");
         Course actual = courseDao.save(expected);

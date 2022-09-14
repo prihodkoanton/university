@@ -5,35 +5,43 @@ import java.util.Objects;
 public class Student extends User {
 
     public static final String GROUP_REF = "group_ref";
-    private Long groupdId;
+    private Long groupId;
 
-    public Student(Long id, String name, Long groupdId) {
+    public Student(Long id, String name, Long groupId) {
         super(id, name, UserType.STUDENT);
-        this.groupdId = groupdId;
+        this.groupId = groupId;
     }
 
     public Student(Long id, String name) {
         super(id, name, UserType.STUDENT);
     }
 
-    public Student(String name, Long groupdId) {
+    public Student(String name, Long groupId) {
         super(null, name, UserType.STUDENT);
-        this.groupdId = groupdId;
+        this.groupId = groupId;
     }
 
-    public Long getGroupdId() {
-        return groupdId;
+    public static String getGroupRef() {
+        return GROUP_REF;
     }
 
-    public void setGroupdId(Long groupdId) {
-        this.groupdId = groupdId;
+    public Student() {
+
+    }
+
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Long groupdId) {
+        this.groupId = groupdId;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + Objects.hash(groupdId);
+        result = prime * result + Objects.hash(groupId);
         return result;
     }
 
@@ -49,12 +57,11 @@ public class Student extends User {
             return false;
         }
         Student other = (Student) obj;
-        return Objects.equals(groupdId, other.groupdId);
+        return Objects.equals(groupId, other.groupId);
     }
 
     @Override
     public String toString() {
-        return "Student [groupdId=" + groupdId + ", id=" + id + "]";
+        return "Student [groupdId=" + groupId + ", id=" + id + "]";
     }
-
 }

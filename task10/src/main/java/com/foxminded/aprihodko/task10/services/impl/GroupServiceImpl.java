@@ -20,28 +20,33 @@ public class GroupServiceImpl implements GroupService {
         this.groupDao = groupDao;
     }
 
-    @Transactional
+    @Override
+    @Transactional(readOnly = true)
     public Optional<Group> findById(Long id) throws SQLException {
         return groupDao.findById(id);
     }
 
-    @Transactional
+    @Override
+    @Transactional(readOnly = true)
     public List<Group> findAll() throws SQLException {
         return groupDao.findAll();
     }
 
+    @Override
     @Transactional
     public void deleteById(Long id) throws SQLException {
         groupDao.deleteById(id);
     }
 
-    @Transactional
+    @Override
+    @Transactional(readOnly = true)
     public Optional<Group> findByName(String name) throws SQLException {
         return groupDao.findByName(name);
     }
 
+    @Override
     @Transactional
-    public Group update(Group entity) throws SQLException {
+    public Group save(Group entity) throws SQLException {
         return groupDao.save(entity);
     }
 }

@@ -26,7 +26,8 @@ public class CourseDaoImpl extends AbstractCrudDao<Course, Long> implements Cour
     public static final String FIND_ALL = "SELECT * FROM university.courses";
     public static final String DELETE_BY_ID = "DELETE FROM university.courses where course_id = ?";
     public static final String FIND_BY_NAME = "SELECT * FROM university.courses where course_name = ?";
-    public static final String CREATE = "INSERT INTO university.courses(course_id, course_name, course_description) VALUES (?, ?, ?)";
+    public static final String FIND_BY_DESCRIPTION = "SELECT * FROM university.courses where course_description = ?";
+    public static final String CREATE = "INSERT INTO university.courses(course_name, course_description) VALUES (?, ?)";
     public static final String UPDATE = "UPDATE university.courses SET course_name = ?, course_description = ? WHERE course_id = ?";
 
     private final JdbcTemplate jdbcTemplate;
@@ -64,25 +65,30 @@ public class CourseDaoImpl extends AbstractCrudDao<Course, Long> implements Cour
     }
 
     @Override
+    public Optional<Course> findByDescription(String description) throws SQLException {
+        return jdbcTemplate.query(FIND_BY_DESCRIPTION, mapper, description).stream().findFirst();
+    }
+
+    @Override
     public Course create(Course entity) throws SQLException {
-        Map<String, Object> usersParameters = new HashMap<String, Object>();
-        usersParameters.put("course_name", entity.getName());
-        usersParameters.put("course_description", entity.getDiscription());
-        Number id = simpleJdbcInsert.executeAndReturnKey(usersParameters);
+        Map<String, Object> courseParameters = new HashMap<String, Object>();
+        courseParameters.put("course_name", entity.getName());
+        courseParameters.put("course_description", entity.getDescription());
+        Number id = simpleJdbcInsert.executeAndReturnKey(courseParameters);
         if (id == null) {
             logger.error("Unable to create Course: {}", entity);
             throw new SQLException("Unable to retrieve id" + entity.getId());
         }
-        return new Course(id.longValue(), entity.getName(), entity.getDiscription());
+        return new Course(id.longValue(), entity.getName(), entity.getDescription());
     }
 
     @Override
     public Course update(Course entity) throws SQLException {
-        int updatedRowCount = jdbcTemplate.update(CREATE, entity.getId(), entity.getName(), entity.getDiscription());
+        int updatedRowCount = jdbcTemplate.update(UPDATE, entity.getName(), entity.getDescription(), entity.getId());
         if (updatedRowCount != 1) {
             logger.error("Unable to update Course: {}", entity);
             throw new SQLException("Unable to update course " + entity);
         }
-        return new Course(entity.getId(), entity.getName(), entity.getDiscription());
+        return new Course(entity.getId(), entity.getName(), entity.getDescription());
     }
 }

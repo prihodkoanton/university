@@ -9,16 +9,20 @@ public class Course extends LongEntity {
     public static final String COURSE_DESCRIPTION = "course_description";
 
     private String name;
-    private String discription;
+    private String description;
 
-    public Course(Long id, String name, String discription) {
-        super(id);
+    public Course(Long id, String name, String description) {
+        this.id = id;
         this.name = name;
-        this.discription = discription;
+        this.description = description;
     }
 
-    public Course(String name, String discription) {
-        this(null, name, discription);
+    public Course(String name, String description) {
+        this(null, name, description);
+    }
+
+    public Course() {
+
     }
 
     public String getName() {
@@ -29,19 +33,19 @@ public class Course extends LongEntity {
         this.name = name;
     }
 
-    public String getDiscription() {
-        return discription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDiscription(String discription) {
-        this.discription = discription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + Objects.hash(discription, name);
+        result = prime * result + Objects.hash(description, name);
         return result;
     }
 
@@ -57,12 +61,11 @@ public class Course extends LongEntity {
             return false;
         }
         Course other = (Course) obj;
-        return Objects.equals(discription, other.discription) && Objects.equals(name, other.name);
+        return Objects.equals(description, other.description) && Objects.equals(name, other.name);
     }
 
     @Override
     public String toString() {
-        return "Course [name=" + name + ", discription=" + discription + ", id=" + id + "]";
+        return "Course [name=" + name + ", discription=" + description + ", id=" + id + "]";
     }
-
 }

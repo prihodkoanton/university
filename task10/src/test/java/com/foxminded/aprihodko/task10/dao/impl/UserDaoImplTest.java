@@ -59,7 +59,8 @@ class UserDaoImplTest extends BaseDaoTest {
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
     void shouldFindAllUsers() throws SQLException {
         List<User> expected = Arrays.asList(new Student(101L, "peter", 100L), new Student(103L, "bob", 101L),
-                new Teacher(102L, "alice", 101L), new Teacher(100L, "john", 100L));
+                new User(104L, "none", UserType.NONE), new Teacher(102L, "alice", 101L),
+                new Teacher(100L, "john", 100L));
         List<User> actual = userDao.findAll();
         assertEquals(expected.toString(), actual.toString());
     }
@@ -76,7 +77,7 @@ class UserDaoImplTest extends BaseDaoTest {
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
     void shoudlDeleteStudentById() throws SQLException {
         userDao.deleteById(101L);
-        Optional<User> shouldBeEmpty = userDao.findById(101L);
+        Optional<User> shouldBeEmpty = userDao.findById(5L);
         assertTrue(shouldBeEmpty.isEmpty());
     }
 
@@ -115,32 +116,57 @@ class UserDaoImplTest extends BaseDaoTest {
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
     void shouldCreateTeacher() throws SQLException {
-        User expected = new Teacher("john", 104L);
+        User expected = new Teacher("new Teacher", 104L);
         User actual = userDao.save(expected);
+        User byId = userDao.findById(2L).orElseThrow();
         assertNotNull(actual.getId());
         expected.setId(actual.getId());
         assertEquals(expected, actual);
+        assertEquals(expected, byId);
     }
 
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
     void shouldCreateStudent() throws SQLException {
-        User expected = new Student("john_new", 102L);
+        User expected = new Student("john_new", 101L);
         User actual = userDao.save(expected);
+        User byId = userDao.findById(1L).orElseThrow();
         assertNotNull(actual.getId());
         expected.setId(actual.getId());
+        assertEquals(expected, actual);
+        assertEquals(expected, byId);
+    }
+
+    @Test
+    @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
+    void shouldUpdateStudent() throws SQLException {
+        User expected = userDao.findById(101L).orElseThrow();
+        expected = new Student(101L, "update_Stud", 102L);
+        User actual = userDao.save(expected);
+        assertNotNull(actual.getId());
         assertEquals(expected, actual);
     }
 
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
+    void shouldUpdateUser() throws SQLException {
+        User update = userDao.findById(104L).orElseThrow();
+        update = new User(104L, "new Teach", UserType.NONE);
+        User actual = userDao.save(update);
+        assertNotNull(actual.getId());
+        assertEquals(update, actual);
+    }
+
+    @Test
+    @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
     void shouldCreateUserNone() throws SQLException {
-        User expected = new User("john", UserType.TEACHER);
+        User expected = new User("NONE", UserType.NONE);
         User actual = userDao.save(expected);
+        User byId = userDao.findById(3L).orElseThrow();
         assertNotNull(actual.getId());
         expected.setId(actual.getId());
         assertEquals(expected, actual);
-
+        assertEquals(expected, byId);
     }
 
     @Test

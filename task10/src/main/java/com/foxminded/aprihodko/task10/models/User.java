@@ -12,13 +12,25 @@ public class User extends LongEntity {
     private UserType type;
 
     public User(Long id, String name, UserType type) {
-        super(id);
+        this.id = id;
         this.name = name;
         this.type = type;
     }
 
+    public User(Long id, String name) {
+        this(id, name, UserType.NONE);
+    }
+
     public User(String name, UserType type) {
         this(null, name, type);
+    }
+
+    public User(String name) {
+        this(null, name, UserType.NONE);
+    }
+
+    public User() {
+
     }
 
     @Override

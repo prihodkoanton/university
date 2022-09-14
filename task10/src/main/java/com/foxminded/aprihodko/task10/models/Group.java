@@ -10,12 +10,16 @@ public class Group extends LongEntity {
     private String name;
 
     public Group(Long id, String name) {
-        super(id);
+        this.id = id;
         this.name = name;
     }
 
     public Group(String name) {
         this(null, name);
+    }
+
+    public Group() {
+
     }
 
     public String getName() {

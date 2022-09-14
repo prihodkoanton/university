@@ -10,12 +10,16 @@ public class Room extends LongEntity {
     private String title;
 
     public Room(Long id, String title) {
-        super(id);
+        this.id = id;
         this.title = title;
     }
 
     public Room(String title) {
         this(null, title);
+    }
+
+    public Room() {
+
     }
 
     @Override

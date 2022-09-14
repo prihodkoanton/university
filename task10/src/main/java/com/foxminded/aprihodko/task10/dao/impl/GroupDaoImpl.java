@@ -26,7 +26,7 @@ public class GroupDaoImpl extends AbstractCrudDao<Group, Long> implements GroupD
     public static final String FIND_ALL = "SELECT * FROM university.groups";
     public static final String DELETE_BY_ID = "DELETE FROM university.groups WHERE group_id = ?";
     public static final String FIND_BY_NAME = "SELECT * FROM university.groups WHERE group_name = ?";
-    public static final String CREATE = "INSERT INTO university.groups (group_id, group_name) VALUES (?, ?)";
+    public static final String CREATE = "INSERT INTO university.groups (group_name) VALUES (?)";
     public static final String UPDATE = "UPDATE university.groups SET group_name = ? WHERE group_id = ?";
 
     private final JdbcTemplate jdbcTemplate;
@@ -66,9 +66,9 @@ public class GroupDaoImpl extends AbstractCrudDao<Group, Long> implements GroupD
 
     @Override
     public Group create(Group entity) throws SQLException {
-        Map<String, Object> usersParameters = new HashMap<String, Object>();
-        usersParameters.put("group_name", entity.getName());
-        Number id = simpleJdbcInsert.executeAndReturnKey(usersParameters);
+        Map<String, Object> groupParameters = new HashMap<String, Object>();
+        groupParameters.put("group_name", entity.getName());
+        Number id = simpleJdbcInsert.executeAndReturnKey(groupParameters);
         if (id == null) {
             logger.error("Unable to create Group:{}", entity);
             throw new SQLException("Unable to retrieve id" + entity.getId());
@@ -78,7 +78,7 @@ public class GroupDaoImpl extends AbstractCrudDao<Group, Long> implements GroupD
 
     @Override
     public Group update(Group entity) throws SQLException {
-        int updatedRowCount = jdbcTemplate.update(CREATE, entity.getId(), entity.getName());
+        int updatedRowCount = jdbcTemplate.update(UPDATE, entity.getName(), entity.getId());
         if (updatedRowCount != 1) {
             logger.error("Unable to update Group:{}", entity);
             throw new SQLException("Unable to update group " + entity);
