@@ -20,7 +20,9 @@ import com.foxminded.aprihodko.task10.models.User;
 import com.foxminded.aprihodko.task10.models.ui.UserForm;
 import com.foxminded.aprihodko.task10.services.CourseService;
 import com.foxminded.aprihodko.task10.services.GroupService;
+import com.foxminded.aprihodko.task10.services.SecurityService;
 import com.foxminded.aprihodko.task10.services.UserService;
+import com.foxminded.aprihodko.task10.validator.UserValidator;
 
 @Controller
 @RequestMapping("/users/")
@@ -29,11 +31,15 @@ public class UserController {
     private UserService userService;
     private CourseService courseService;
     private GroupService groupService;
+    private UserValidator userValidator;
+    private SecurityService securityService;
 
-    public UserController(UserService userService, CourseService courseService, GroupService groupService) {
+    public UserController(UserService userService, CourseService courseService, GroupService groupService,
+            SecurityService securityService) {
         this.userService = userService;
         this.courseService = courseService;
         this.groupService = groupService;
+        this.securityService = securityService;
     }
 
     @ModelAttribute("groups")
@@ -49,6 +55,35 @@ public class UserController {
     @ModelAttribute("users")
     List<User> users() throws SQLException {
         return userService.findAll();
+    }
+
+    @GetMapping("registration")
+    public String registration(Model model) {
+        model.addAttribute("userReg", new User());
+        return "registration";
+    }
+
+    @PostMapping("registration")
+    public String registration(@ModelAttribute("userReg") User userReg, BindingResult bindingResult, Model model)
+            throws SQLException {
+        userValidator.validate(userReg, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "registration";
+        }
+        userService.save(userReg);
+        securityService.autoLogin(userReg.getName(), userReg.getPasswordHash());
+        return "redirect:/welcome";
+    }
+
+    @GetMapping("login")
+    public String login(Model model, String error, String logout) {
+        if (error != null) {
+            model.addAttribute("error", "Username or password is incorrect.");
+        }
+        if (logout != null) {
+            model.addAttribute("message", "Logged out successfully.");
+        }
+        return "login";
     }
 
     @GetMapping("showForm")
@@ -154,13 +189,13 @@ public class UserController {
             User user;
             switch (form.getUserType()) {
             case "USER":
-                user = new User(form.getName());
+                user = new User(form.getName(), form.getRole(), form.getPasswordHash());
                 break;
             case "STUDENT":
-                user = new Student(form.getName(), form.getGroupId());
+                user = new Student(form.getName(), form.getGroupId(), form.getPasswordHash());
                 break;
             case "TEACHER":
-                user = new Teacher(form.getName(), form.getCourseId());
+                user = new Teacher(form.getName(), form.getCourseId(), form.getPasswordHash());
                 break;
             default:
                 throw new IllegalStateException("Unexpected user type: " + form.getUserType());

@@ -1,0 +1,23 @@
+<html>
+<head></head>
+<body>
+	<h1>Login</h1>
+	<form action="login" method='POST' th:object="${user}">
+		<table>
+			<tr>
+				<td>User:</td>
+				<td><input type='text' name='name'></td>
+			</tr>
+			<tr>
+				<td>Password:</td>
+				<td><input type='password' name='passwordHash' /></td>
+			</tr>
+			<tr>
+				<td><input name="Submit" type="submit" value="submit" /></td>
+				<td><a href="/registration">Create user</a></td>
+
+			</tr>
+		</table>
+	</form>
+</body>
+</html>

@@ -4,10 +4,15 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.foxminded.aprihodko.task10.dao.UserDao;
+import com.foxminded.aprihodko.task10.models.MyUserPrincipal;
+import com.foxminded.aprihodko.task10.models.Role;
 import com.foxminded.aprihodko.task10.models.Student;
 import com.foxminded.aprihodko.task10.models.Teacher;
 import com.foxminded.aprihodko.task10.models.User;
@@ -15,12 +20,21 @@ import com.foxminded.aprihodko.task10.models.UserType;
 import com.foxminded.aprihodko.task10.services.UserService;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserDao userDao;
 
     public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userDao.findByName(username).orElseThrow();
+        if (user == null) {
+            throw new UsernameNotFoundException(username);
+        }
+        return new MyUserPrincipal(user);
     }
 
     @Override
@@ -56,6 +70,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User save(User entity) throws SQLException {
+        if (entity instanceof User) {
+            entity.setRole(Role.ADMIN);
+        } else {
+            entity.setRole(Role.USER);
+        }
         return userDao.save(entity);
     }
 
@@ -70,4 +89,5 @@ public class UserServiceImpl implements UserService {
     public List<Teacher> findTeacherByCourseId(Long id) throws SQLException {
         return userDao.findTeacherByCourseId(id);
     }
+
 }

@@ -19,6 +19,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.foxminded.aprihodko.task10.BaseDaoTest;
 import com.foxminded.aprihodko.task10.dao.UserDao;
+import com.foxminded.aprihodko.task10.models.Role;
 import com.foxminded.aprihodko.task10.models.Student;
 import com.foxminded.aprihodko.task10.models.Teacher;
 import com.foxminded.aprihodko.task10.models.User;
@@ -36,7 +37,7 @@ class UserServiceImplTest extends BaseDaoTest {
 
     @Test
     void shouldFindById() throws SQLException {
-        User user = new Teacher(100L, "john", 100L);
+        User user = new Teacher(100L, "john", 100L, "12345678");
         when(userDao.findById(100L)).thenReturn(Optional.of(user));
         Optional<User> expected = userDao.findById(100L);
         Optional<User> actual = userServiceImpl.findById(100L);
@@ -45,8 +46,8 @@ class UserServiceImplTest extends BaseDaoTest {
 
     @Test
     void shouldFindAll() throws SQLException {
-        List<User> users = Arrays.asList(new User(100L, "petr", UserType.NONE), new Teacher(101L, "john", 101L),
-                new Student(102L, "alice", 102L));
+        List<User> users = Arrays.asList(new User(100L, "petr", UserType.NONE, Role.ADMIN, "12345678"),
+                new Teacher(101L, "john", 101L, "12345678"), new Student(102L, "alice", 102L, "12345678"));
         when(userDao.findAll()).thenReturn(users);
         List<User> expected = userDao.findAll();
         List<User> actual = userServiceImpl.findAll();
@@ -70,7 +71,7 @@ class UserServiceImplTest extends BaseDaoTest {
 
     @Test
     void shouldFindUserByName() throws SQLException {
-        User user = new User(100L, "john", UserType.NONE);
+        User user = new User(100L, "john", UserType.NONE, Role.ADMIN, "12345678");
         when(userDao.findByName("john")).thenReturn(Optional.of(user));
         Optional<User> expected = userDao.findByName("john");
         Optional<User> actual = userServiceImpl.findByName("john");
@@ -79,7 +80,7 @@ class UserServiceImplTest extends BaseDaoTest {
 
     @Test
     void shouldUpdateUser() throws SQLException {
-        User user = new User(100L, "john", UserType.NONE);
+        User user = new User(100L, "john", UserType.NONE, Role.ADMIN, "12345678");
         when(userDao.save(user)).thenReturn(user);
         User expected = userDao.save(user);
         User actual = userServiceImpl.save(user);

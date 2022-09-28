@@ -19,15 +19,15 @@
 
 <body>
 	<div class="container my-2">
-	<header th:insert="fragments/header :: header"></header>
+		<header th:insert="fragments/header :: header"></header>
 		<div class="card">
 			<div class="card-body">
 				<div class="container my-5" th:switch="${courses}">
 
 					<p class="my-5">
 						<a class="btn btn-primary" href="/courses/showForm"><i
-							class="fas fa-user-plus ml-2">Add Courses</i></a>
-							<a class="btn btn-primary" href="/" role="button">Main page</a>
+							class="fas fa-user-plus ml-2">Add Courses</i></a> <a
+							class="btn btn-primary" href="/" role="button">Main page</a>
 					</p>
 					<div class="col-md-10">
 						<h2 th:case="null">No Courses yet!</h2>

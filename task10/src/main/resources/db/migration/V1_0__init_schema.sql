@@ -17,11 +17,24 @@ create table university.groups
 
 create table university.users
 (
-    user_id   bigserial not null,
-    user_name text      not null,
-    user_type text      not null,
-    constraint user_pkey primary key (user_id)
+    user_id   bigserial     not null,
+    user_name text          not null,
+    user_type text          not null,
+    user_role text          not null,
+    user_password text      not null,
+    constraint user_pkey primary key (user_id),
+    unique (user_id),
+    unique (user_role)
 );
+
+create table university.users_role
+(
+    user_id_ref     bigserial   not null references             university.users (user_id)      ON DELETE CASCADE,
+    user_role_ref   text        not null references             university.users (user_role)    ON DELETE cascade,
+    unique (user_id_ref),
+    unique (user_role_ref)
+);
+
 
 create table university.students
 (

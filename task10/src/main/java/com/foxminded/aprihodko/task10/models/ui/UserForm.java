@@ -1,15 +1,35 @@
 package com.foxminded.aprihodko.task10.models.ui;
 
+import com.foxminded.aprihodko.task10.models.Role;
+
 public class UserForm {
     private String name;
     private Long groupId;
     private Long courseId;
     private String userType;
+    private Role role;
+    private String passwordHash;
 
     private Long id;
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     public Long getId() {

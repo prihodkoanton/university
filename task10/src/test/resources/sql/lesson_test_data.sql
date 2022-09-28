@@ -17,11 +17,11 @@ VALUES (100, 'java', 'Java course'),
        (103, 'physic', 'Physic course');
 
 
-insert into university.users (user_id, user_name, user_type)
-VALUES (100, 'john', 'TEACHER'),
-       (101, 'alice', 'TEACHER'),
-       (102, 'bob', 'TEACHER'),
-       (103, 'petr', 'TEACHER');
+insert into university.users (user_id, user_name, user_type, user_role, user_password)
+VALUES (100, 'john', 'TEACHER', 'USER', '12345678'),
+       (101, 'alice', 'TEACHER', 'USER', '12345678'),
+       (102, 'bob', 'TEACHER', 'USER', '12345678'),
+       (103, 'petr', 'TEACHER', 'USER', '12345678');
 
 insert into university.teachers (user_ref, course_ref)
 VALUES (100, 100),

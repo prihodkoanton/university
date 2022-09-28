@@ -9,16 +9,26 @@ public class Teacher extends User {
     private Long courseId;
 
     public Teacher(Long id, String name, Long courseId) {
-        super(id, name, UserType.TEACHER);
+        super(id, name, UserType.TEACHER, Role.USER);
         this.courseId = courseId;
     }
 
-    public Teacher(Long id, String name) {
-        super(id, name, UserType.TEACHER);
+    public Teacher(Long id, String name, String passwordHash) {
+        super(id, name, UserType.TEACHER, Role.USER, passwordHash);
+    }
+
+    public Teacher(Long id, String name, Long courseId, String passwordHash) {
+        super(id, name, UserType.TEACHER, Role.USER, passwordHash);
+        this.courseId = courseId;
+    }
+
+    public Teacher(String name, Long courseId, String passwordHash) {
+        super(null, name, UserType.TEACHER, Role.USER, passwordHash);
+        this.courseId = courseId;
     }
 
     public Teacher(String name, Long courseId) {
-        super(null, name, UserType.TEACHER);
+        super(null, name, UserType.TEACHER, Role.USER);
         this.courseId = courseId;
     }
 

@@ -8,16 +8,22 @@ public class Student extends User {
     private Long groupId;
 
     public Student(Long id, String name, Long groupId) {
-        super(id, name, UserType.STUDENT);
+        super(id, name, UserType.STUDENT, Role.USER);
         this.groupId = groupId;
     }
 
-    public Student(Long id, String name) {
-        super(id, name, UserType.STUDENT);
+    public Student(Long id, String name, Long groupId, String passwordHash) {
+        super(id, name, UserType.STUDENT, Role.USER, passwordHash);
+        this.groupId = groupId;
+    }
+
+    public Student(String name, Long groupId, String passwordHash) {
+        super(null, name, UserType.STUDENT, Role.USER, passwordHash);
+        this.groupId = groupId;
     }
 
     public Student(String name, Long groupId) {
-        super(null, name, UserType.STUDENT);
+        super(null, name, UserType.STUDENT, Role.USER);
         this.groupId = groupId;
     }
 

@@ -21,6 +21,7 @@ import com.foxminded.aprihodko.task10.dao.impl.GroupDaoImpl;
 import com.foxminded.aprihodko.task10.dao.impl.LessonDaoImpl;
 import com.foxminded.aprihodko.task10.dao.impl.RoomDaoImpl;
 import com.foxminded.aprihodko.task10.dao.impl.UserDaoImpl;
+import com.foxminded.aprihodko.task10.models.Role;
 import com.foxminded.aprihodko.task10.models.User;
 import com.foxminded.aprihodko.task10.models.UserType;
 import com.foxminded.aprihodko.task10.services.UserService;
@@ -52,8 +53,10 @@ class UserControllerTest {
 
     @Test
     void shouldGetListOfUsers() throws Exception {
-        when(userServiceImpl.findAll()).thenReturn(Arrays.asList(new User("teacher", UserType.TEACHER),
-                new User("student", UserType.STUDENT), new User("none", UserType.NONE)));
+        when(userServiceImpl.findAll())
+                .thenReturn(Arrays.asList(new User("teacher", UserType.TEACHER, Role.USER, "12345678"),
+                        new User("student", UserType.STUDENT, Role.USER, "12345678"),
+                        new User("none", UserType.NONE, Role.ADMIN, "12345678")));
         mvc.perform(get("/users/list")).andExpect(status().isOk())
                 .andExpect(content().string(containsString("teacher")))
                 .andExpect(content().string(containsString("student")))

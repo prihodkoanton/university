@@ -7,30 +7,51 @@ public class User extends LongEntity {
     public static final String USER_ID = "user_id";
     public static final String USER_NAME = "user_name";
     public static final String USER_TYPE = "user_type";
+    public static final String USER_ROLE = "user_role";
+    public static final String USER_PASSWORD = "user_password";
 
     private String name;
     private UserType type;
+    private Role role;
+    private String passwordHash;
 
-    public User(Long id, String name, UserType type) {
+    public User(Long id, String name, UserType type, Role role, String passwordHash) {
         this.id = id;
         this.name = name;
         this.type = type;
+        this.role = role;
+        this.passwordHash = passwordHash;
     }
 
-    public User(Long id, String name) {
-        this(id, name, UserType.NONE);
+    public User(Long id, String name, UserType type, Role role) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.role = role;
     }
 
-    public User(String name, UserType type) {
-        this(null, name, type);
+    public User(Long id, String name, Role role, String passwordHash) {
+        this(id, name, UserType.NONE, role, passwordHash);
     }
 
-    public User(String name) {
-        this(null, name, UserType.NONE);
+    public User(String name, UserType type, Role role, String passwordHash) {
+        this(null, name, type, role, passwordHash);
+    }
+
+    public User(String name, Role role, String passwordHash) {
+        this(null, name, UserType.NONE, role, passwordHash);
     }
 
     public User() {
 
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     @Override
@@ -41,6 +62,14 @@ public class User extends LongEntity {
     @Override
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     public String getName() {
