@@ -24,7 +24,7 @@
     <appender name="STDOUT"
         class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d %p %c{1.} [%t] %m%n</pattern>
+            <pattern>%black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C{1.}): %msg%n%throwable</pattern>
         </encoder>
     </appender>
 
@@ -33,7 +33,7 @@
         <appender-ref ref="FILE-ROLLING" />
     </logger>
 
-    <root level="ERROR">
+    <root level="info">
         <appender-ref ref="STDOUT" />
     </root>
 </configuration>

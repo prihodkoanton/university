@@ -10,34 +10,35 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.foxminded.aprihodko.task10.models.User;
-import com.foxminded.aprihodko.task10.services.SecurityService;
-import com.foxminded.aprihodko.task10.services.UserService;
+import com.foxminded.aprihodko.task10.services.impl.SecurityServiceImpl;
+import com.foxminded.aprihodko.task10.services.impl.UserServiceImpl;
 import com.foxminded.aprihodko.task10.validator.UserValidator;
 
 @Controller
 public class RootController {
 
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
     private UserValidator userValidator;
-    private SecurityService securityService;
+    private SecurityServiceImpl securityServiceImpl;
 
-    public RootController(UserService userService, UserValidator userValidator, SecurityService securityService) {
-        this.userService = userService;
+    public RootController(UserServiceImpl userService, UserValidator userValidator,
+            SecurityServiceImpl securityService) {
+        this.userServiceImpl = userService;
         this.userValidator = userValidator;
-        this.securityService = securityService;
+        this.securityServiceImpl = securityService;
     }
 
-    @GetMapping("/login")
-    public String login(Model model, String error, String logout) {
-        if (error != null) {
-            model.addAttribute("error", "Username or password is incorrect.");
-        }
-        if (logout != null) {
-            model.addAttribute("message", "Logged out successfully.");
-        }
-        model.addAttribute("user", new User());
-        return "login";
-    }
+//    @GetMapping("/login")
+//    public String login(Model model, String error, String logout) {
+//        if (error != null) {
+//            model.addAttribute("error", "Username or password is incorrect.");
+//        }
+//        if (logout != null) {
+//            model.addAttribute("message", "Logged out successfully.");
+//        }
+//        model.addAttribute("user", new User());
+//        return "login";
+//    }
 
     @GetMapping("/registration")
     public String registration(Model model) {
@@ -52,12 +53,12 @@ public class RootController {
         if (bindingResult.hasErrors()) {
             return "registration";
         }
-        userService.save(userReg);
-        securityService.autoLogin(userReg.getName(), userReg.getPasswordHash());
+        userServiceImpl.save(userReg);
+        securityServiceImpl.autoLogin(userReg.getName(), userReg.getPasswordHash());
         return "redirect:/home";
     }
 
-    @GetMapping("/home")
+    @GetMapping({ "/", "/home" })
     public String home(Model model) {
         model.addAttribute("title", "Main page");
         return "home";

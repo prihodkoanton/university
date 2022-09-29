@@ -57,35 +57,6 @@ public class UserController {
         return userService.findAll();
     }
 
-    @GetMapping("registration")
-    public String registration(Model model) {
-        model.addAttribute("userReg", new User());
-        return "registration";
-    }
-
-    @PostMapping("registration")
-    public String registration(@ModelAttribute("userReg") User userReg, BindingResult bindingResult, Model model)
-            throws SQLException {
-        userValidator.validate(userReg, bindingResult);
-        if (bindingResult.hasErrors()) {
-            return "registration";
-        }
-        userService.save(userReg);
-        securityService.autoLogin(userReg.getName(), userReg.getPasswordHash());
-        return "redirect:/welcome";
-    }
-
-    @GetMapping("login")
-    public String login(Model model, String error, String logout) {
-        if (error != null) {
-            model.addAttribute("error", "Username or password is incorrect.");
-        }
-        if (logout != null) {
-            model.addAttribute("message", "Logged out successfully.");
-        }
-        return "login";
-    }
-
     @GetMapping("showForm")
     public String showFormForAll(User user, Model model) throws SQLException {
         model.addAttribute("teacher", new Teacher());
