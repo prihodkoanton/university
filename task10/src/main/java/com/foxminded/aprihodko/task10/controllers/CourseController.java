@@ -2,6 +2,7 @@ package com.foxminded.aprihodko.task10.controllers;
 
 import java.sql.SQLException;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,6 +36,7 @@ public class CourseController {
     }
 
     @PostMapping("add")
+    @PreAuthorize("hasAuthority('developers:write')")
     public String addCourse(Course course, BindingResult result, Model model) throws SQLException {
         if (result.hasErrors()) {
             return "add-course";
@@ -44,6 +46,7 @@ public class CourseController {
     }
 
     @GetMapping("edit/{id}")
+    @PreAuthorize("hasAuthority('developers:read')")
     public String showUpdateForm(@PathVariable("id") long id, Model model)
             throws IllegalArgumentException, SQLException {
         Course course = this.courseService.findById(id)
@@ -53,6 +56,7 @@ public class CourseController {
     }
 
     @PostMapping("update/{id}")
+    @PreAuthorize("hasAuthority('developers:write')")
     public String updateCourse(@PathVariable("id") long id, Course course, BindingResult result, Model model)
             throws SQLException {
         if (result.hasErrors()) {
@@ -65,6 +69,7 @@ public class CourseController {
     }
 
     @GetMapping("delete/{id}")
+    @PreAuthorize("hasAuthority('developers:write')")
     public String deleteCourse(@PathVariable("id") long id, Model model) throws SQLException {
         Course course = this.courseService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid course id: " + id));

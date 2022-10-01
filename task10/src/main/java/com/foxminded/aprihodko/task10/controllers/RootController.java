@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.foxminded.aprihodko.task10.models.User;
 import com.foxminded.aprihodko.task10.services.impl.SecurityServiceImpl;
@@ -15,6 +16,7 @@ import com.foxminded.aprihodko.task10.services.impl.UserServiceImpl;
 import com.foxminded.aprihodko.task10.validator.UserValidator;
 
 @Controller
+@RequestMapping("/")
 public class RootController {
 
     private UserServiceImpl userServiceImpl;
@@ -36,7 +38,6 @@ public class RootController {
 //        if (logout != null) {
 //            model.addAttribute("message", "Logged out successfully.");
 //        }
-//        model.addAttribute("user", new User());
 //        return "login";
 //    }
 
@@ -58,7 +59,7 @@ public class RootController {
         return "redirect:/home";
     }
 
-    @GetMapping({ "/", "/home" })
+    @GetMapping("/home")
     public String home(Model model) {
         model.addAttribute("title", "Main page");
         return "home";

@@ -19,7 +19,7 @@ import com.foxminded.aprihodko.task10.models.User;
 import com.foxminded.aprihodko.task10.models.UserType;
 import com.foxminded.aprihodko.task10.services.UserService;
 
-@Service
+@Service("userServiceImpl")
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserDao userDao;
@@ -30,11 +30,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userDao.findByName(username).orElseThrow();
-        if (user == null) {
-            throw new UsernameNotFoundException(username);
-        }
-        return new MyUserPrincipal(user);
+        User user = userDao.findByName(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User does not exist"));
+        return MyUserPrincipal.fromUser(user);
     }
 
     @Override
@@ -89,5 +87,4 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public List<Teacher> findTeacherByCourseId(Long id) throws SQLException {
         return userDao.findTeacherByCourseId(id);
     }
-
 }

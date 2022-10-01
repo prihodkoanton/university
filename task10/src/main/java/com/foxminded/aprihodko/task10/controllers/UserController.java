@@ -3,6 +3,7 @@ package com.foxminded.aprihodko.task10.controllers;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -71,6 +72,7 @@ public class UserController {
     }
 
     @GetMapping("edit/{id}")
+    @PreAuthorize("hasAuthority('developers:read')")
     public String showUpdateForm(@PathVariable("id") long id, Model model)
             throws IllegalArgumentException, SQLException {
         User user = this.userService.findById(id)
@@ -109,6 +111,7 @@ public class UserController {
     }
 
     @PostMapping("update/{id}")
+    @PreAuthorize("hasAuthority('developers:write')")
     public String updateUser(@PathVariable("id") long id, User user, BindingResult result, Model model)
             throws SQLException {
         if (result.hasErrors()) {
@@ -120,6 +123,7 @@ public class UserController {
     }
 
     @PostMapping("updateTeacher/{id}")
+    @PreAuthorize("hasAuthority('developers:write')")
     public String updateTeacher(@PathVariable("id") long id, Teacher teacher, BindingResult result, Model model)
             throws SQLException {
         if (result.hasErrors()) {
@@ -131,6 +135,7 @@ public class UserController {
     }
 
     @PostMapping("updateStudent/{id}")
+    @PreAuthorize("hasAuthority('developers:write')")
     public String updateStudent(@PathVariable("id") long id, Student student, BindingResult result, Model model)
             throws SQLException {
         if (result.hasErrors()) {
@@ -142,6 +147,7 @@ public class UserController {
     }
 
     @GetMapping("delete/{id}")
+    @PreAuthorize("hasAuthority('developers:write')")
     public String deleteUser(@PathVariable("id") long id, Model model) throws SQLException {
         User user = this.userService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user id: " + id));
@@ -151,6 +157,7 @@ public class UserController {
     }
 
     @PostMapping("add")
+    @PreAuthorize("hasAuthority('developers:read')")
     String postForm(Model model, UserForm form) throws SQLException {
         if ("reload".equals(form.getStatus())) {
             form.setStatus("");

@@ -1,23 +1,22 @@
-<html>
-<head></head>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Login Customer</title>
+</head>
 <body>
-	<h1>Login</h1>
-	<form name='f' action="login" method='POST'>
-		<table>
-			<tr>
-				<td>User:</td>
-				<td><input type='text' name='name'></td>
-			</tr>
-			<tr>
-				<td>Password:</td>
-				<td><input type='password' name='passwordHash' /></td>
-			</tr>
-			<tr>
-				<td><input name="Submit" type="submit" value="submit" /></td>
-				<td><a href="/registration">Create user</a></td>
-
-			</tr>
-		</table>
-	</form>
+<div class="container">
+    <form class="form-signin" method="post" action="/auth/login">
+        <h2 class="form-signin-heading">Login</h2>
+        <p>
+            <label for="username">Name</label>
+            <input type="text" id="username" name="username" class="form-control" placeholder="Name" required>
+        </p>
+        <p>
+            <label for="password">PasswordHash</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="PasswordHash" required>
+        </p>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+</div>
 </body>
 </html>
