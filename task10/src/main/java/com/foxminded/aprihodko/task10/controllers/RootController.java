@@ -30,16 +30,10 @@ public class RootController {
         this.securityServiceImpl = securityService;
     }
 
-//    @GetMapping("/login")
-//    public String login(Model model, String error, String logout) {
-//        if (error != null) {
-//            model.addAttribute("error", "Username or password is incorrect.");
-//        }
-//        if (logout != null) {
-//            model.addAttribute("message", "Logged out successfully.");
-//        }
-//        return "login";
-//    }
+    @GetMapping("/login")
+    public String getLoginPage() {
+        return "login";
+    }
 
     @GetMapping("/registration")
     public String registration(Model model) {
@@ -59,7 +53,7 @@ public class RootController {
         return "redirect:/home";
     }
 
-    @GetMapping("/home")
+    @GetMapping({ "/", "/home" })
     public String home(Model model) {
         model.addAttribute("title", "Main page");
         return "home";

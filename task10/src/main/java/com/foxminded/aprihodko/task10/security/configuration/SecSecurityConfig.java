@@ -22,7 +22,7 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserServiceImpl userDetailsService;
 
     @Autowired
-    public SecSecurityConfig(/* @Qualifier("userServiceImpl") */ UserServiceImpl userDetailsService) {
+    public SecSecurityConfig(UserServiceImpl userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
@@ -38,23 +38,12 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());
-//        auth.userDetailsService(userDetailsService);
     }
-
-//    @Bean
-//    public LogoutSuccessHandler logoutSuccessHandler() {
-//        return new CustomLogoutSuccessHandler();
-//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-//    }
 
     @Override
     @Bean

@@ -58,6 +58,21 @@
 							</select>
 
 						</div>
+						<div class="form-group col-md-8">
+							<label class="col-form-label" for="role">Role</label> <select
+								class="form-control selectpicker" th:field="*{role}">
+								<option
+									th:each="roleOpt : ${T(com.foxminded.aprihodko.task10.models.Role).values()}"
+									th:value="${roleOpt}" th:text="${roleOpt}"></option>
+							</select>
+						</div>
+						<div class="form-group col-md-6">
+							<label class=" col-form-label" for="passwordHash">
+								Password</label> <input class="form-control" id="passwordHash"
+								placeholder="Password" th:field="*{passwordHash}" type="text">
+							<span class="text-danger" th:errors="*{passwordHash}"
+								th:if="${#fields.hasErrors('passwordHash')}"></span>
+						</div>
 						<div class="col-md-8">
 							<input hidden type="text" th:field="*{status}"> <input
 								class="btn btn-primary" type="submit" value="Submit"> <a
