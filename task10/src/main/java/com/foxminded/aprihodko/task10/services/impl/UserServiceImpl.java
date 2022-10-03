@@ -20,7 +20,7 @@ import com.foxminded.aprihodko.task10.models.UserType;
 import com.foxminded.aprihodko.task10.services.UserService;
 
 @Service("userServiceImpl")
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
 

@@ -2,6 +2,8 @@ package com.foxminded.aprihodko.task10.controllers;
 
 import java.sql.SQLException;
 
+import com.foxminded.aprihodko.task10.services.SecurityService;
+import com.foxminded.aprihodko.task10.services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,12 +21,12 @@ import com.foxminded.aprihodko.task10.validator.UserValidator;
 @RequestMapping("/")
 public class RootController {
 
-    private UserServiceImpl userServiceImpl;
+    private UserService userServiceImpl;
     private UserValidator userValidator;
-    private SecurityServiceImpl securityServiceImpl;
+    private SecurityService securityServiceImpl;
 
-    public RootController(UserServiceImpl userService, UserValidator userValidator,
-            SecurityServiceImpl securityService) {
+    public RootController(UserService userService, UserValidator userValidator,
+            SecurityService securityService) {
         this.userServiceImpl = userService;
         this.userValidator = userValidator;
         this.securityServiceImpl = securityService;

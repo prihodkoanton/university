@@ -1,5 +1,6 @@
 package com.foxminded.aprihodko.task10.services.impl;
 
+import com.foxminded.aprihodko.task10.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class SecurityServiceImpl implements SecurityService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private UserServiceImpl userServiceImpl;
+    private UserService userServiceImpl;
 
     @Override
     public String findLoggedInUsername() {

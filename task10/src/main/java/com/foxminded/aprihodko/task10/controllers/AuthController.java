@@ -2,6 +2,7 @@ package com.foxminded.aprihodko.task10.controllers;
 
 import java.sql.SQLException;
 
+import com.foxminded.aprihodko.task10.services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,9 +19,9 @@ import com.foxminded.aprihodko.task10.services.impl.UserServiceImpl;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final UserServiceImpl userServiceImpl;
+    private final UserService userServiceImpl;
 
-    public AuthController(UserServiceImpl userServiceImpl) {
+    public AuthController(UserService userServiceImpl) {
         this.userServiceImpl = userServiceImpl;
     }
 

@@ -8,8 +8,9 @@ import com.foxminded.aprihodko.task10.models.Student;
 import com.foxminded.aprihodko.task10.models.Teacher;
 import com.foxminded.aprihodko.task10.models.User;
 import com.foxminded.aprihodko.task10.models.UserType;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
 
     Optional<User> findById(Long id) throws SQLException;
 
