@@ -29,6 +29,12 @@ public class AuthController {
         return "login";
     }
 
+//    @GetMapping("/registration")
+//    public String registration(Model model) {
+//        model.addAttribute("userReg", new User());
+//        return "registration";
+//    }
+
     @GetMapping("/registration")
     public String showFormForAll(Model model) throws SQLException {
         model.addAttribute("teacher", new Teacher());
@@ -62,5 +68,4 @@ public class AuthController {
             return "redirect:/home";
         }
     }
-
 }

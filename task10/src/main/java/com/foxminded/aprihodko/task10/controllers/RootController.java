@@ -64,7 +64,7 @@ public class RootController {
 //        return "add-user";
 //    }
 
-    @GetMapping("registration")
+    @GetMapping("/registration")
     public String registration(Model model) {
         model.addAttribute("userReg", new User());
         return "registration";
