@@ -28,7 +28,9 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests().antMatchers("/auth/registration").permitAll().anyRequest()
+        http.csrf().disable()
+                .authorizeRequests().antMatchers("/auth/registration", "/users/add").permitAll()
+                .anyRequest()
                 .authenticated().and().formLogin().loginPage("/auth/login").permitAll().defaultSuccessUrl("/home").and()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout", "POST"))
                 .invalidateHttpSession(true).clearAuthentication(true).deleteCookies("JSESSIONID")
