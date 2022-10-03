@@ -30,12 +30,41 @@ public class RootController {
         this.securityServiceImpl = securityService;
     }
 
-    @GetMapping("/login")
-    public String getLoginPage() {
-        return "login";
-    }
+//    @PostMapping("registration")
+//    String postForm(Model model, UserForm form) throws SQLException {
+//        if ("reload".equals(form.getStatus())) {
+//            form.setStatus("");
+//            model.addAttribute(form);
+//            return "add-user";
+//        } else {
+//            User user;
+//            switch (form.getUserType()) {
+//            case "USER":
+//                user = new User(form.getName(), form.getRole(), form.getPasswordHash());
+//                break;
+//            case "STUDENT":
+//                user = new Student(form.getName(), form.getGroupId(), form.getPasswordHash());
+//                break;
+//            case "TEACHER":
+//                user = new Teacher(form.getName(), form.getCourseId(), form.getPasswordHash());
+//                break;
+//            default:
+//                throw new IllegalStateException("Unexpected user type: " + form.getUserType());
+//            }
+//            userServiceImpl.save(user);
+//            return "redirect:/home";
+//        }
+//    }
+//
+//    @GetMapping("registration")
+//    public String showFormForAll(Model model) throws SQLException {
+//        model.addAttribute("teacher", new Teacher());
+//        model.addAttribute("student", new Student());
+//        model.addAttribute("userForm", new UserForm());
+//        return "add-user";
+//    }
 
-    @GetMapping("/registration")
+    @GetMapping("registration")
     public String registration(Model model) {
         model.addAttribute("userReg", new User());
         return "registration";
