@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.foxminded.aprihodko.task10.dao.impl.CourseDaoImpl;
@@ -43,6 +44,7 @@ class RoomControllerTest {
     MockMvc mvc;
 
     @Test
+    @WithMockUser("test")
     void shouldGetListOfRooms() throws Exception {
         when(roomDaoImpl.findAll()).thenReturn(Arrays.asList(new Room("one"), new Room("two"), new Room("three")));
         mvc.perform(get("/rooms/list")).andExpect(status().isOk()).andExpect(content().string(containsString("one")))

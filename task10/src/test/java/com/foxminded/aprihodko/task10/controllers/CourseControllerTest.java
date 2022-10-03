@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.foxminded.aprihodko.task10.dao.impl.CourseDaoImpl;
@@ -43,6 +44,7 @@ class CourseControllerTest {
     MockMvc mvc;
 
     @Test
+    @WithMockUser("test")
     void shouldGetListOfCourses() throws Exception {
         when(courseDaoImpl.findAll()).thenReturn(Arrays.asList(new Course("one", "course one"),
                 new Course("two", "course two"), new Course("three", "course three")));

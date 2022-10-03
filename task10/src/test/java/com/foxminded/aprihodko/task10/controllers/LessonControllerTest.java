@@ -10,9 +10,12 @@ import java.time.DayOfWeek;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.foxminded.aprihodko.task10.dao.impl.CourseDaoImpl;
@@ -22,6 +25,7 @@ import com.foxminded.aprihodko.task10.dao.impl.RoomDaoImpl;
 import com.foxminded.aprihodko.task10.dao.impl.UserDaoImpl;
 import com.foxminded.aprihodko.task10.models.Lesson;
 
+@ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = { LessonController.class })
 class LessonControllerTest {
 
@@ -44,6 +48,7 @@ class LessonControllerTest {
     MockMvc mvc;
 
     @Test
+    @WithMockUser("test")
     void shouldGetListOfLessons() throws Exception {
         when(lessonDaoImpl.findAll()).thenReturn(Arrays.asList(new Lesson(DayOfWeek.MONDAY, 1, 100L, 100L, 100L, 100L),
                 new Lesson(DayOfWeek.TUESDAY, 1, 101L, 101L, 101L, 101L),
