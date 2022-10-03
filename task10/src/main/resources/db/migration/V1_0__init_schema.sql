@@ -22,19 +22,8 @@ create table university.users
     user_type text          not null,
     user_role text          not null,
     user_password text      not null,
-    constraint user_pkey primary key (user_id),
-    unique (user_id),
-    unique (user_role)
+    constraint user_pkey primary key (user_id)
 );
-
-create table university.users_role
-(
-    user_id_ref     bigserial   not null references             university.users (user_id)      ON DELETE CASCADE,
-    user_role_ref   text        not null references             university.users (user_role)    ON DELETE cascade,
-    unique (user_id_ref),
-    unique (user_role_ref)
-);
-
 
 create table university.students
 (
