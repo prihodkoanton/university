@@ -2,6 +2,7 @@ package com.foxminded.aprihodko.task10.controllers;
 
 import java.sql.SQLException;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,6 +36,7 @@ public class GroupController {
     }
 
     @PostMapping("add")
+    @PreAuthorize("hasAuthority('developers:write')")
     public String addGroup(Group group, BindingResult result, Model model) throws SQLException {
         if (result.hasErrors()) {
             return "add-group";
@@ -44,6 +46,7 @@ public class GroupController {
     }
 
     @GetMapping("edit/{id}")
+    @PreAuthorize("hasAuthority('developers:read')")
     public String showUpdateForm(@PathVariable("id") long id, Model model)
             throws IllegalArgumentException, SQLException {
         Group group = this.groupService.findById(id)
@@ -53,6 +56,7 @@ public class GroupController {
     }
 
     @PostMapping("update/{id}")
+    @PreAuthorize("hasAuthority('developers:write')")
     public String updateGroup(@PathVariable("id") long id, Group group, BindingResult result, Model model)
             throws SQLException {
         if (result.hasErrors()) {
@@ -65,6 +69,7 @@ public class GroupController {
     }
 
     @GetMapping("delete/{id}")
+    @PreAuthorize("hasAuthority('developers:write')")
     public String deleteGroup(@PathVariable("id") long id, Model model) throws SQLException {
         Group group = this.groupService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid group id: " + id));

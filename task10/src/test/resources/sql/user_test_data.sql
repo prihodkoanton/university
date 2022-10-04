@@ -9,12 +9,12 @@ VALUES (100, 'AA-01'),
        (101, 'BB-02'),
        (102, 'CC-03');
 
-insert into university.users (user_id, user_name, user_type)
-VALUES (100, 'john', 'TEACHER'),
-       (101, 'peter', 'STUDENT'),
-       (102, 'alice', 'TEACHER'),
-       (103, 'bob', 'STUDENT'),
-       (104, 'none', 'NONE');
+insert into university.users (user_id, user_name, user_type, user_role, user_password)
+VALUES (100, 'john', 'TEACHER', 'USER', '12345678'),
+       (101, 'peter', 'STUDENT', 'USER', '12345678'),
+       (102, 'alice', 'TEACHER', 'USER', '12345678'),
+       (103, 'bob', 'STUDENT', 'USER', '12345678'),
+       (104, 'none', 'NONE', 'ADMIN', '12345678');
 
 insert into university.teachers (user_ref, course_ref)
 VALUES (100, 100),

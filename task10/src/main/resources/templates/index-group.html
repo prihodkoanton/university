@@ -18,14 +18,14 @@
 </head>
 
 <body>
-
+	<header th:insert="fragments/header :: header"></header>
 	<main>
 		<div class="container my-2">
-			<header th:insert="fragments/header :: header"></header>
+
 			<div class="card">
 				<div class="card-body">
 					<div class="container my-5" th:switch="${groups}">
-					
+
 						<p class="my-5">
 							<a class="btn btn-primary" href="/groups/showForm"><i
 								class="fas fa-user-plus ml-2"> Add Group</i></a> <a

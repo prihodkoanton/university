@@ -17,9 +17,11 @@ create table university.groups
 
 create table university.users
 (
-    user_id   bigserial not null,
-    user_name text      not null,
-    user_type text      not null,
+    user_id   bigserial     not null,
+    user_name text          not null,
+    user_type text          not null,
+    user_role text          not null,
+    user_password text      not null,
     constraint user_pkey primary key (user_id)
 );
 

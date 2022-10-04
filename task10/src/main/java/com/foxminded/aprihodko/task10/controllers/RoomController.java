@@ -2,6 +2,7 @@ package com.foxminded.aprihodko.task10.controllers;
 
 import java.sql.SQLException;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,6 +36,7 @@ public class RoomController {
     }
 
     @PostMapping("add")
+    @PreAuthorize("hasAuthority('developers:write')")
     public String addRoom(Room room, BindingResult result, Model model) throws SQLException {
         if (result.hasErrors()) {
             return "add-room";
@@ -44,6 +46,7 @@ public class RoomController {
     }
 
     @GetMapping("edit/{id}")
+    @PreAuthorize("hasAuthority('developers:read')")
     public String showUpdateForm(@PathVariable("id") long id, Model model)
             throws IllegalArgumentException, SQLException {
         Room room = this.roomService.findById(id)
@@ -53,6 +56,7 @@ public class RoomController {
     }
 
     @PostMapping("update/{id}")
+    @PreAuthorize("hasAuthority('developers:write')")
     public String updateRoom(@PathVariable("id") long id, Room room, BindingResult result, Model model)
             throws SQLException {
         if (result.hasErrors()) {
@@ -65,6 +69,7 @@ public class RoomController {
     }
 
     @GetMapping("delete/{id}")
+    @PreAuthorize("hasAuthority('developers:write')")
     public String deleteRoom(@PathVariable("id") long id, Model model) throws IllegalArgumentException, SQLException {
         Room room = this.roomService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid room id" + id));

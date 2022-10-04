@@ -1,39 +1,41 @@
 package com.foxminded.aprihodko.task10.controllers;
 
-import java.sql.SQLException;
-import java.util.List;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.foxminded.aprihodko.task10.models.Course;
-import com.foxminded.aprihodko.task10.models.Group;
-import com.foxminded.aprihodko.task10.models.Student;
-import com.foxminded.aprihodko.task10.models.Teacher;
-import com.foxminded.aprihodko.task10.models.User;
+import com.foxminded.aprihodko.task10.models.*;
 import com.foxminded.aprihodko.task10.models.ui.UserForm;
 import com.foxminded.aprihodko.task10.services.CourseService;
 import com.foxminded.aprihodko.task10.services.GroupService;
+import com.foxminded.aprihodko.task10.services.SecurityService;
 import com.foxminded.aprihodko.task10.services.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import java.sql.SQLException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/users/")
 public class UserController {
 
-    private UserService userService;
-    private CourseService courseService;
-    private GroupService groupService;
+    private final UserService userService;
+    private final CourseService courseService;
+    private final GroupService groupService;
+    private final SecurityService securityService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService, CourseService courseService, GroupService groupService) {
+    public UserController(UserService userService,
+                          CourseService courseService,
+                          GroupService groupService,
+                          SecurityService securityService,
+                          PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.courseService = courseService;
         this.groupService = groupService;
+        this.securityService = securityService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @ModelAttribute("groups")
@@ -65,6 +67,7 @@ public class UserController {
     }
 
     @GetMapping("edit/{id}")
+    @PreAuthorize("hasAuthority('developers:read')")
     public String showUpdateForm(@PathVariable("id") long id, Model model)
             throws IllegalArgumentException, SQLException {
         User user = this.userService.findById(id)
@@ -103,6 +106,7 @@ public class UserController {
     }
 
     @PostMapping("update/{id}")
+    @PreAuthorize("hasAuthority('developers:write')")
     public String updateUser(@PathVariable("id") long id, User user, BindingResult result, Model model)
             throws SQLException {
         if (result.hasErrors()) {
@@ -114,6 +118,7 @@ public class UserController {
     }
 
     @PostMapping("updateTeacher/{id}")
+    @PreAuthorize("hasAuthority('developers:write')")
     public String updateTeacher(@PathVariable("id") long id, Teacher teacher, BindingResult result, Model model)
             throws SQLException {
         if (result.hasErrors()) {
@@ -125,6 +130,7 @@ public class UserController {
     }
 
     @PostMapping("updateStudent/{id}")
+    @PreAuthorize("hasAuthority('developers:write')")
     public String updateStudent(@PathVariable("id") long id, Student student, BindingResult result, Model model)
             throws SQLException {
         if (result.hasErrors()) {
@@ -136,6 +142,7 @@ public class UserController {
     }
 
     @GetMapping("delete/{id}")
+    @PreAuthorize("hasAuthority('developers:write')")
     public String deleteUser(@PathVariable("id") long id, Model model) throws SQLException {
         User user = this.userService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user id: " + id));
@@ -145,6 +152,7 @@ public class UserController {
     }
 
     @PostMapping("add")
+    // @PreAuthorize("hasAuthority('developers:read')")
     String postForm(Model model, UserForm form) throws SQLException {
         if ("reload".equals(form.getStatus())) {
             form.setStatus("");
@@ -152,18 +160,19 @@ public class UserController {
             return "add-user";
         } else {
             User user;
+            String passwordHash = passwordEncoder.encode(form.getPasswordHash());
             switch (form.getUserType()) {
-            case "USER":
-                user = new User(form.getName());
-                break;
-            case "STUDENT":
-                user = new Student(form.getName(), form.getGroupId());
-                break;
-            case "TEACHER":
-                user = new Teacher(form.getName(), form.getCourseId());
-                break;
-            default:
-                throw new IllegalStateException("Unexpected user type: " + form.getUserType());
+                case "USER":
+                    user = new User(form.getName(), form.getRole(), passwordHash);
+                    break;
+                case "STUDENT":
+                    user = new Student(form.getName(), form.getGroupId(), passwordHash);
+                    break;
+                case "TEACHER":
+                    user = new Teacher(form.getName(), form.getCourseId(), passwordHash);
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected user type: " + form.getUserType());
             }
             userService.save(user);
             return "redirect:list";

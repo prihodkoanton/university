@@ -7,56 +7,77 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.foxminded.aprihodko.task10.dao.impl.CourseDaoImpl;
-import com.foxminded.aprihodko.task10.dao.impl.GroupDaoImpl;
-import com.foxminded.aprihodko.task10.dao.impl.LessonDaoImpl;
-import com.foxminded.aprihodko.task10.dao.impl.RoomDaoImpl;
-import com.foxminded.aprihodko.task10.dao.impl.UserDaoImpl;
+import com.foxminded.aprihodko.task10.dao.CourseDao;
+import com.foxminded.aprihodko.task10.dao.GroupDao;
+import com.foxminded.aprihodko.task10.dao.LessonDao;
+import com.foxminded.aprihodko.task10.dao.RoomDao;
+import com.foxminded.aprihodko.task10.dao.UserDao;
+import com.foxminded.aprihodko.task10.models.Role;
 import com.foxminded.aprihodko.task10.models.User;
 import com.foxminded.aprihodko.task10.models.UserType;
 import com.foxminded.aprihodko.task10.services.UserService;
 
-@ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = { UserController.class })
 class UserControllerTest {
 
     @MockBean
-    UserService userServiceImpl;
+    UserService userService;
 
     @MockBean
-    CourseDaoImpl courseDaoImpl;
+    CourseDao courseDaoImpl;
 
     @MockBean
-    GroupDaoImpl groupDaoImpl;
+    GroupDao groupDaoImpl;
 
     @MockBean
-    LessonDaoImpl lessonDaoImpl;
+    LessonDao lessonDaoImpl;
 
     @MockBean
-    RoomDaoImpl roomDaoImpl;
+    RoomDao roomDaoImpl;
 
     @MockBean
-    UserDaoImpl userDaoImpl;
+    UserDao userDaoImpl;
 
     @Autowired
     MockMvc mvc;
 
     @Test
+    @WithMockUser("test")
     void shouldGetListOfUsers() throws Exception {
-        when(userServiceImpl.findAll()).thenReturn(Arrays.asList(new User("teacher", UserType.TEACHER),
-                new User("student", UserType.STUDENT), new User("none", UserType.NONE)));
+        when(userService.findAll())
+                .thenReturn(Arrays.asList(new User("teacher", UserType.TEACHER, Role.USER, "12345678"),
+                        new User("student", UserType.STUDENT, Role.USER, "12345678"),
+                        new User("none", UserType.NONE, Role.ADMIN, "12345678")));
         mvc.perform(get("/users/list")).andExpect(status().isOk())
                 .andExpect(content().string(containsString("teacher")))
                 .andExpect(content().string(containsString("student")))
                 .andExpect(content().string(containsString("none")));
+    }
+
+    @Test
+    @WithMockUser(authorities = "developers:read")
+    void shouldAllowUserEdit() throws Exception {
+        when(userService.findById(1L))
+                .thenReturn(Optional.of(new User(1L, "John Wick", UserType.STUDENT, Role.USER, "")));
+
+        mvc.perform(get("/users/edit/1")).andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser("test") // logged in, but no req authority
+    void shouldDenyUserEdit() throws Exception {
+        when(userService.findById(1L))
+                .thenReturn(Optional.of(new User(1L, "John Wick", UserType.STUDENT, Role.USER, "")));
+
+        mvc.perform(get("/users/edit/1")).andExpect(status().isForbidden());
     }
 }
