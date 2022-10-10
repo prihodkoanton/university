@@ -10,32 +10,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import javax.annotation.PostConstruct;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.foxminded.aprihodko.task10.BaseDaoTest;
 import com.foxminded.aprihodko.task10.dao.CourseDao;
 import com.foxminded.aprihodko.task10.models.Course;
 
-@JdbcTest
+@SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class CourseDaoImplTest extends BaseDaoTest {
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
-
-    private CourseDao courseDao;
-
-    @PostConstruct
-    void init() {
-        courseDao = new CourseDaoImpl(jdbcTemplate);
-    }
+    CourseDao courseDao;
 
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/course_test_data.sql" })
@@ -56,6 +47,7 @@ class CourseDaoImplTest extends BaseDaoTest {
 
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/course_test_data.sql" })
+    @Transactional
     void shouldNotDeleteById() throws SQLException {
         Exception e = assertThrows(SQLException.class, () -> courseDao.deleteById(10L));
         assertEquals("Unable to delete course (id = 10)", e.getMessage());
@@ -63,6 +55,7 @@ class CourseDaoImplTest extends BaseDaoTest {
 
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/course_test_data.sql" })
+    @Transactional
     void shouldDeleteById() throws SQLException {
         courseDao.deleteById(100L);
         Optional<Course> shouldBeEmpty = courseDao.findById(100L);
@@ -87,6 +80,7 @@ class CourseDaoImplTest extends BaseDaoTest {
 
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/course_test_data.sql" })
+    @Transactional
     void shouldCreateCourse() throws SQLException {
         Course expected = new Course("java", "Java course");
         Course actual = courseDao.save(expected);

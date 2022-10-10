@@ -1,8 +1,20 @@
 package com.foxminded.aprihodko.task10.models;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class User extends LongEntity {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "university.users")
+@Inheritance(strategy = InheritanceType.JOINED)
+public class User extends LongEntity implements Serializable {
 
     public static final String USER_ID = "user_id";
     public static final String USER_NAME = "user_name";
@@ -10,9 +22,16 @@ public class User extends LongEntity {
     public static final String USER_ROLE = "user_role";
     public static final String USER_PASSWORD = "user_password";
 
+    @Column(name = "user_name")
     private String name;
+
+    @Enumerated(EnumType.STRING)
     private UserType type;
+
+    @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Column(name = "user_password")
     private String passwordHash;
 
     public User(Long id, String name, UserType type, Role role, String passwordHash) {

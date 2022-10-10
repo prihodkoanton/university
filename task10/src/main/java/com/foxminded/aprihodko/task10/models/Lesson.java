@@ -1,9 +1,15 @@
 package com.foxminded.aprihodko.task10.models;
 
+import java.io.Serializable;
 import java.time.DayOfWeek;
 import java.util.Objects;
 
-public class Lesson extends LongEntity {
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "university.lessons")
+public class Lesson extends LongEntity implements Serializable {
 
     public static final String LESSON_ID = "lesson_id";
     public static final String LESSON_DAY_OF_WEEK = "lesson_day_of_week";

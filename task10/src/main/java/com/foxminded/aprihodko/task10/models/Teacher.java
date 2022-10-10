@@ -1,11 +1,19 @@
 package com.foxminded.aprihodko.task10.models;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Teacher extends User {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "university.teachers")
+public class Teacher extends User implements Serializable {
 
     public static final String COURSE_REF = "course_ref";
 
+    @Column(name = "course_ref")
     private Long courseId;
 
     public Teacher(Long id, String name, Long courseId) {

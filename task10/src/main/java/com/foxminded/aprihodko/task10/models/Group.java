@@ -1,12 +1,20 @@
 package com.foxminded.aprihodko.task10.models;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Group extends LongEntity {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "university.groups")
+public class Group extends LongEntity implements Serializable {
 
     public static final String GROUP_ID = "group_id";
     public static final String GROUP_NAME = "group_name";
 
+    @Column(name = "group_name")
     private String name;
 
     public Group(Long id, String name) {
@@ -67,5 +75,4 @@ public class Group extends LongEntity {
     public String toString() {
         return "Group [name=" + name + ", id=" + id + "]";
     }
-
 }

@@ -24,6 +24,7 @@ import com.foxminded.aprihodko.task10.models.Student;
 import com.foxminded.aprihodko.task10.models.Teacher;
 import com.foxminded.aprihodko.task10.models.User;
 import com.foxminded.aprihodko.task10.models.UserType;
+import com.foxminded.aprihodko.task10.services.UserService;
 import com.foxminded.aprihodko.task10.services.impl.UserServiceImpl;
 
 @SpringBootTest(classes = { UserServiceImpl.class })
@@ -33,7 +34,7 @@ class UserServiceImplTest extends BaseDaoTest {
     UserDao userDao;
 
     @Autowired
-    private UserServiceImpl userServiceImpl;
+    private UserService userServiceImpl;
 
     @Test
     void shouldFindById() throws SQLException {
@@ -88,5 +89,4 @@ class UserServiceImplTest extends BaseDaoTest {
         user.setId(actual.getId());
         assertEquals(expected, actual);
     }
-
 }

@@ -19,6 +19,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import com.foxminded.aprihodko.task10.BaseDaoTest;
 import com.foxminded.aprihodko.task10.dao.GroupDao;
 import com.foxminded.aprihodko.task10.models.Group;
+import com.foxminded.aprihodko.task10.services.GroupService;
 import com.foxminded.aprihodko.task10.services.impl.GroupServiceImpl;
 
 @SpringBootTest(classes = { GroupServiceImpl.class })
@@ -28,7 +29,7 @@ class GroupServiceImplTest extends BaseDaoTest {
     GroupDao groupDao;
 
     @Autowired
-    private GroupServiceImpl groupServiceImpl;
+    private GroupService groupServiceImpl;
 
     @Test
     void shouldFindById() throws SQLException {

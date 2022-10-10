@@ -1,8 +1,14 @@
 package com.foxminded.aprihodko.task10.models;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Student extends User {
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "university.students")
+public class Student extends User implements Serializable {
 
     public static final String GROUP_REF = "group_ref";
     private Long groupId;
@@ -33,6 +39,16 @@ public class Student extends User {
 
     public Student() {
 
+    }
+
+    @Override
+    public Long getId() {
+        return super.getId();
+    }
+
+    @Override
+    public void setId(Long id) {
+        super.setId(id);
     }
 
     public Long getGroupId() {
