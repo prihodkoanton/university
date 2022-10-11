@@ -4,7 +4,10 @@ import java.io.Serializable;
 import java.time.DayOfWeek;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
 @Entity
@@ -19,11 +22,23 @@ public class Lesson extends LongEntity implements Serializable {
     public static final String COURSE_REF = "course_ref";
     public static final String TEACHER_REF = "teacher_ref";
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "lesson_day_of_week")
     private DayOfWeek dayOfWeek;
+
+    @Column(name = "lesson_time_span")
     private int timeSpan;
+
+    @Column(name = "room_ref")
     private Long roomId;
+
+    @Column(name = "group_ref")
     private Long groupId;
+
+    @Column(name = "course_ref")
     private Long courseId;
+
+    @Column(name = "teacher_ref")
     private Long teacherId;
 
     public Lesson(Long id, DayOfWeek dayOfWeek, int timeSpan, Long roomId, Long groupId, Long courseId,

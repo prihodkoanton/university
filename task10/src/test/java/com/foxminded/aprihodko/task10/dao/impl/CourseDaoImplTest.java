@@ -32,7 +32,6 @@ class CourseDaoImplTest extends BaseDaoTest {
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/course_test_data.sql" })
     void shouldFindById() throws SQLException {
-        List<Course> actual1 = courseDao.findAll();
         Course expected = new Course(100L, "java", "Java course");
         Course actual = courseDao.findById(100L).orElseThrow();
         assertEquals(expected, actual);
@@ -56,6 +55,7 @@ class CourseDaoImplTest extends BaseDaoTest {
 
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/course_test_data.sql" })
+    @Transactional
     void shouldDeleteById() throws SQLException {
         courseDao.deleteById(100L);
         Optional<Course> shouldBeEmpty = courseDao.findById(100L);
