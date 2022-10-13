@@ -1,21 +1,20 @@
 package com.foxminded.aprihodko.task10.dao.impl;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.foxminded.aprihodko.task10.dao.AbstractCrudDao;
 import com.foxminded.aprihodko.task10.dao.UserDao;
-import com.foxminded.aprihodko.task10.dao.mapper.UserMapper;
 import com.foxminded.aprihodko.task10.models.Student;
 import com.foxminded.aprihodko.task10.models.Teacher;
 import com.foxminded.aprihodko.task10.models.User;
@@ -23,6 +22,9 @@ import com.foxminded.aprihodko.task10.models.UserType;
 
 @Repository
 public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao {
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     private static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
 
@@ -46,122 +48,114 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
     public static final String FIND_STUDENT_BY_GROUP_ID = "select * from university.students s left join university.users u on s.user_ref = u.user_id   where group_ref = ?";
     public static final String FIND_TEACHER_BY_COURSE_ID = "select * from university.teachers t left join university.users u on t.user_ref = u.user_id   where course_ref = ?";
 
-    private final JdbcTemplate jdbcTemplate;
-    private final UserMapper mapper;
-    private SimpleJdbcInsert simpleJdbcInsert;
-    private SimpleJdbcInsert simpleJdbcInsertStud;
-    private SimpleJdbcInsert simpleJdbcInsertTeach;
-
-    public UserDaoImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-        mapper = new UserMapper();
-        simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate.getDataSource()).withTableName("university.users")
-                .usingColumns("user_name", "user_type", "user_role", "user_password")
-                .usingGeneratedKeyColumns("user_id");
-        simpleJdbcInsertStud = new SimpleJdbcInsert(jdbcTemplate.getDataSource()).withTableName("university.students")
-                .usingColumns("user_ref", "group_ref");
-        simpleJdbcInsertTeach = new SimpleJdbcInsert(jdbcTemplate.getDataSource()).withTableName("university.teachers")
-                .usingColumns("user_ref", "course_ref");
-    }
-
     @Override
     public Optional<User> findById(Long id) throws SQLException {
-        return jdbcTemplate.query(FIND_BY_ID, mapper, id).stream().findFirst();
+//        TypedQuery<User> query = entityManager.createQuery(
+//                "Select u from User u LEFT JOIN u.university.students s LEFT JOIN u.university.teachers t WHERE u.id = "
+//                        + id,
+//                User.class);
+        User user = (User) entityManager.createNativeQuery(
+                "select * from university.users u left join university.students s on u.id = s.id left join university.teachers t on u.id = t.id where u.id = "
+                        + id,
+                User.class).getSingleResult();
+        if (user instanceof Student) {
+            Student student = (Student) user;
+            return student != null ? Optional.of(student) : Optional.empty();
+        } else if (user instanceof Teacher) {
+            Teacher teacher = (Teacher) user;
+            return teacher != null ? Optional.of(teacher) : Optional.empty();
+        }
+        return user != null ? Optional.of(user) : Optional.empty();
     }
 
     @Override
     public List<User> findAll() throws SQLException {
-        return jdbcTemplate.query(FIND_ALL, mapper);
+        TypedQuery<User> query = entityManager.createQuery("Select u From User u", User.class);
+        return query.getResultList();
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) throws SQLException {
-        int deleteRowCount = jdbcTemplate.update(DELETE_BY_ID, id);
-        if (deleteRowCount != 1) {
-            logger.error("Unable to user group (id = " + id + ")");
-            throw new SQLException("Unable to delete course (id = " + id + ")");
+        try {
+            User user = findById(id).orElseThrow();
+            entityManager.remove(user);
+        } catch (Exception e) {
+            logger.error("Unable to user user (id = " + id + ")");
+            throw new SQLException("Unable to delete user (id = " + id + ")" + e.getMessage());
         }
     }
 
     @Override
     public Optional<User> findByName(String name) {
-        return jdbcTemplate.query(FIND_BY_NAME, mapper, name).stream().findFirst();
+        TypedQuery<User> query = entityManager.createQuery("From User WHERE user_name = '" + name + "'", User.class);
+        User user = query.getSingleResult();
+        return user != null ? Optional.of(user) : Optional.empty();
     }
 
     @Override
     public List<User> findByType(UserType userType) {
-        return jdbcTemplate.query(FIND_BY_USER_TYPE, mapper, userType.name());
+        TypedQuery<User> query = entityManager.createQuery("From User WHERE user_type = '" + userType.toString() + "'",
+                User.class);
+        return query.getResultList();
     }
 
     @Override
+    @Transactional
     public User create(User entity) throws SQLException {
-        Map<String, Object> usersParameters = new HashMap<String, Object>();
-        usersParameters.put("user_name", entity.getName());
-        usersParameters.put("user_type", entity.getType().toString());
-        usersParameters.put("user_role", entity.getRole().toString());
-        usersParameters.put("user_password", entity.getPasswordHash());
-        Number id = simpleJdbcInsert.executeAndReturnKey(usersParameters);
-        if (id == null) {
+        try {
+            entityManager.persist(entity);
+            if (entity instanceof Student) {
+                Student student = (Student) entity;
+                return new Student(student.getId(), student.getName(), student.getGroupId());
+            } else if (entity instanceof Teacher) {
+                Teacher teacher = (Teacher) entity;
+                return new Teacher(teacher.getId(), teacher.getName(), teacher.getCourseId());
+            }
+        } catch (Exception e) {
             logger.error("Unable to create User:{}", entity);
             throw new SQLException("Unable to retrieve id" + entity.getId());
         }
-        if (entity instanceof Student) {
-            Student student = (Student) entity;
-            Map<String, Object> studParameters = new HashMap<String, Object>();
-            studParameters.put("user_ref", id.longValue());
-            studParameters.put("group_ref", student.getGroupId());
-            simpleJdbcInsertStud.execute(studParameters);
-            return new Student(id.longValue(), student.getName(), student.getGroupId());
-        } else if (entity instanceof Teacher) {
-            Teacher teacher = (Teacher) entity;
-            Map<String, Object> taechParameters = new HashMap<String, Object>();
-            taechParameters.put("user_ref", id.longValue());
-            taechParameters.put("course_ref", teacher.getCourseId());
-            simpleJdbcInsertTeach.execute(taechParameters);
-            return new Teacher(id.longValue(), teacher.getName(), teacher.getCourseId());
-        }
-        return new User(id.longValue(), entity.getName(), entity.getType(), entity.getRole(), entity.getPasswordHash());
+        return new User(entity.getId(), entity.getName(), entity.getType(), entity.getRole(), entity.getPasswordHash());
     }
 
     @Override
+    @Transactional
     public User update(User entity) throws SQLException {
-        int updatedUserRowCount = jdbcTemplate.update(UPDATE, entity.getName(), entity.getType().toString(),
-                entity.getRole().toString(), entity.getPasswordHash(), entity.getId());
-        if (updatedUserRowCount != 1) {
+        try {
+            User user = findById(entity.getId()).orElseThrow();
+            entityManager.merge(user);
+            if (entity instanceof Student) {
+                Student student = (Student) entity;
+//            logger.error("Unable to update Student:{}", student);
+//            throw new SQLException("Unable to update Student", student.toString());\
+                return new Student(student.getId(), student.getName(), student.getGroupId());
+            } else if (entity instanceof Teacher) {
+                Teacher teacher = (Teacher) entity;
+//                logger.error("Unable to update Teacher:{}", teacher);
+//                throw new SQLException("Unable to update Teacher", teacher.toString());
+                return new Teacher(teacher.getId(), teacher.getName(), teacher.getCourseId());
+            }
+        } catch (Exception e) {
             logger.error("Unable to update User:{}", entity);
             throw new SQLException("Unable to update user" + entity.getId());
-        }
-        if (entity instanceof Student) {
-            Student student = (Student) entity;
-            int updatedStudentRowCount = jdbcTemplate.update(UPDATE_GROUP_FOR_STUDENT, student.getGroupId(),
-                    student.getId());
-            if (updatedStudentRowCount != 1) {
-                logger.error("Unable to update Student:{}", student);
-                throw new SQLException("Unable to update Student", student.toString());
-            }
-            return new Student(student.getId(), student.getName(), student.getGroupId());
-        } else if (entity instanceof Teacher) {
-            Teacher teacher = (Teacher) entity;
-            int updatedTeacherRowCount = jdbcTemplate.update(UPDATE_COURSE_FOR_TEACHER, teacher.getCourseId(),
-                    teacher.getId());
-            if (updatedTeacherRowCount != 1) {
-                logger.error("Unable to update Teacher:{}", teacher);
-                throw new SQLException("Unable to update Teacher", teacher.toString());
-            }
-            return new Teacher(teacher.getId(), teacher.getName(), teacher.getCourseId());
         }
         return new User(entity.getId(), entity.getName(), entity.getType(), entity.getRole(), entity.getPasswordHash());
     }
 
     @Override
     public List<Teacher> findTeacherByCourseId(Long courseId) throws SQLException {
-        return jdbcTemplate.query(FIND_TEACHER_BY_COURSE_ID, mapper, courseId).stream().map(u -> (Teacher) u)
-                .collect(Collectors.toList());
+//
+        TypedQuery<Teacher> query = entityManager.createQuery(
+                "Select t from Teacher t LEFT JOIN t.university.users u WHERE u.course_ref = " + courseId,
+                Teacher.class);
+        return query.getResultList();
     }
 
     @Override
-    public List<Student> findStudentByGroupId(Long courseId) throws SQLException {
-        return jdbcTemplate.query(FIND_STUDENT_BY_GROUP_ID, mapper, courseId).stream().map(u -> (Student) u)
-                .collect(Collectors.toList());
+    public List<Student> findStudentByGroupId(Long groupId) throws SQLException {
+        TypedQuery<Student> query = entityManager.createQuery(
+                "Select s from Student s LEFT JOIN s.university.users u WHERE u.group_ref = " + groupId, Student.class);
+        return query.getResultList();
     }
 }

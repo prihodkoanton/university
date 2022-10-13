@@ -9,14 +9,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import javax.annotation.PostConstruct;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.foxminded.aprihodko.task10.BaseDaoTest;
 import com.foxminded.aprihodko.task10.dao.UserDao;
@@ -26,19 +24,12 @@ import com.foxminded.aprihodko.task10.models.Teacher;
 import com.foxminded.aprihodko.task10.models.User;
 import com.foxminded.aprihodko.task10.models.UserType;
 
-@JdbcTest
+@SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class UserDaoImplTest extends BaseDaoTest {
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
-
     private UserDao userDao;
-
-    @PostConstruct
-    void init() {
-        userDao = new UserDaoImpl(jdbcTemplate);
-    }
 
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
@@ -69,6 +60,7 @@ class UserDaoImplTest extends BaseDaoTest {
 
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
+    @Transactional
     void shoudlDeleteTeacherById() throws SQLException {
         userDao.deleteById(100L);
         Optional<User> shouldBeEmpty = userDao.findById(100L);
@@ -77,6 +69,7 @@ class UserDaoImplTest extends BaseDaoTest {
 
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
+    @Transactional
     void shoudlDeleteStudentById() throws SQLException {
         userDao.deleteById(101L);
         Optional<User> shouldBeEmpty = userDao.findById(5L);

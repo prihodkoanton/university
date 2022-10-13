@@ -11,6 +11,7 @@ import javax.persistence.TypedQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.foxminded.aprihodko.task10.dao.AbstractCrudDao;
 import com.foxminded.aprihodko.task10.dao.CourseDao;
@@ -37,9 +38,15 @@ public class CourseDaoImpl extends AbstractCrudDao<Course, Long> implements Cour
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) throws SQLException {
-        Course course = findById(id).orElseThrow();
-        entityManager.remove(course);
+        try {
+            Course course = findById(id).orElseThrow();
+            entityManager.remove(course);
+        } catch (Exception e) {
+            logger.error("Unable to user course (id = " + id + ")");
+            throw new SQLException("Unable to delete course (id = " + id + ")");
+        }
     }
 
     @Override
@@ -59,12 +66,14 @@ public class CourseDaoImpl extends AbstractCrudDao<Course, Long> implements Cour
     }
 
     @Override
+    @Transactional
     public Course create(Course entity) throws SQLException {
         entityManager.persist(entity);
         return new Course(entity.getId(), entity.getName(), entity.getDescription());
     }
 
     @Override
+    @Transactional
     public Course update(Course entity) throws SQLException {
         Course course = findById(entity.getId()).orElseThrow();
         entityManager.merge(course);

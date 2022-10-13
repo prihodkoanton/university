@@ -27,13 +27,13 @@ create table university.users
 
 create table university.students
 (
-    user_ref  bigint PRIMARY KEY references university.users (id) ON DELETE CASCADE,
+    id  bigint PRIMARY KEY references university.users (id) ON DELETE CASCADE,
     group_ref bigint REFERENCES university.groups (id) ON DELETE CASCADE
 );
 
 create table university.teachers
 (
-    user_ref   bigint primary key references university.users (id) ON DELETE CASCADE,
+    id   bigint primary key references university.users (id) ON DELETE CASCADE,
     course_ref bigint references university.courses (id)ON DELETE CASCADE
 );
 

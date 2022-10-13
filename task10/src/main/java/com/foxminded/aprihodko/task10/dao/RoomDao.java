@@ -6,5 +6,5 @@ import com.foxminded.aprihodko.task10.models.Room;
 
 public interface RoomDao extends CrudDao<Room, Long> {
 
-    Optional<Room> findByTitle(String name);
+    Optional<Room> findByTitle(String title);
 }

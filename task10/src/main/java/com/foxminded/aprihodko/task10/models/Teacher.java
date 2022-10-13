@@ -5,6 +5,8 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -15,6 +17,9 @@ public class Teacher extends User implements Serializable {
 
     @Column(name = "course_ref")
     private Long courseId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Course course;
 
     public Teacher(Long id, String name, Long courseId) {
         super(id, name, UserType.TEACHER, Role.USER);

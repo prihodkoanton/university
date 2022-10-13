@@ -11,6 +11,7 @@ import javax.persistence.TypedQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.foxminded.aprihodko.task10.dao.AbstractCrudDao;
 import com.foxminded.aprihodko.task10.dao.GroupDao;
@@ -37,6 +38,7 @@ public class GroupDaoImpl extends AbstractCrudDao<Group, Long> implements GroupD
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) throws SQLException {
         Group group = findById(id).orElseThrow();
         entityManager.remove(group);
@@ -51,12 +53,14 @@ public class GroupDaoImpl extends AbstractCrudDao<Group, Long> implements GroupD
     }
 
     @Override
+    @Transactional
     public Group create(Group entity) throws SQLException {
         entityManager.persist(entity);
         return new Group(entity.getId(), entity.getName());
     }
 
     @Override
+    @Transactional
     public Group update(Group entity) throws SQLException {
         Group group = findById(entity.getId()).orElseThrow();
         entityManager.merge(group);

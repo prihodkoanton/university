@@ -55,7 +55,6 @@ class CourseDaoImplTest extends BaseDaoTest {
 
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/course_test_data.sql" })
-    @Transactional
     void shouldDeleteById() throws SQLException {
         courseDao.deleteById(100L);
         Optional<Course> shouldBeEmpty = courseDao.findById(100L);

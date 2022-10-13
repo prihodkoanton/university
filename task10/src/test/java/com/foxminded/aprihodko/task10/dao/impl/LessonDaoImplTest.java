@@ -50,7 +50,6 @@ class LessonDaoImplTest extends BaseDaoTest {
 
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/lesson_test_data.sql" })
-    @Transactional
     void shoudlDeleteById() throws SQLException {
         lessonDao.deleteById(100L);
         Optional<Lesson> shouldBeEmty = lessonDao.findById(100L);

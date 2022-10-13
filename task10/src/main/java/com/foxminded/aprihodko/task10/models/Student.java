@@ -3,7 +3,10 @@ package com.foxminded.aprihodko.task10.models;
 import java.io.Serializable;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -11,7 +14,12 @@ import javax.persistence.Table;
 public class Student extends User implements Serializable {
 
     public static final String GROUP_REF = "group_ref";
+
+    @Column(name = "group_ref")
     private Long groupId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Group group;
 
     public Student(Long id, String name, Long groupId) {
         super(id, name, UserType.STUDENT, Role.USER);

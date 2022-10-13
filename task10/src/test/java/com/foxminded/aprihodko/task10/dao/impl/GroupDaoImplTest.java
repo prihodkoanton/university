@@ -55,7 +55,6 @@ class GroupDaoImplTest extends BaseDaoTest {
 
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/group_test_data.sql" })
-    @Transactional
     void shouldDeleteById() throws SQLException {
         groupDao.deleteById(100L);
         Optional<Group> shouldBeEmpty = groupDao.findById(100L);

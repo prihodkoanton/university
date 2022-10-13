@@ -26,9 +26,11 @@ public class User extends LongEntity implements Serializable {
     private String name;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "user_type")
     private UserType type;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "user_role")
     private Role role;
 
     @Column(name = "user_password")
