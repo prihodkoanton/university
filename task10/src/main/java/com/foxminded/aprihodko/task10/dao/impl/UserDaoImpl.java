@@ -29,41 +29,8 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
 
     private static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
 
-    public static final String FIND_BY_ID = "select * from university.users u left join university.students s on u.user_id = s.user_ref left join university.teachers t on u.user_id = t.user_ref where u.user_id = ?";
-    public static final String FIND_ALL = "" + "select *\n" + "from university.users u\n"
-            + "         left join university.students s on u.user_id = s.user_ref\n"
-            + "         left join university.teachers t on u.user_id = t.user_ref;";
-    public static final String DELETE_BY_ID = "DELETE FROM university.users WHERE user_id = ?";
-    public static final String FIND_BY_NAME = "select *\n" + "from university.users u\n"
-            + "         left join university.students s on u.user_id = s.user_ref\n"
-            + "         left join university.teachers t on u.user_id = t.user_ref\n" + "where user_name = ?;";
-    public static final String FIND_BY_USER_TYPE = "" + "select *\n" + "from university.users u\n"
-            + "         left join university.students s on u.user_id = s.user_ref\n"
-            + "         left join university.teachers t on u.user_id = t.user_ref\n" + "where user_type = ?;";
-    public static final String CREATE_USER = "INSERT INTO university.users(user_name, user_type, user_role, user_password) VALUES  (?, ?, ?, ?)";
-    public static final String CREATE_STUDENT = "INSERT INTO university.students(group_ref) VALUES (?)";
-    public static final String CREATE_TEACHER = "INSERT INTO university.teachers(course_ref) VALUES (?)";
-    public static final String UPDATE = "UPDATE university.users SET user_name = ?, user_type = ?, user_role = ?, user_password = ?  WHERE user_id = ?";
-    public static final String UPDATE_GROUP_FOR_STUDENT = "UPDATE university.students SET group_ref = ? WHERE user_ref = ?";
-    public static final String UPDATE_COURSE_FOR_TEACHER = "UPDATE university.teachers SET course_ref = ? WHERE user_ref = ?";
-    public static final String FIND_STUDENT_BY_GROUP_ID = "select * from university.students s left join university.users u on s.user_ref = u.user_id   where group_ref = ?";
-    public static final String FIND_TEACHER_BY_COURSE_ID = "select * from university.teachers t left join university.users u on t.user_ref = u.user_id   where course_ref = ?";
-
     @Override
     public Optional<User> findById(Long id) throws SQLException {
-//        User user = (User) entityManager.createNativeQuery(
-//                "select * from users AS u left join students AS s on u.id = s.id left join teachers AS t on u.id = t.id where u.id = "
-//                        + id,
-//                User.class).getSingleResult();
-//        if (user instanceof Teacher) {
-//            Teacher teacher = (Teacher) user;
-//            return teacher != null ? Optional.of(teacher) : Optional.empty();
-//        }
-//        if (user instanceof Student) {
-//            Student student = (Student) user;
-//            return student != null ? Optional.of(student) : Optional.empty();
-//
-//        }
         User user = entityManager.find(User.class, id);
         return user != null ? Optional.of(user) : Optional.empty();
     }
@@ -103,21 +70,21 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
     @Override
     @Transactional
     public User create(User entity) throws SQLException {
-//        try {
-        entityManager.persist(entity);
-        if (entity instanceof Student) {
-            Student student = (Student) entity;
-            entityManager.persist(student);
-            return new Student(student.getId(), student.getName(), student.getGroupId());
-        } else if (entity instanceof Teacher) {
-            Teacher teacher = (Teacher) entity;
-            entityManager.persist(teacher);
-            return new Teacher(teacher.getId(), teacher.getName(), teacher.getCourseId());
+        try {
+            entityManager.persist(entity);
+            if (entity instanceof Student) {
+                Student student = (Student) entity;
+                entityManager.persist(student);
+                return new Student(student.getId(), student.getName(), student.getGroupId());
+            } else if (entity instanceof Teacher) {
+                Teacher teacher = (Teacher) entity;
+                entityManager.persist(teacher);
+                return new Teacher(teacher.getId(), teacher.getName(), teacher.getCourseId());
+            }
+        } catch (Exception e) {
+            logger.error("Unable to create User:{}", entity);
+            throw new SQLException("Unable to retrieve id " + entity.getId());
         }
-//        } catch (Exception e) {
-//            logger.error("Unable to create User:{}", entity);
-//            throw new SQLException("Unable to retrieve id " + entity.getId());
-//        }
         return new User(entity.getId(), entity.getName(), entity.getType(), entity.getRole(), entity.getPasswordHash());
     }
 
@@ -143,7 +110,6 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
 
     @Override
     public List<Teacher> findTeacherByCourseId(Long courseId) throws SQLException {
-//
         Query query = entityManager.createNativeQuery(
                 "Select * from teachers AS t LEFT JOIN users AS u ON u.id = t.id WHERE t.course_id = " + courseId,
                 Teacher.class);
