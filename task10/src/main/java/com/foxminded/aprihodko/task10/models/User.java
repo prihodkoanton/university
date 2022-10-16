@@ -12,7 +12,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "university.users")
+@Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User extends LongEntity implements Serializable {
 

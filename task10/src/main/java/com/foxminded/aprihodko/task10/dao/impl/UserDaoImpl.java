@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.slf4j.Logger;
@@ -50,21 +51,20 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
 
     @Override
     public Optional<User> findById(Long id) throws SQLException {
-//        TypedQuery<User> query = entityManager.createQuery(
-//                "Select u from User u LEFT JOIN u.university.students s LEFT JOIN u.university.teachers t WHERE u.id = "
+//        User user = (User) entityManager.createNativeQuery(
+//                "select * from users AS u left join students AS s on u.id = s.id left join teachers AS t on u.id = t.id where u.id = "
 //                        + id,
-//                User.class);
-        User user = (User) entityManager.createNativeQuery(
-                "select * from university.users u left join university.students s on u.id = s.id left join university.teachers t on u.id = t.id where u.id = "
-                        + id,
-                User.class).getSingleResult();
-        if (user instanceof Student) {
-            Student student = (Student) user;
-            return student != null ? Optional.of(student) : Optional.empty();
-        } else if (user instanceof Teacher) {
-            Teacher teacher = (Teacher) user;
-            return teacher != null ? Optional.of(teacher) : Optional.empty();
-        }
+//                User.class).getSingleResult();
+//        if (user instanceof Teacher) {
+//            Teacher teacher = (Teacher) user;
+//            return teacher != null ? Optional.of(teacher) : Optional.empty();
+//        }
+//        if (user instanceof Student) {
+//            Student student = (Student) user;
+//            return student != null ? Optional.of(student) : Optional.empty();
+//
+//        }
+        User user = entityManager.find(User.class, id);
         return user != null ? Optional.of(user) : Optional.empty();
     }
 
@@ -78,7 +78,7 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
     @Transactional
     public void deleteById(Long id) throws SQLException {
         try {
-            User user = findById(id).orElseThrow();
+            User user = entityManager.find(User.class, id);
             entityManager.remove(user);
         } catch (Exception e) {
             logger.error("Unable to user user (id = " + id + ")");
@@ -103,19 +103,21 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
     @Override
     @Transactional
     public User create(User entity) throws SQLException {
-        try {
-            entityManager.persist(entity);
-            if (entity instanceof Student) {
-                Student student = (Student) entity;
-                return new Student(student.getId(), student.getName(), student.getGroupId());
-            } else if (entity instanceof Teacher) {
-                Teacher teacher = (Teacher) entity;
-                return new Teacher(teacher.getId(), teacher.getName(), teacher.getCourseId());
-            }
-        } catch (Exception e) {
-            logger.error("Unable to create User:{}", entity);
-            throw new SQLException("Unable to retrieve id" + entity.getId());
+//        try {
+        entityManager.persist(entity);
+        if (entity instanceof Student) {
+            Student student = (Student) entity;
+            entityManager.persist(student);
+            return new Student(student.getId(), student.getName(), student.getGroupId());
+        } else if (entity instanceof Teacher) {
+            Teacher teacher = (Teacher) entity;
+            entityManager.persist(teacher);
+            return new Teacher(teacher.getId(), teacher.getName(), teacher.getCourseId());
         }
+//        } catch (Exception e) {
+//            logger.error("Unable to create User:{}", entity);
+//            throw new SQLException("Unable to retrieve id " + entity.getId());
+//        }
         return new User(entity.getId(), entity.getName(), entity.getType(), entity.getRole(), entity.getPasswordHash());
     }
 
@@ -124,16 +126,12 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
     public User update(User entity) throws SQLException {
         try {
             User user = findById(entity.getId()).orElseThrow();
-            entityManager.merge(user);
+            entityManager.persist(user);
             if (entity instanceof Student) {
                 Student student = (Student) entity;
-//            logger.error("Unable to update Student:{}", student);
-//            throw new SQLException("Unable to update Student", student.toString());\
                 return new Student(student.getId(), student.getName(), student.getGroupId());
             } else if (entity instanceof Teacher) {
                 Teacher teacher = (Teacher) entity;
-//                logger.error("Unable to update Teacher:{}", teacher);
-//                throw new SQLException("Unable to update Teacher", teacher.toString());
                 return new Teacher(teacher.getId(), teacher.getName(), teacher.getCourseId());
             }
         } catch (Exception e) {
@@ -146,16 +144,17 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
     @Override
     public List<Teacher> findTeacherByCourseId(Long courseId) throws SQLException {
 //
-        TypedQuery<Teacher> query = entityManager.createQuery(
-                "Select t from Teacher t LEFT JOIN t.university.users u WHERE u.course_ref = " + courseId,
+        Query query = entityManager.createNativeQuery(
+                "Select * from teachers AS t LEFT JOIN users AS u ON u.id = t.id WHERE t.course_id = " + courseId,
                 Teacher.class);
         return query.getResultList();
     }
 
     @Override
     public List<Student> findStudentByGroupId(Long groupId) throws SQLException {
-        TypedQuery<Student> query = entityManager.createQuery(
-                "Select s from Student s LEFT JOIN s.university.users u WHERE u.group_ref = " + groupId, Student.class);
+        Query query = entityManager.createNativeQuery(
+                "Select * from students AS s LEFT JOIN users AS u on u.id = s.id WHERE s.group_id = " + groupId,
+                Student.class);
         return query.getResultList();
     }
 }

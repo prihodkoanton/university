@@ -40,8 +40,13 @@ public class RoomDaoImpl extends AbstractCrudDao<Room, Long> implements RoomDao 
     @Override
     @Transactional
     public void deleteById(Long id) throws SQLException {
-        Room room = findById(id).orElseThrow();
-        entityManager.remove(room);
+        try {
+            Room room = findById(id).orElseThrow();
+            entityManager.remove(room);
+        } catch (Exception e) {
+            logger.error("Unable to user room (id = " + id + ")");
+            throw new SQLException("Unable to delete room (id = " + id + ")");
+        }
     }
 
     @Override

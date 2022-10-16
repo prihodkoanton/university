@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -49,8 +48,8 @@ class CourseDaoImplTest extends BaseDaoTest {
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/course_test_data.sql" })
     void shouldNotDeleteById() throws SQLException {
-        Exception e = assertThrows(NoSuchElementException.class, () -> courseDao.deleteById(10L));
-        assertEquals("No value present", e.getMessage());
+        Exception e = assertThrows(SQLException.class, () -> courseDao.deleteById(10L));
+        assertEquals("Unable to delete course (id = " + 10L + ")", e.getMessage());
     }
 
     @Test

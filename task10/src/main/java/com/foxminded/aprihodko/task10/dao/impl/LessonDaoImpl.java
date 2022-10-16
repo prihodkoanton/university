@@ -40,8 +40,13 @@ public class LessonDaoImpl extends AbstractCrudDao<Lesson, Long> implements Less
     @Override
     @Transactional
     public void deleteById(Long id) throws SQLException {
-        Lesson lesson = findById(id).orElseThrow();
-        entityManager.remove(lesson);
+        try {
+            Lesson lesson = findById(id).orElseThrow();
+            entityManager.remove(lesson);
+        } catch (Exception e) {
+            logger.error("Unable to user lesson (id = " + id + ")");
+            throw new SQLException("Unable to delete lesson (id = " + id + ")");
+        }
     }
 
     @Override

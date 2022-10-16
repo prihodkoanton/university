@@ -11,7 +11,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "university.lessons")
+@Table(name = "lessons")
 public class Lesson extends LongEntity implements Serializable {
 
     public static final String LESSON_ID = "lesson_id";

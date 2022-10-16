@@ -41,6 +41,14 @@ class UserDaoImplTest extends BaseDaoTest {
 
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
+    void shouldFindUserById() throws SQLException {
+        User expected = new User(104L, "none", UserType.NONE, Role.ADMIN, "12345678");
+        User actual = userDao.findById(104L).orElseThrow();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
     void shouldFindStudentById() throws SQLException {
         User expected = new Student(101L, "peter", 100L, "12345678");
         User actual = userDao.findById(101L).orElseThrow();
@@ -112,6 +120,7 @@ class UserDaoImplTest extends BaseDaoTest {
 
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
+    @Transactional
     void shouldCreateTeacher() throws SQLException {
         User expected = new Teacher("new Teacher", 104L, "12345678");
         User actual = userDao.save(expected);
@@ -124,6 +133,7 @@ class UserDaoImplTest extends BaseDaoTest {
 
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
+    @Transactional
     void shouldCreateStudent() throws SQLException {
         User expected = new Student("john_new", 101L, "12345678");
         User actual = userDao.save(expected);
@@ -136,9 +146,10 @@ class UserDaoImplTest extends BaseDaoTest {
 
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
+    @Transactional
     void shouldUpdateStudent() throws SQLException {
         User expected = userDao.findById(101L).orElseThrow();
-        expected = new Student(101L, "update_Stud", 102L, "12345678");
+        expected = new Student(101L, "update_Stud", 100L, "12345678");
         User actual = userDao.save(expected);
         assertNotNull(actual.getId());
         assertEquals(expected, actual);
@@ -146,9 +157,10 @@ class UserDaoImplTest extends BaseDaoTest {
 
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
-    void shouldUpdateUser() throws SQLException {
-        User update = userDao.findById(104L).orElseThrow();
-        update = new User(104L, "new Teach", UserType.NONE, Role.ADMIN, "12345678");
+    @Transactional
+    void shouldUpdateTeacher() throws SQLException {
+        User update = userDao.findById(100L).orElseThrow();
+        update = new Teacher(100L, "new Teach", "12345678");
         User actual = userDao.save(update);
         assertNotNull(actual.getId());
         assertEquals(update, actual);
@@ -156,6 +168,7 @@ class UserDaoImplTest extends BaseDaoTest {
 
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/user_test_data.sql" })
+    @Transactional
     void shouldCreateUserNone() throws SQLException {
         User expected = new User("NONE", UserType.NONE, Role.ADMIN, "12345678");
         User actual = userDao.save(expected);

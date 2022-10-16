@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "university.rooms")
+@Table(name = "rooms")
 public class Room extends LongEntity implements Serializable {
 
     public static final String ROOM_ID = "room_id";

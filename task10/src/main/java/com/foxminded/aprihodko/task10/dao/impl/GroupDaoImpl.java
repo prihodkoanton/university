@@ -40,8 +40,13 @@ public class GroupDaoImpl extends AbstractCrudDao<Group, Long> implements GroupD
     @Override
     @Transactional
     public void deleteById(Long id) throws SQLException {
-        Group group = findById(id).orElseThrow();
-        entityManager.remove(group);
+        try {
+            Group group = findById(id).orElseThrow();
+            entityManager.remove(group);
+        } catch (Exception e) {
+            logger.error("Unable to user group (id = " + id + ")");
+            throw new SQLException("Unable to delete group (id = " + id + ")");
+        }
     }
 
     @Override

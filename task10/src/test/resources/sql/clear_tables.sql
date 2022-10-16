@@ -1,15 +1,15 @@
 delete
-from university.lessons cascade;
+from lessons cascade;
 delete
-from university.rooms cascade;
+from rooms cascade;
 delete
-from university.students cascade;
+from students cascade;
 delete
-from university.teachers cascade;
+from teachers cascade;
 delete
-from university.groups cascade;
+from groups cascade;
 delete
-from university.courses cascade;
+from courses cascade;
 delete
-from university.users cascade;
+from users cascade;
 

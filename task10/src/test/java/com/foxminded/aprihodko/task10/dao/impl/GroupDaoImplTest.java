@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -49,8 +48,8 @@ class GroupDaoImplTest extends BaseDaoTest {
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/group_test_data.sql" })
     void shouldNotDeleteById() throws SQLException {
-        Exception e = assertThrows(NoSuchElementException.class, () -> groupDao.deleteById(10L));
-        assertEquals("No value present", e.getMessage());
+        Exception e = assertThrows(SQLException.class, () -> groupDao.deleteById(10L));
+        assertEquals("Unable to delete group (id = " + 10L + ")", e.getMessage());
     }
 
     @Test
@@ -73,7 +72,20 @@ class GroupDaoImplTest extends BaseDaoTest {
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/group_test_data.sql" })
     @Transactional
     void shouldCreateGroup() throws SQLException {
-        Group expected = new Group("group for Java");
+        Group expected = new Group();
+        expected.setName("new group");
+        Group actual = groupDao.save(expected);
+        assertNotNull(actual.getId());
+        expected.setId(actual.getId());
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    @Sql(scripts = { "/sql/clear_tables.sql", "/sql/group_test_data.sql" })
+    @Transactional
+    void shouldUpdateGroup() throws SQLException {
+        Group expected = groupDao.findById(100L).orElseThrow();
+        expected.setName("new group");
         Group actual = groupDao.save(expected);
         assertNotNull(actual.getId());
         expected.setId(actual.getId());
