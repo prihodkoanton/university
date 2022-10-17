@@ -11,32 +11,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import javax.annotation.PostConstruct;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.foxminded.aprihodko.task10.BaseDaoTest;
 import com.foxminded.aprihodko.task10.dao.LessonDao;
 import com.foxminded.aprihodko.task10.models.Lesson;
 
-@JdbcTest
+@SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class LessonDaoImplTest extends BaseDaoTest {
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
-
     private LessonDao lessonDao;
-
-    @PostConstruct
-    void init() {
-        lessonDao = new LessonDaoImpl(jdbcTemplate);
-    }
 
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/lesson_test_data.sql" })
@@ -68,7 +59,7 @@ class LessonDaoImplTest extends BaseDaoTest {
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/lesson_test_data.sql" })
     void shouldNotDeleteById() throws SQLException {
         Exception e = assertThrows(SQLException.class, () -> lessonDao.deleteById(10L));
-        assertEquals("Unable to delete course (id = 10)", e.getMessage());
+        assertEquals("Unable to delete lesson (id = " + 10L + ")", e.getMessage());
     }
 
     @Test
@@ -115,6 +106,7 @@ class LessonDaoImplTest extends BaseDaoTest {
 
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/lesson_test_data.sql" })
+    @Transactional
     void shoudlCreateLesson() throws SQLException {
         Lesson lesson = new Lesson(DayOfWeek.FRIDAY, 1, 103L, 103L, 103L, 103L);
         Lesson actual = lessonDao.save(lesson);

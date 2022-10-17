@@ -1,12 +1,27 @@
 package com.foxminded.aprihodko.task10.models;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Teacher extends User {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "teachers")
+public class Teacher extends User implements Serializable {
 
     public static final String COURSE_REF = "course_ref";
 
+    @Column(name = "course_id", nullable = false, insertable = false, updatable = false)
     private Long courseId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "course_id", referencedColumnName = "ID")
+    private Course course;
 
     public Teacher(Long id, String name, Long courseId) {
         super(id, name, UserType.TEACHER, Role.USER);

@@ -1,12 +1,20 @@
 package com.foxminded.aprihodko.task10.models;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Room extends LongEntity {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "rooms")
+public class Room extends LongEntity implements Serializable {
 
     public static final String ROOM_ID = "room_id";
     public static final String ROOM_TITLE = "room_title";
 
+    @Column(name = "room_title")
     private String title;
 
     public Room(Long id, String title) {

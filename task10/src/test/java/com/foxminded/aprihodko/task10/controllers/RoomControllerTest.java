@@ -15,30 +15,30 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.foxminded.aprihodko.task10.dao.impl.CourseDaoImpl;
-import com.foxminded.aprihodko.task10.dao.impl.GroupDaoImpl;
-import com.foxminded.aprihodko.task10.dao.impl.LessonDaoImpl;
-import com.foxminded.aprihodko.task10.dao.impl.RoomDaoImpl;
-import com.foxminded.aprihodko.task10.dao.impl.UserDaoImpl;
+import com.foxminded.aprihodko.task10.dao.CourseDao;
+import com.foxminded.aprihodko.task10.dao.GroupDao;
+import com.foxminded.aprihodko.task10.dao.LessonDao;
+import com.foxminded.aprihodko.task10.dao.RoomDao;
+import com.foxminded.aprihodko.task10.dao.UserDao;
 import com.foxminded.aprihodko.task10.models.Room;
 
 @WebMvcTest(controllers = { RoomController.class })
 class RoomControllerTest {
 
     @MockBean
-    CourseDaoImpl courseDaoImpl;
+    CourseDao courseDaoImpl;
 
     @MockBean
-    GroupDaoImpl groupDaoImpl;
+    GroupDao groupDaoImpl;
 
     @MockBean
-    LessonDaoImpl lessonDaoImpl;
+    LessonDao lessonDaoImpl;
 
     @MockBean
-    RoomDaoImpl roomDaoImpl;
+    RoomDao roomDaoImpl;
 
     @MockBean
-    UserDaoImpl userDaoImpl;
+    UserDao userDaoImpl;
 
     @Autowired
     MockMvc mvc;

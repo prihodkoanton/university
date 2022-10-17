@@ -10,32 +10,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import javax.annotation.PostConstruct;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.foxminded.aprihodko.task10.BaseDaoTest;
 import com.foxminded.aprihodko.task10.dao.GroupDao;
 import com.foxminded.aprihodko.task10.models.Group;
 
-@JdbcTest
+@SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class GroupDaoImplTest extends BaseDaoTest {
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
-
     private GroupDao groupDao;
-
-    @PostConstruct
-    void init() {
-        groupDao = new GroupDaoImpl(jdbcTemplate);
-    }
 
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/group_test_data.sql" })
@@ -58,7 +49,7 @@ class GroupDaoImplTest extends BaseDaoTest {
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/group_test_data.sql" })
     void shouldNotDeleteById() throws SQLException {
         Exception e = assertThrows(SQLException.class, () -> groupDao.deleteById(10L));
-        assertEquals("Unable to delete course (id = 10)", e.getMessage());
+        assertEquals("Unable to delete group (id = " + 10L + ")", e.getMessage());
     }
 
     @Test
@@ -79,8 +70,22 @@ class GroupDaoImplTest extends BaseDaoTest {
 
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/group_test_data.sql" })
+    @Transactional
     void shouldCreateGroup() throws SQLException {
-        Group expected = new Group("group for Java");
+        Group expected = new Group();
+        expected.setName("new group");
+        Group actual = groupDao.save(expected);
+        assertNotNull(actual.getId());
+        expected.setId(actual.getId());
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    @Sql(scripts = { "/sql/clear_tables.sql", "/sql/group_test_data.sql" })
+    @Transactional
+    void shouldUpdateGroup() throws SQLException {
+        Group expected = groupDao.findById(100L).orElseThrow();
+        expected.setName("new group");
         Group actual = groupDao.save(expected);
         assertNotNull(actual.getId());
         expected.setId(actual.getId());

@@ -20,6 +20,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import com.foxminded.aprihodko.task10.BaseDaoTest;
 import com.foxminded.aprihodko.task10.dao.RoomDao;
 import com.foxminded.aprihodko.task10.models.Room;
+import com.foxminded.aprihodko.task10.services.RoomService;
 import com.foxminded.aprihodko.task10.services.impl.RoomServiceImpl;
 
 @SpringBootTest(classes = { RoomServiceImpl.class })
@@ -29,7 +30,7 @@ class RoomServiceImplTest extends BaseDaoTest {
     RoomDao roomDao;
 
     @Autowired
-    private RoomServiceImpl roomServiceImpl;
+    private RoomService roomServiceImpl;
 
     @Test
     void shouldFindById() throws SQLException {

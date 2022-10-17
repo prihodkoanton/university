@@ -20,6 +20,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import com.foxminded.aprihodko.task10.BaseDaoTest;
 import com.foxminded.aprihodko.task10.dao.CourseDao;
 import com.foxminded.aprihodko.task10.models.Course;
+import com.foxminded.aprihodko.task10.services.CourseService;
 import com.foxminded.aprihodko.task10.services.impl.CourseServiceImpl;
 
 @SpringBootTest(classes = { CourseServiceImpl.class })
@@ -29,7 +30,7 @@ class CourseServiceImplTest extends BaseDaoTest {
     CourseDao courseDao;
 
     @Autowired
-    private CourseServiceImpl courseServiceImpl;
+    private CourseService courseServiceImpl;
 
     @Test
     void shouldFindById() throws SQLException {

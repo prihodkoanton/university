@@ -1,60 +1,58 @@
-create schema university;
-
-CREATE TABLE university.courses
+CREATE TABLE courses
 (
-    course_id          bigserial NOT NULL,
+    id          bigserial        NOT NULL,
     course_name        text      NOT NULL,
     course_description text      NOT NULL,
-    CONSTRAINT course_pkey PRIMARY KEY (course_id)
+    CONSTRAINT course_pkey PRIMARY KEY (id)
 );
 
-create table university.groups
+create table groups
 (
-    group_id   bigserial not null,
+    id   bigserial not null,
     group_name text      not null,
-    constraint group_pkey primary key (group_id)
+    constraint group_pkey primary key (id)
 );
 
-create table university.users
+create table users
 (
-    user_id   bigserial     not null,
+    id   bigserial     not null,
     user_name text          not null,
     user_type text          not null,
     user_role text          not null,
     user_password text      not null,
-    constraint user_pkey primary key (user_id)
+    constraint user_pkey primary key (id)
 );
 
-create table university.students
+create table students
 (
-    user_ref  bigint PRIMARY KEY references university.users (user_id) ON DELETE CASCADE,
-    group_ref bigint REFERENCES university.groups (group_id) ON DELETE CASCADE
+    id  bigint PRIMARY KEY references users (id) ON DELETE CASCADE,
+    group_id bigint REFERENCES groups (id) ON DELETE CASCADE
 );
 
-create table university.teachers
+create table teachers
 (
-    user_ref   bigint primary key references university.users (user_id) ON DELETE CASCADE,
-    course_ref bigint references university.courses (course_id)ON DELETE CASCADE
+    id   bigint primary key references users (id) ON DELETE CASCADE,
+    course_id bigint references courses (id)ON DELETE CASCADE
 );
 
 
-create table university.rooms
+create table rooms
 (
-    room_id    bigserial not null,
+    id    bigserial not null,
     room_title text not null,
-    constraint room_pkey primary key (room_id)
+    constraint room_pkey primary key (id)
 );
 
-create table university.lessons
+create table lessons
 (
-    lesson_id          bigserial                                        not null,
+    id          bigserial                                               not null,
     lesson_day_of_week text                                             not null,
     lesson_time_span   int                                              not null,
-    room_ref           bigint references university.rooms (room_id)     not null,
-    group_ref          bigint references university.groups (group_id)   not null,
-    course_ref         bigint references university.courses (course_id) not null,
-    teacher_ref        bigint references university.users (user_id)     not null,
-    constraint lesson_pkey primary key (lesson_id),
+    room_ref           bigint references rooms (id)     not null,
+    group_ref          bigint references groups (id)   not null,
+    course_ref         bigint references courses (id) not null,
+    teacher_ref        bigint references users (id)     not null,
+    constraint lesson_pkey primary key (id),
     unique (lesson_day_of_week, lesson_time_span, room_ref),
     unique (lesson_day_of_week, lesson_time_span, group_ref),
     unique (lesson_day_of_week, lesson_time_span, teacher_ref)

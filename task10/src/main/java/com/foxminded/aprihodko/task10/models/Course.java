@@ -1,14 +1,24 @@
 package com.foxminded.aprihodko.task10.models;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Course extends LongEntity {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "courses")
+public class Course extends LongEntity implements Serializable {
 
     public static final String COURSE_ID = "course_id";
     public static final String COURSE_NAME = "course_name";
     public static final String COURSE_DESCRIPTION = "course_description";
 
+    @Column(name = "course_name")
     private String name;
+
+    @Column(name = "course_description")
     private String description;
 
     public Course(Long id, String name, String description) {
@@ -23,6 +33,16 @@ public class Course extends LongEntity {
 
     public Course() {
 
+    }
+
+    @Override
+    public Long getId() {
+        return super.getId();
+    }
+
+    @Override
+    public void setId(Long id) {
+        super.setId(id);
     }
 
     public String getName() {
@@ -66,6 +86,6 @@ public class Course extends LongEntity {
 
     @Override
     public String toString() {
-        return "Course [name=" + name + ", discription=" + description + ", id=" + id + "]";
+        return "Course [name=" + name + ", description=" + description + "]";
     }
 }
