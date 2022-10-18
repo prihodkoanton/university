@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta content="ie=edge" http-equiv="x-ua-compatible">
+<title>Rooms</title>
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<link crossorigin="anonymous"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	rel="stylesheet">
+<link crossorigin="anonymous"
+	href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
+	integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
+	rel="stylesheet">
+<!-- <link rel="stylesheet" href="../css/shards.min.css"> -->
+</head>
+
+<body>
+
+	<header th:insert="fragments/header :: header"></header>
+	<main>
+		<div class="container my-2">
+			<div class="card">
+				<div class="card-body">
+					<div class="container my-5" th:switch="${rooms}">
+						<p class="my-5">
+							<a class="btn btn-primary" href="/rooms/showForm"><i
+								class="fas fa-user-plus ml-2"> Add Room</i></a> <a
+								class="btn btn-primary" href="/" role="button">Main page</a>
+						</p>
+						<div class="col-md-10">
+							<h2 th:case="null">No Rooms yet!</h2>
+							<div th:case="*">
+								<table class="table table-striped table-responsive-md">
+									<thead>
+										<tr>
+											<th>Title</th>
+											<th>Edit</th>
+											<th>Delete</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="room : ${rooms}">
+											<td th:text="${room.title}"></td>
+											<td><a class="btn btn-primary"
+												th:href="@{/rooms/edit/{id}(id=${room.id})}"><i
+													class="fas fa-user-edit ml-2"></i></a></td>
+											<td><a class="btn btn-primary"
+												th:href="@{/rooms/delete/{id}(id=${room.id})}"><i
+													class="fas fa-user-times ml-2"></i></a></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+</body>
+
+</html>
