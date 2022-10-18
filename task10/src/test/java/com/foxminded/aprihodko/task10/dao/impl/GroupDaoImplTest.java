@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,8 +49,8 @@ class GroupDaoImplTest extends BaseDaoTest {
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/group_test_data.sql" })
     void shouldNotDeleteById() throws SQLException {
-        Exception e = assertThrows(SQLException.class, () -> groupDao.deleteById(10L));
-        assertEquals("Unable to delete group (id = " + 10L + ")", e.getMessage());
+        Exception e = assertThrows(EmptyResultDataAccessException.class, () -> groupDao.deleteById(10L));
+        assertEquals("No class com.foxminded.aprihodko.task10.models.Group entity with id 10 exists!", e.getMessage());
     }
 
     @Test

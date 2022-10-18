@@ -24,7 +24,7 @@ public interface LessonService {
 
     List<Lesson> findByTeacherId(Long id) throws SQLException;
 
-    List<Lesson> findByTimeSpan(Long timeSpan) throws SQLException;
+    List<Lesson> findByTimeSpan(int timeSpan) throws SQLException;
 
     Lesson save(Lesson entity) throws SQLException;
 }

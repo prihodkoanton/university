@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,8 +49,8 @@ class CourseDaoImplTest extends BaseDaoTest {
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/course_test_data.sql" })
     void shouldNotDeleteById() throws SQLException {
-        Exception e = assertThrows(SQLException.class, () -> courseDao.deleteById(10L));
-        assertEquals("Unable to delete course (id = " + 10L + ")", e.getMessage());
+        Exception e = assertThrows(EmptyResultDataAccessException.class, () -> courseDao.deleteById(10L));
+        assertEquals("No class com.foxminded.aprihodko.task10.models.Course entity with id 10 exists!", e.getMessage());
     }
 
     @Test

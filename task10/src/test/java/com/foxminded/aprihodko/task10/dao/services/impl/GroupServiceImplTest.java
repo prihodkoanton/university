@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import com.foxminded.aprihodko.task10.BaseDaoTest;
 import com.foxminded.aprihodko.task10.dao.GroupDao;
@@ -58,9 +59,9 @@ class GroupServiceImplTest extends BaseDaoTest {
     @Test
     void shouldNotDeleteById() throws SQLException {
         when(groupDao.findById(10L)).thenReturn(null);
-        doThrow(new SQLException()).when(groupDao).deleteById(10L);
-        Exception actual = assertThrows(SQLException.class, () -> groupServiceImpl.deleteById(10L));
-        Exception expected = assertThrows(SQLException.class, () -> groupServiceImpl.deleteById(10L));
+        doThrow(new EmptyResultDataAccessException(1)).when(groupDao).deleteById(10L);
+        Exception actual = assertThrows(EmptyResultDataAccessException.class, () -> groupServiceImpl.deleteById(10L));
+        Exception expected = assertThrows(EmptyResultDataAccessException.class, () -> groupServiceImpl.deleteById(10L));
         assertEquals(expected, actual);
     }
 

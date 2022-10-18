@@ -70,7 +70,7 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Lesson> findByTimeSpan(Long timeSpan) throws SQLException {
+    public List<Lesson> findByTimeSpan(int timeSpan) throws SQLException {
         return lessonDao.findByTimeSpan(timeSpan);
     }
 

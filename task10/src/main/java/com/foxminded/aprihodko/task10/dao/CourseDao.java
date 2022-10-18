@@ -3,9 +3,11 @@ package com.foxminded.aprihodko.task10.dao;
 import java.sql.SQLException;
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import com.foxminded.aprihodko.task10.models.Course;
 
-public interface CourseDao extends CrudDao<Course, Long> {
+public interface CourseDao extends JpaRepository<Course, Long> {
 
     Optional<Course> findByName(String name) throws SQLException;
 

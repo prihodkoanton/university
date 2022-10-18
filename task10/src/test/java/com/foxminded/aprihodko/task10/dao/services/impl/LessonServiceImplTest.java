@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import com.foxminded.aprihodko.task10.BaseDaoTest;
 import com.foxminded.aprihodko.task10.dao.LessonDao;
@@ -62,9 +63,9 @@ class LessonServiceImplTest extends BaseDaoTest {
     @Test
     void shouldNotDeleteById() throws SQLException {
         when(lessonDao.findById(10L)).thenReturn(null);
-        doThrow(new SQLException()).when(lessonDao).deleteById(10L);
-        Exception actual = assertThrows(SQLException.class, () -> lessonServiceImpl.deleteById(10L));
-        Exception expected = assertThrows(SQLException.class, () -> lessonDao.deleteById(10L));
+        doThrow(new EmptyResultDataAccessException(1)).when(lessonDao).deleteById(10L);
+        Exception actual = assertThrows(EmptyResultDataAccessException.class, () -> lessonServiceImpl.deleteById(10L));
+        Exception expected = assertThrows(EmptyResultDataAccessException.class, () -> lessonDao.deleteById(10L));
         assertEquals(expected, actual);
     }
 
@@ -116,9 +117,9 @@ class LessonServiceImplTest extends BaseDaoTest {
     @Test
     void shouldFindTimeSpan() throws SQLException {
         List<Lesson> lessons = Arrays.asList(new Lesson(100L, DayOfWeek.MONDAY, 1, 100L, 100L, 100L, 100L));
-        when(lessonDao.findByTimeSpan(1L)).thenReturn(lessons);
-        List<Lesson> expected = lessonDao.findByTimeSpan(1L);
-        List<Lesson> actual = lessonServiceImpl.findByTimeSpan(1L);
+        when(lessonDao.findByTimeSpan(1)).thenReturn(lessons);
+        List<Lesson> expected = lessonDao.findByTimeSpan(1);
+        List<Lesson> actual = lessonServiceImpl.findByTimeSpan(1);
         assertEquals(expected, actual);
     }
 

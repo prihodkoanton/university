@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,8 +59,8 @@ class LessonDaoImplTest extends BaseDaoTest {
     @Test
     @Sql(scripts = { "/sql/clear_tables.sql", "/sql/lesson_test_data.sql" })
     void shouldNotDeleteById() throws SQLException {
-        Exception e = assertThrows(SQLException.class, () -> lessonDao.deleteById(10L));
-        assertEquals("Unable to delete lesson (id = " + 10L + ")", e.getMessage());
+        Exception e = assertThrows(EmptyResultDataAccessException.class, () -> lessonDao.deleteById(10L));
+        assertEquals("No class com.foxminded.aprihodko.task10.models.Lesson entity with id 10 exists!", e.getMessage());
     }
 
     @Test
@@ -100,7 +101,7 @@ class LessonDaoImplTest extends BaseDaoTest {
         List<Lesson> expected = Arrays.asList(new Lesson(100L, DayOfWeek.MONDAY, 1, 100L, 100L, 100L, 100L),
                 new Lesson(101L, DayOfWeek.TUESDAY, 1, 101L, 101L, 101L, 101L),
                 new Lesson(102L, DayOfWeek.WEDNESDAY, 1, 102L, 102L, 102L, 102L));
-        List<Lesson> actual = lessonDao.findByTimeSpan(1L);
+        List<Lesson> actual = lessonDao.findByTimeSpan(1);
         assertEquals(expected, actual);
     }
 

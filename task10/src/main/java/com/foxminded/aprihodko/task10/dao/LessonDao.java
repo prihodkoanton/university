@@ -1,13 +1,14 @@
 package com.foxminded.aprihodko.task10.dao;
 
-import com.foxminded.aprihodko.task10.models.Lesson;
-
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface LessonDao extends CrudDao<Lesson, Long> {
+import com.foxminded.aprihodko.task10.models.Lesson;
+
+public interface LessonDao extends JpaRepository<Lesson, Long> {
 
     Optional<Lesson> findByDayOfWeek(String dayOfWeek) throws SQLException;
 
@@ -19,5 +20,5 @@ public interface LessonDao extends CrudDao<Lesson, Long> {
 
     List<Lesson> findByTeacherId(Long id) throws SQLException;
 
-    List<Lesson> findByTimeSpan(Long timeSpan) throws SQLException;
+    List<Lesson> findByTimeSpan(int timeSpan) throws SQLException;
 }

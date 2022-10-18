@@ -12,9 +12,7 @@ import javax.persistence.TypedQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.foxminded.aprihodko.task10.dao.AbstractCrudDao;
 import com.foxminded.aprihodko.task10.dao.UserDao;
 import com.foxminded.aprihodko.task10.models.Student;
 import com.foxminded.aprihodko.task10.models.Teacher;
@@ -22,36 +20,36 @@ import com.foxminded.aprihodko.task10.models.User;
 import com.foxminded.aprihodko.task10.models.UserType;
 
 @Repository
-public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao {
+public abstract class UserDaoImpl implements UserDao {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     private static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
 
-    @Override
-    public Optional<User> findById(Long id) throws SQLException {
-        User user = entityManager.find(User.class, id);
-        return user != null ? Optional.of(user) : Optional.empty();
-    }
-
-    @Override
-    public List<User> findAll() throws SQLException {
-        TypedQuery<User> query = entityManager.createQuery("Select u From User u", User.class);
-        return query.getResultList();
-    }
-
-    @Override
-    @Transactional
-    public void deleteById(Long id) throws SQLException {
-        try {
-            User user = entityManager.find(User.class, id);
-            entityManager.remove(user);
-        } catch (Exception e) {
-            logger.error("Unable to user user (id = " + id + ")");
-            throw new SQLException("Unable to delete user (id = " + id + ")" + e.getMessage());
-        }
-    }
+//    @Override
+//    public Optional<User> findById(Long id) throws SQLException {
+//        User user = entityManager.find(User.class, id);
+//        return user != null ? Optional.of(user) : Optional.empty();
+//    }
+//
+//    @Override
+//    public List<User> findAll() throws SQLException {
+//        TypedQuery<User> query = entityManager.createQuery("Select u From User u", User.class);
+//        return query.getResultList();
+//    }
+//
+//    @Override
+//    @Transactional
+//    public void deleteById(Long id) throws SQLException {
+//        try {
+//            User user = entityManager.find(User.class, id);
+//            entityManager.remove(user);
+//        } catch (Exception e) {
+//            logger.error("Unable to user user (id = " + id + ")");
+//            throw new SQLException("Unable to delete user (id = " + id + ")" + e.getMessage());
+//        }
+//    }
 
     @Override
     public Optional<User> findByName(String name) {
@@ -67,46 +65,46 @@ public class UserDaoImpl extends AbstractCrudDao<User, Long> implements UserDao 
         return query.getResultList();
     }
 
-    @Override
-    @Transactional
-    public User create(User entity) throws SQLException {
-        try {
-            entityManager.persist(entity);
-            if (entity instanceof Student) {
-                Student student = (Student) entity;
-                entityManager.persist(student);
-                return new Student(student.getId(), student.getName(), student.getGroupId());
-            } else if (entity instanceof Teacher) {
-                Teacher teacher = (Teacher) entity;
-                entityManager.persist(teacher);
-                return new Teacher(teacher.getId(), teacher.getName(), teacher.getCourseId());
-            }
-        } catch (Exception e) {
-            logger.error("Unable to create User:{}", entity);
-            throw new SQLException("Unable to retrieve id " + entity.getId());
-        }
-        return new User(entity.getId(), entity.getName(), entity.getType(), entity.getRole(), entity.getPasswordHash());
-    }
+//    @Override
+//    @Transactional
+//    public User create(User entity) throws SQLException {
+//        try {
+//            entityManager.persist(entity);
+//            if (entity instanceof Student) {
+//                Student student = (Student) entity;
+//                entityManager.persist(student);
+//                return new Student(student.getId(), student.getName(), student.getGroupId());
+//            } else if (entity instanceof Teacher) {
+//                Teacher teacher = (Teacher) entity;
+//                entityManager.persist(teacher);
+//                return new Teacher(teacher.getId(), teacher.getName(), teacher.getCourseId());
+//            }
+//        } catch (Exception e) {
+//            logger.error("Unable to create User:{}", entity);
+//            throw new SQLException("Unable to retrieve id " + entity.getId());
+//        }
+//        return new User(entity.getId(), entity.getName(), entity.getType(), entity.getRole(), entity.getPasswordHash());
+//    }
 
-    @Override
-    @Transactional
-    public User update(User entity) throws SQLException {
-        try {
-            User user = findById(entity.getId()).orElseThrow();
-            entityManager.persist(user);
-            if (entity instanceof Student) {
-                Student student = (Student) entity;
-                return new Student(student.getId(), student.getName(), student.getGroupId());
-            } else if (entity instanceof Teacher) {
-                Teacher teacher = (Teacher) entity;
-                return new Teacher(teacher.getId(), teacher.getName(), teacher.getCourseId());
-            }
-        } catch (Exception e) {
-            logger.error("Unable to update User:{}", entity);
-            throw new SQLException("Unable to update user" + entity.getId());
-        }
-        return new User(entity.getId(), entity.getName(), entity.getType(), entity.getRole(), entity.getPasswordHash());
-    }
+//    @Override
+//    @Transactional
+//    public User update(User entity) throws SQLException {
+//        try {
+//            User user = findById(entity.getId()).orElseThrow();
+//            entityManager.persist(user);
+//            if (entity instanceof Student) {
+//                Student student = (Student) entity;
+//                return new Student(student.getId(), student.getName(), student.getGroupId());
+//            } else if (entity instanceof Teacher) {
+//                Teacher teacher = (Teacher) entity;
+//                return new Teacher(teacher.getId(), teacher.getName(), teacher.getCourseId());
+//            }
+//        } catch (Exception e) {
+//            logger.error("Unable to update User:{}", entity);
+//            throw new SQLException("Unable to update user" + entity.getId());
+//        }
+//        return new User(entity.getId(), entity.getName(), entity.getType(), entity.getRole(), entity.getPasswordHash());
+//    }
 
     @Override
     public List<Teacher> findTeacherByCourseId(Long courseId) throws SQLException {
