@@ -158,7 +158,6 @@ public class UserController {
     }
 
     @PostMapping("add")
-    @PreAuthorize("hasAuthority('developers:read')")
     String postForm(Model model, UserForm form) throws SQLException {
         if ("reload".equals(form.getStatus())) {
             form.setStatus("");
