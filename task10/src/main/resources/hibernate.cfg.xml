@@ -16,7 +16,7 @@
         <property name="hibernate.format_sql">true</property> <!-- Show SQL formatted -->
 
 
-        <!--  <property name="default_schema">university</property> --><!-- DB encoding -->
+        <!-- <property name="default_schema">university</property> --><!-- DB encoding -->
 
 
         <property

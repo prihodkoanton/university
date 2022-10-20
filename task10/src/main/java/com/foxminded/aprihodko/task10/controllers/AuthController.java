@@ -2,7 +2,6 @@ package com.foxminded.aprihodko.task10.controllers;
 
 import java.sql.SQLException;
 
-import com.foxminded.aprihodko.task10.services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +12,7 @@ import com.foxminded.aprihodko.task10.models.Student;
 import com.foxminded.aprihodko.task10.models.Teacher;
 import com.foxminded.aprihodko.task10.models.User;
 import com.foxminded.aprihodko.task10.models.ui.UserForm;
-import com.foxminded.aprihodko.task10.services.impl.UserServiceImpl;
+import com.foxminded.aprihodko.task10.services.UserService;
 
 @Controller
 @RequestMapping("/auth")
@@ -29,12 +28,6 @@ public class AuthController {
     public String getLoginPage() {
         return "login";
     }
-
-//    @GetMapping("/registration")
-//    public String registration(Model model) {
-//        model.addAttribute("userReg", new User());
-//        return "registration";
-//    }
 
     @GetMapping("/registration")
     public String showFormForAll(Model model) throws SQLException {

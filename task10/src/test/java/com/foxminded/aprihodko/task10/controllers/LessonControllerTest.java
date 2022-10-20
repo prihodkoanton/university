@@ -16,43 +16,42 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.foxminded.aprihodko.task10.dao.CourseDao;
-import com.foxminded.aprihodko.task10.dao.GroupDao;
-import com.foxminded.aprihodko.task10.dao.LessonDao;
-import com.foxminded.aprihodko.task10.dao.RoomDao;
-import com.foxminded.aprihodko.task10.dao.UserDao;
 import com.foxminded.aprihodko.task10.models.Lesson;
+import com.foxminded.aprihodko.task10.repositories.CourseRepository;
+import com.foxminded.aprihodko.task10.repositories.GroupRepository;
+import com.foxminded.aprihodko.task10.repositories.LessonRepository;
+import com.foxminded.aprihodko.task10.repositories.RoomRepository;
+import com.foxminded.aprihodko.task10.repositories.UserRepository;
 
 @WebMvcTest(controllers = { LessonController.class })
 class LessonControllerTest {
 
-    @MockBean
-    CourseDao courseDaoImpl;
+	@MockBean
+	CourseRepository courseRepository;
 
-    @MockBean
-    GroupDao groupDaoImpl;
+	@MockBean
+	GroupRepository groupDaoImpl;
 
-    @MockBean
-    LessonDao lessonDaoImpl;
+	@MockBean
+	LessonRepository lessonRepository;
 
-    @MockBean
-    RoomDao roomDaoImpl;
+	@MockBean
+	RoomRepository roomRepository;
 
-    @MockBean
-    UserDao userDaoImpl;
+	@MockBean
+	UserRepository userRepository;
 
-    @Autowired
-    MockMvc mvc;
+	@Autowired
+	MockMvc mvc;
 
-    @Test
-    @WithMockUser("test")
-    void shouldGetListOfLessons() throws Exception {
-        when(lessonDaoImpl.findAll()).thenReturn(Arrays.asList(new Lesson(DayOfWeek.MONDAY, 1, 100L, 100L, 100L, 100L),
-                new Lesson(DayOfWeek.TUESDAY, 1, 101L, 101L, 101L, 101L),
-                new Lesson(DayOfWeek.WEDNESDAY, 1, 102L, 102L, 102L, 102L)));
-        mvc.perform(get("/lessons/list")).andExpect(status().isOk())
-                .andExpect(content().string(containsString("MONDAY")))
-                .andExpect(content().string(containsString("TUESDAY")))
-                .andExpect(content().string(containsString("WEDNESDAY")));
-    }
+	@Test
+	@WithMockUser("test")
+	void shouldGetListOfLessons() throws Exception {
+		when(lessonRepository.findAll()).thenReturn(Arrays.asList(new Lesson(DayOfWeek.MONDAY, 1, 100L, 100L, 100L, 100L),
+				new Lesson(DayOfWeek.TUESDAY, 1, 101L, 101L, 101L, 101L),
+				new Lesson(DayOfWeek.WEDNESDAY, 1, 102L, 102L, 102L, 102L)));
+		mvc.perform(get("/lessons/list")).andExpect(status().isOk()).andExpect(content().string(containsString("MONDAY")))
+				.andExpect(content().string(containsString("TUESDAY")))
+				.andExpect(content().string(containsString("WEDNESDAY")));
+	}
 }

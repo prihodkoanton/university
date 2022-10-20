@@ -7,76 +7,76 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.foxminded.aprihodko.task10.dao.LessonDao;
 import com.foxminded.aprihodko.task10.models.Lesson;
+import com.foxminded.aprihodko.task10.repositories.LessonRepository;
 import com.foxminded.aprihodko.task10.services.LessonService;
 
 @Service
 public class LessonServiceImpl implements LessonService {
 
-    private final LessonDao lessonDao;
+	private final LessonRepository lessonRepository;
 
-    public LessonServiceImpl(LessonDao lessonDao) {
-        this.lessonDao = lessonDao;
-    }
+	public LessonServiceImpl(LessonRepository lessonRepository) {
+		this.lessonRepository = lessonRepository;
+	}
 
-    @Override
-    @Transactional(readOnly = true)
-    public Optional<Lesson> findById(Long id) throws SQLException {
-        return lessonDao.findById(id);
-    }
+	@Override
+	@Transactional(readOnly = true)
+	public Optional<Lesson> findById(Long id) throws SQLException {
+		return lessonRepository.findById(id);
+	}
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<Lesson> findAll() throws SQLException {
-        return lessonDao.findAll();
-    }
+	@Override
+	@Transactional(readOnly = true)
+	public List<Lesson> findAll() throws SQLException {
+		return lessonRepository.findAll();
+	}
 
-    @Override
-    @Transactional
-    public void deleteById(Long id) throws SQLException {
-        lessonDao.deleteById(id);
-    }
+	@Override
+	@Transactional
+	public void deleteById(Long id) throws SQLException {
+		lessonRepository.deleteById(id);
+	}
 
-    @Override
-    @Transactional(readOnly = true)
-    public Optional<Lesson> findByDayOfWeek(String dayOfWeek) throws SQLException {
-        return lessonDao.findByDayOfWeek(dayOfWeek);
-    }
+	@Override
+	@Transactional(readOnly = true)
+	public Optional<Lesson> findByDayOfWeek(String dayOfWeek) throws SQLException {
+		return lessonRepository.findByDayOfWeek(dayOfWeek);
+	}
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<Lesson> findByRoomId(Long id) throws SQLException {
-        return lessonDao.findByRoomId(id);
-    }
+	@Override
+	@Transactional(readOnly = true)
+	public List<Lesson> findByRoomId(Long id) throws SQLException {
+		return lessonRepository.findByRoomId(id);
+	}
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<Lesson> findByGroupId(Long id) throws SQLException {
-        return lessonDao.findByGroupId(id);
-    }
+	@Override
+	@Transactional(readOnly = true)
+	public List<Lesson> findByGroupId(Long id) throws SQLException {
+		return lessonRepository.findByGroupId(id);
+	}
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<Lesson> findByCourseId(Long id) throws SQLException {
-        return lessonDao.findByCourseId(id);
-    }
+	@Override
+	@Transactional(readOnly = true)
+	public List<Lesson> findByCourseId(Long id) throws SQLException {
+		return lessonRepository.findByCourseId(id);
+	}
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<Lesson> findByTeacherId(Long id) throws SQLException {
-        return lessonDao.findByTeacherId(id);
-    }
+	@Override
+	@Transactional(readOnly = true)
+	public List<Lesson> findByTeacherId(Long id) throws SQLException {
+		return lessonRepository.findByTeacherId(id);
+	}
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<Lesson> findByTimeSpan(Long timeSpan) throws SQLException {
-        return lessonDao.findByTimeSpan(timeSpan);
-    }
+	@Override
+	@Transactional(readOnly = true)
+	public List<Lesson> findByTimeSpan(int timeSpan) throws SQLException {
+		return lessonRepository.findByTimeSpan(timeSpan);
+	}
 
-    @Override
-    @Transactional
-    public Lesson save(Lesson entity) throws SQLException {
-        return lessonDao.save(entity);
-    }
+	@Override
+	@Transactional
+	public Lesson save(Lesson entity) throws SQLException {
+		return lessonRepository.save(entity);
+	}
 }

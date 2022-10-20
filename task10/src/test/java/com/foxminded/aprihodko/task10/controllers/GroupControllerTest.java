@@ -15,42 +15,42 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.foxminded.aprihodko.task10.dao.CourseDao;
-import com.foxminded.aprihodko.task10.dao.GroupDao;
-import com.foxminded.aprihodko.task10.dao.LessonDao;
-import com.foxminded.aprihodko.task10.dao.RoomDao;
-import com.foxminded.aprihodko.task10.dao.UserDao;
 import com.foxminded.aprihodko.task10.models.Group;
+import com.foxminded.aprihodko.task10.repositories.CourseRepository;
+import com.foxminded.aprihodko.task10.repositories.GroupRepository;
+import com.foxminded.aprihodko.task10.repositories.LessonRepository;
+import com.foxminded.aprihodko.task10.repositories.RoomRepository;
+import com.foxminded.aprihodko.task10.repositories.UserRepository;
 
 @WebMvcTest(controllers = { GroupController.class })
 class GroupControllerTest {
 
-    @MockBean
-    CourseDao courseDaoImpl;
+	@MockBean
+	CourseRepository courseRepository;
 
-    @MockBean
-    GroupDao groupDaoImpl;
+	@MockBean
+	GroupRepository groupDaoImpl;
 
-    @MockBean
-    LessonDao lessonDaoImpl;
+	@MockBean
+	LessonRepository lessonRepository;
 
-    @MockBean
-    RoomDao roomDaoImpl;
+	@MockBean
+	RoomRepository roomRepository;
 
-    @MockBean
-    UserDao userDaoImpl;
+	@MockBean
+	UserRepository userRepository;
 
-    @Autowired
-    MockMvc mvc;
+	@Autowired
+	MockMvc mvc;
 
-    @Test
-    @WithMockUser("test")
-    void shouldGetListOfGroups() throws Exception {
-        when(groupDaoImpl.findAll()).thenReturn(Arrays.asList(new Group("group for Java"),
-                new Group("group for Java Spring"), new Group("group for C# .Net")));
-        mvc.perform(get("/groups/list")).andExpect(status().isOk())
-                .andExpect(content().string(containsString("group for Java")))
-                .andExpect(content().string(containsString("group for Java Spring")))
-                .andExpect(content().string(containsString("group for C# .Net")));
-    }
+	@Test
+	@WithMockUser("test")
+	void shouldGetListOfGroups() throws Exception {
+		when(groupDaoImpl.findAll()).thenReturn(Arrays.asList(new Group("group for Java"),
+				new Group("group for Java Spring"), new Group("group for C# .Net")));
+		mvc.perform(get("/groups/list")).andExpect(status().isOk())
+				.andExpect(content().string(containsString("group for Java")))
+				.andExpect(content().string(containsString("group for Java Spring")))
+				.andExpect(content().string(containsString("group for C# .Net")));
+	}
 }

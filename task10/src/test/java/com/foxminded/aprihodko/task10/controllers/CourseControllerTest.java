@@ -15,42 +15,42 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.foxminded.aprihodko.task10.dao.CourseDao;
-import com.foxminded.aprihodko.task10.dao.GroupDao;
-import com.foxminded.aprihodko.task10.dao.LessonDao;
-import com.foxminded.aprihodko.task10.dao.RoomDao;
-import com.foxminded.aprihodko.task10.dao.UserDao;
 import com.foxminded.aprihodko.task10.models.Course;
+import com.foxminded.aprihodko.task10.repositories.CourseRepository;
+import com.foxminded.aprihodko.task10.repositories.GroupRepository;
+import com.foxminded.aprihodko.task10.repositories.LessonRepository;
+import com.foxminded.aprihodko.task10.repositories.RoomRepository;
+import com.foxminded.aprihodko.task10.repositories.UserRepository;
 
 @WebMvcTest(controllers = { CourseController.class })
 class CourseControllerTest {
 
-    @MockBean
-    CourseDao courseDaoImpl;
+	@MockBean
+	CourseRepository courseRepository;
 
-    @MockBean
-    GroupDao groupDaoImpl;
+	@MockBean
+	GroupRepository groupDaoImpl;
 
-    @MockBean
-    LessonDao lessonDaoImpl;
+	@MockBean
+	LessonRepository lessonRepository;
 
-    @MockBean
-    RoomDao roomDaoImpl;
+	@MockBean
+	RoomRepository roomRepository;
 
-    @MockBean
-    UserDao userDaoImpl;
+	@MockBean
+	UserRepository userRepository;
 
-    @Autowired
-    MockMvc mvc;
+	@Autowired
+	MockMvc mvc;
 
-    @Test
-    @WithMockUser("test")
-    void shouldGetListOfCourses() throws Exception {
-        when(courseDaoImpl.findAll()).thenReturn(Arrays.asList(new Course("one", "course one"),
-                new Course("two", "course two"), new Course("three", "course three")));
-        mvc.perform(get("/courses/list")).andExpect(status().isOk())
-                .andExpect(content().string(containsString("course one")))
-                .andExpect(content().string(containsString("course two")))
-                .andExpect(content().string(containsString("course three")));
-    }
+	@Test
+	@WithMockUser("test")
+	void shouldGetListOfCourses() throws Exception {
+		when(courseRepository.findAll()).thenReturn(Arrays.asList(new Course("one", "course one"),
+				new Course("two", "course two"), new Course("three", "course three")));
+		mvc.perform(get("/courses/list")).andExpect(status().isOk())
+				.andExpect(content().string(containsString("course one")))
+				.andExpect(content().string(containsString("course two")))
+				.andExpect(content().string(containsString("course three")));
+	}
 }
