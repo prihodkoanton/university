@@ -1,83 +1,94 @@
 package com.foxminded.aprihodko.task10.models.ui;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import com.foxminded.aprihodko.task10.models.Role;
 
 public class UserForm {
-    private String name;
-    private Long groupId;
-    private Long courseId;
-    private String userType;
-    private Role role;
-    private String passwordHash;
 
-    private Long id;
+	@NotEmpty(message = "User's name cannot be empty.")
+	@Size(min = 2, max = 250)
+	private String name;
+	private Long groupId;
+	private Long courseId;
+	private String userType;
+	private Role role;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	@NotNull
+	@Min(8)
+	private String passwordHash;
 
-    public Role getRole() {
-        return role;
-    }
+	private Long id;
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getPasswordHash() {
-        return passwordHash;
-    }
+	public Role getRole() {
+		return role;
+	}
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
-    }
+	public void setRole(Role role) {
+		this.role = role;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public String getPasswordHash() {
+		return passwordHash;
+	}
 
-    private String status;
+	public void setPasswordHash(String passwordHash) {
+		this.passwordHash = passwordHash;
+	}
 
-    public UserForm() {
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	private String status;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public UserForm() {
+	}
 
-    public Long getGroupId() {
-        return groupId;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public Long getCourseId() {
-        return courseId;
-    }
+	public Long getGroupId() {
+		return groupId;
+	}
 
-    public void setCourseId(Long courseId) {
-        this.courseId = courseId;
-    }
+	public void setGroupId(Long groupId) {
+		this.groupId = groupId;
+	}
 
-    public String getUserType() {
-        return userType;
-    }
+	public Long getCourseId() {
+		return courseId;
+	}
 
-    public void setUserType(String userType) {
-        this.userType = userType;
-    }
+	public void setCourseId(Long courseId) {
+		this.courseId = courseId;
+	}
 
-    public String getStatus() {
-        return status;
-    }
+	public String getUserType() {
+		return userType;
+	}
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 }
